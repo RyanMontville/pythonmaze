@@ -31,3 +31,30 @@ class Generator(Turtle):
         xint = int(self.xcor())
         yint = int(self.ycor())
         print("X: " + str(xint) + ", Y: " + str(yint))
+        
+    def draw_line(self, direction, coordinate):
+        if direction == "right":
+            heading = 0
+            x_cord = -390
+            y_cord = coordinate
+            travel_distance = 780
+        elif direction == "left":
+            heading = 180
+            x_cord = 390
+            y_cord = coordinate
+            travel_distance = 780
+        elif direction == "up":
+            heading = 90
+            x_cord = coordinate
+            y_cord = -290
+            travel_distance = 580
+        else:
+            heading = 270
+            x_cord = coordinate
+            y_cord = 290
+            travel_distance = 580
+        self.setheading(heading)
+        self.pu()
+        self.goto(x_cord, y_cord)
+        self.pd()
+        self.forward(travel_distance)
