@@ -5,9 +5,10 @@ import random
 screen = Screen()
 screen.setup(width=800,height=600)
 screen.title("Maze Generator")
-# screen.tracer(2,0)
+screen.tracer(2,0)
 generator = Generator()
 
-generator.draw_zig_zags(-390,290)
+bottom_of_zig_zags = generator.draw_zig_zags(-390,290)
+top_right_of_spiral = generator.draw_spiral(-390,bottom_of_zig_zags)
 
 screen.exitonclick()

@@ -100,3 +100,42 @@ class Generator(Turtle):
                     horizontal_count += 1
             # draw a line for the path on the far right side to get from top right corner to bottom of horizontal zig zags
             self.draw_line_from_tuple((370,(y_coordinate-20),370,bottom_of_zig_zags))
+        return bottom_of_zig_zags
+            
+    def draw_spiral(self, x_coordinate, y_coordinate):
+        # Draw outside bottom of spiral
+        self.draw_line_from_tuple((x_coordinate,(y_coordinate-120),(x_coordinate+120),(y_coordinate-120)))
+        # Draw outside right of spiral
+        self.draw_line_from_tuple(((x_coordinate+120),(y_coordinate-120),(x_coordinate+120),(y_coordinate-20)))
+        current_y_top_coordinate = y_coordinate
+        current_y_bottom_coordinate = y_coordinate-100
+        current_x_left_position = x_coordinate + 20
+        current_x_right_position = x_coordinate + 100
+        # Draw spiral going in, starting with down
+        self.draw_line_from_tuple((current_x_left_position,y_coordinate,current_x_left_position,(current_y_bottom_coordinate)))
+        # Draw right
+        self.draw_line_from_tuple((current_x_left_position,current_y_bottom_coordinate,current_x_right_position,current_y_bottom_coordinate))
+        current_y_top_coordinate -= 40
+        # Draw up
+        self.draw_line_from_tuple((current_x_right_position,current_y_bottom_coordinate,current_x_right_position,current_y_top_coordinate))
+        current_x_left_position += 40
+        # Draw left
+        self.draw_line_from_tuple((current_x_right_position,current_y_top_coordinate,current_x_left_position,current_y_top_coordinate))
+        current_y_bottom_coordinate += 40
+        # Draw down
+        self.draw_line_from_tuple((current_x_left_position,current_y_top_coordinate,current_x_left_position,current_y_bottom_coordinate))
+        # Draw spiral going out, starting with down
+        current_y_top_coordinate = current_y_bottom_coordinate
+        current_y_bottom_coordinate -= 20
+        current_x_right_position -= 20
+        current_x_left_position -= 20
+        self.draw_line_from_tuple((current_x_right_position,current_y_top_coordinate,current_x_right_position,current_y_bottom_coordinate))
+        # Draw left
+        self.draw_line_from_tuple((current_x_right_position,current_y_bottom_coordinate,current_x_left_position,current_y_bottom_coordinate))
+        current_y_top_coordinate += 40
+        # Draw up
+        self.draw_line_from_tuple((current_x_left_position,current_y_bottom_coordinate,current_x_left_position,current_y_top_coordinate))
+        current_x_right_position += 40
+        # Draw right
+        self.draw_line_from_tuple((current_x_left_position,current_y_top_coordinate,current_x_right_position,current_y_top_coordinate))
+        return (current_x_right_position,(current_y_top_coordinate+20))
