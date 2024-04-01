@@ -7,6 +7,7 @@ class Generator(Turtle):
         # starts with coordinates to draw the border of the maze
         self.draw_from_array([(-390,290,390,290),(390,290,390,-270),(390,-290,-390,-290),(-390,-290,-390,270)])
         self.hideturtle()
+        self.speed("fastest")
         
     def print_cors(self):
         xint = int(self.xcor())
@@ -62,6 +63,16 @@ class Generator(Turtle):
             self.draw_line_from_tuple(((x_coordinate + 20),bottom_of_zig_zags,370,bottom_of_zig_zags))
         else:
             self.draw_line_from_tuple(((x_coordinate + 20),bottom_of_zig_zags,right_edge_of_vertical_zig_zag,bottom_of_zig_zags))
+            
+        # If the height of the vertical zig zags is 120, the program can choose to add a spiral before drawing the horizontal zig zags
+        draw_spiral = False
+        if choice[0] == 120:
+            if random.choice([True, False]):
+                draw_spiral = True
+                end_of_spiral = self.draw_spiral(right_edge_of_vertical_zig_zag,y_coordinate)
+                self.draw_line_from_tuple((right_edge_of_vertical_zig_zag,(y_coordinate-140),(right_edge_of_vertical_zig_zag+120),(y_coordinate-140)))
+                right_edge_of_vertical_zig_zag = end_of_spiral[0]
+        
         # start of horizontal zig zags
         start_of_zig = right_edge_of_vertical_zig_zag
         start_of_zag = right_edge_of_vertical_zig_zag + 20
@@ -100,42 +111,138 @@ class Generator(Turtle):
                     horizontal_count += 1
             # draw a line for the path on the far right side to get from top right corner to bottom of horizontal zig zags
             self.draw_line_from_tuple((370,(y_coordinate-20),370,bottom_of_zig_zags))
-        return bottom_of_zig_zags
+        return (bottom_of_zig_zags, draw_spiral)
+    
+    def update_coordinates(self,x_coordinate,y_coordinate,x_start_change,x_end_change,y_start_change,y_end_change):
+        x_start = x_coordinate + x_start_change
+        x_end = x_coordinate + x_end_change
+        y_start = y_coordinate + y_start_change
+        y_end = y_coordinate + y_end_change
+        self.draw_line_from_tuple((x_start,y_start,x_end,y_end))
+        return (x_end,y_end)
             
     def draw_spiral(self, x_coordinate, y_coordinate):
         # Draw outside bottom of spiral
-        self.draw_line_from_tuple((x_coordinate,(y_coordinate-120),(x_coordinate+120),(y_coordinate-120)))
-        # Draw outside right of spiral
-        self.draw_line_from_tuple(((x_coordinate+120),(y_coordinate-120),(x_coordinate+120),(y_coordinate-20)))
-        current_y_top_coordinate = y_coordinate
-        current_y_bottom_coordinate = y_coordinate-100
-        current_x_left_position = x_coordinate + 20
-        current_x_right_position = x_coordinate + 100
-        # Draw spiral going in, starting with down
-        self.draw_line_from_tuple((current_x_left_position,y_coordinate,current_x_left_position,(current_y_bottom_coordinate)))
-        # Draw right
-        self.draw_line_from_tuple((current_x_left_position,current_y_bottom_coordinate,current_x_right_position,current_y_bottom_coordinate))
-        current_y_top_coordinate -= 40
+        coords = self.update_coordinates(x_coordinate,y_coordinate,0,120,-120,-120)
         # Draw up
-        self.draw_line_from_tuple((current_x_right_position,current_y_bottom_coordinate,current_x_right_position,current_y_top_coordinate))
-        current_x_left_position += 40
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,100)
         # Draw left
-        self.draw_line_from_tuple((current_x_right_position,current_y_top_coordinate,current_x_left_position,current_y_top_coordinate))
-        current_y_bottom_coordinate += 40
+        coords = self.update_coordinates(coords[0],coords[1],0,-80,0,0)
         # Draw down
-        self.draw_line_from_tuple((current_x_left_position,current_y_top_coordinate,current_x_left_position,current_y_bottom_coordinate))
-        # Draw spiral going out, starting with down
-        current_y_top_coordinate = current_y_bottom_coordinate
-        current_y_bottom_coordinate -= 20
-        current_x_right_position -= 20
-        current_x_left_position -= 20
-        self.draw_line_from_tuple((current_x_right_position,current_y_top_coordinate,current_x_right_position,current_y_bottom_coordinate))
-        # Draw left
-        self.draw_line_from_tuple((current_x_right_position,current_y_bottom_coordinate,current_x_left_position,current_y_bottom_coordinate))
-        current_y_top_coordinate += 40
-        # Draw up
-        self.draw_line_from_tuple((current_x_left_position,current_y_bottom_coordinate,current_x_left_position,current_y_top_coordinate))
-        current_x_right_position += 40
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-60)
         # Draw right
-        self.draw_line_from_tuple((current_x_left_position,current_y_top_coordinate,current_x_right_position,current_y_top_coordinate))
-        return (current_x_right_position,(current_y_top_coordinate+20))
+        coords = self.update_coordinates(coords[0],coords[1],0,40,0,0)
+        # Draw up
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20)
+        # Draw the spiral going back out, starting with up
+        coords = self.update_coordinates(coords[0],coords[1],-20,-20,0,20)
+        # Draw right
+        coords = self.update_coordinates(coords[0],coords[1],0,40,0,0)
+        # Draw down
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-60)
+        # Draw left
+        coords = self.update_coordinates(coords[0],coords[1],0,-80,0,0)
+        # Draw up
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,100)
+        return (x_coordinate+120,y_coordinate)
+    
+    def draw_multipath_variation_one(self,x_coordinate,y_coordinate):
+        # Draw 1st path, starting with right
+        coords = self.update_coordinates(x_coordinate,y_coordinate,20,400,-120,-120)
+        # Draw right edge
+        self.update_coordinates(coords[0],coords[1],20,20,0,120)
+        # Draw up
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,100)
+        # Draw left
+        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0)
+        # Draw down
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-80)
+        # Draw left
+        coords = self.update_coordinates(coords[0],coords[1],0,-360,0,0)
+        # Draw up
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,80)
+        # Draw 2nd path, starting with down
+        coords = self.update_coordinates(coords[0],coords[1],20,20,0,-60)
+        # Draw right
+        coords = self.update_coordinates(coords[0],coords[1],0,200,0,0)
+        # Draw down
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-20)
+        # Draw 3rd path, starting with down
+        coords = self.update_coordinates(x_coordinate,y_coordinate,60,60,-20,-60)
+        # Draw right
+        coords = self.update_coordinates(coords[0],coords[1],0,220,0,0)
+        # Draw down
+        coords = self.update_coordinates(coords[0],coords[1],-20,-20,0,-20)
+        # Draw right
+        coords = self.update_coordinates(coords[0],coords[1],0,100,0,0)
+        # Draw left
+        coords = self.update_coordinates(coords[0],coords[1],20,-60,20,20)
+        # Draw up
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,40)
+        # Draw down
+        coords = self.update_coordinates(coords[0],coords[1],20,20,20,-20)
+        # Draw up
+        coords = self.update_coordinates(coords[0],coords[1],20,20,-20,20)
+        # Draw down
+        coords = self.update_coordinates(coords[0],coords[1],20,20,20,-20)
+        # Draw 4th path, starting with up
+        coords = self.update_coordinates(coords[0],coords[1],-80,-80,-20,40)
+        # Draw left
+        coords = self.update_coordinates(coords[0],coords[1],0,-180,-20,-20)
+        # Draw down
+        coords = self.update_coordinates(coords[0],coords[1],-20,-20,20,-20)
+        # Draw right
+        coords = self.update_coordinates(coords[0],coords[1],0,180,0,0)
+        return (x_coordinate+420,y_coordinate)
+    
+    def draw_multipath_variation_two(self,x_coordinate,y_coordinate):
+        # this multipath is drawn out of order, so it is hard to comment what is happening
+        coords = self.update_coordinates(x_coordinate,y_coordinate,220,220,0,-20)
+        for i in range(3):
+            coords = self.update_coordinates(coords[0],coords[1],-40,-40,20,0)
+        coords = self.update_coordinates(coords[0],coords[1],-20,-80,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-20)
+        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0)
+        self.update_coordinates(coords[0],coords[1],20,20,0,20)
+        coords = self.update_coordinates(coords[0],coords[1],20,40,0,0)
+        self.update_coordinates(coords[0],coords[1],20,20,0,20)
+        self.update_coordinates(coords[0],coords[1],60,60,0,20)
+        self.update_coordinates(coords[0],coords[1],100,100,0,20)
+        coords = self.update_coordinates(coords[0],coords[1],20,120,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-60)
+        coords = self.update_coordinates(coords[0],coords[1],0,-40,0,0)
+        self.update_coordinates(coords[0],coords[1],20,20,20,60)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,40)
+        coords = self.update_coordinates(coords[0],coords[1],-20,-20,20,-60)
+        coords = self.update_coordinates(coords[0],coords[1],-20,-20,0,60)
+        coords = self.update_coordinates(coords[0],coords[1],-20,-20,20,-40)
+        coords = self.update_coordinates(coords[0],coords[1],-20,-20,60,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,-100,40,40)
+        coords = self.update_coordinates(coords[0],coords[1],80,80,-60,-20)
+        coords = self.update_coordinates(coords[0],coords[1],0,-60,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],-20,40,-20,-20)
+        coords = self.update_coordinates(coords[0],coords[1],-40,180,-20,-20)
+        
+    def fill_rest_of_row(self,y_coordinate):
+        coords = self.update_coordinates(390,y_coordinate,-20,-20,-20,-100)
+        coords = self.update_coordinates(coords[0],coords[1],0,-80,0,0)
+        self.update_coordinates(coords[0],coords[1],-20,-20,-20,80)
+        self.update_coordinates(coords[0],coords[1],-20,100,-20,-20)
+        coords = self.update_coordinates(coords[0],coords[1],-20,60,20,20)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,40)
+        self.update_coordinates(coords[0],coords[1],20,-60,20,20)
+        coords = self.update_coordinates(coords[0],coords[1],-20,-20,20,-20)
+        coords = self.update_coordinates(coords[0],coords[1],0,-40,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],-20,20,20,20)
+        self.update_coordinates(coords[0],coords[1],-20,-20,20,40)
+        
+    def draw_row(self,x_coordinate,y_coordinate,has_spiral_been_drawn):
+        if has_spiral_been_drawn:
+            end_coord = self.draw_multipath_variation_one(x_coordinate,y_coordinate)
+            next_coord = self.draw_multipath_variation_two(end_coord[0],end_coord[1])
+            self.fill_rest_of_row(y_coordinate)
+        else:
+            end_coord = self.draw_spiral(x_coordinate,y_coordinate)
+            second_end_coord = self.draw_multipath_variation_one(end_coord[0],end_coord[1])
+            third_end_coord = self.draw_multipath_variation_two(second_end_coord[0],second_end_coord[1])
