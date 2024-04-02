@@ -150,7 +150,7 @@ class Generator(Turtle):
         # Draw 1st path, starting with right
         coords = self.update_coordinates(x_coordinate,y_coordinate,20,400,-120,-120)
         # Draw right edge
-        self.update_coordinates(coords[0],coords[1],20,20,0,120)
+        self.update_coordinates(coords[0],coords[1],20,20,-20,120)
         # Draw up
         coords = self.update_coordinates(coords[0],coords[1],0,0,0,100)
         # Draw left
@@ -223,6 +223,7 @@ class Generator(Turtle):
         coords = self.update_coordinates(coords[0],coords[1],0,-60,0,0)
         coords = self.update_coordinates(coords[0],coords[1],-20,40,-20,-20)
         coords = self.update_coordinates(coords[0],coords[1],-40,180,-20,-20)
+        return coords[1]-20
         
     def fill_rest_of_row(self,y_coordinate):
         coords = self.update_coordinates(390,y_coordinate,-20,-20,-20,-100)
@@ -237,12 +238,62 @@ class Generator(Turtle):
         coords = self.update_coordinates(coords[0],coords[1],-20,20,20,20)
         self.update_coordinates(coords[0],coords[1],-20,-20,20,40)
         
-    def draw_row(self,x_coordinate,y_coordinate,has_spiral_been_drawn):
+    def draw_second_row(self,x_coordinate,y_coordinate,has_spiral_been_drawn):
+        bottom_line = 0
         if has_spiral_been_drawn:
             end_coord = self.draw_multipath_variation_one(x_coordinate,y_coordinate)
-            next_coord = self.draw_multipath_variation_two(end_coord[0],end_coord[1])
+            bottom_line = self.draw_multipath_variation_two(end_coord[0],end_coord[1])
             self.fill_rest_of_row(y_coordinate)
         else:
             end_coord = self.draw_spiral(x_coordinate,y_coordinate)
             second_end_coord = self.draw_multipath_variation_one(end_coord[0],end_coord[1])
-            third_end_coord = self.draw_multipath_variation_two(second_end_coord[0],second_end_coord[1])
+            bottom_line = self.draw_multipath_variation_two(second_end_coord[0],second_end_coord[1])
+        return bottom_line
+    
+    def draw_stair_paths(self,x_coordinate,y_coordinate):
+        # Draw top line
+        coords = self.update_coordinates(x_coordinate,y_coordinate,0,120,0,0)
+        # Draw right side of stairs section
+        self.update_coordinates(coords[0],coords[1],20,20,20,-160)
+        #randomly make either the right side or bottom of section a dead end
+        bottom_path_dead_end = random.choice([True,False])
+        if bottom_path_dead_end:
+            temp_coords = coords
+            temp_coords = self.update_coordinates(temp_coords[0],temp_coords[1],0,0,0,-160)
+            self.update_coordinates(temp_coords[0],temp_coords[1],-120,40,-20,-20)
+        else:
+            temp_coords = coords
+            temp_coords = self.update_coordinates(temp_coords[0],temp_coords[1],0,0,0,-180)
+            temp_coords = self.update_coordinates(temp_coords[0],temp_coords[1],-120,-40,0,0)
+            self.update_coordinates(temp_coords[0],temp_coords[1],20,80,0,0)
+        # Draw top left curl
+        coords = self.update_coordinates(coords[0],coords[1],-120,-80,-40,-40)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20)
+        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0)
+        # Draw top right group
+        coords = self.update_coordinates(coords[0],coords[1],40,80,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],-40,-40,0,-60)
+        coords = self.update_coordinates(coords[0],coords[1],0,20,40,40)
+        coords = self.update_coordinates(coords[0],coords[1],0,20,-20,-20)
+        coords = self.update_coordinates(coords[0],coords[1],-40,-20,-20,-20)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-20)
+        coords = self.update_coordinates(coords[0],coords[1],20,20,80,-20)
+        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0)
+        # Draw right side of stairs
+        coords = self.update_coordinates(coords[0],coords[1],40,20,-40,-40)
+        for i in range(3):
+            coords = self.update_coordinates(coords[0],coords[1],0,0,0,20)
+            coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20)
+        # Draw left side of stairs
+        coords = self.update_coordinates(coords[0],coords[1],0,-20,20,20)
+        temp_coords = self.update_coordinates(coords[0],coords[1],0,0,0,-100)
+        self.update_coordinates(temp_coords[0],temp_coords[1],0,20,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,20,-60,-60)
+        for i in range(2):
+            coords = self.update_coordinates(coords[0],coords[1],0,0,0,-20)
+            coords = self.update_coordinates(coords[0],coords[1],0,20,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-20)
+        
+    def draw_third_row(self,top_coordinate):
+        self.draw_stair_paths(-390,top_coordinate)
