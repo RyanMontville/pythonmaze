@@ -152,10 +152,13 @@ class Generator(Turtle):
         self.update_coordinates(coords[0],coords[1],20,20,0,120)
         # Draw up
         coords = self.update_coordinates(coords[0],coords[1],0,0,0,100)
-        # Draw left
-        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0)
+        #randomly close one of the paths
+        if random.choice([True,False]):
+            self.update_coordinates(x_coordinate,y_coordinate,380,400,-20,-20)
+        else:
+            self.update_coordinates(x_coordinate,y_coordinate,380,380,-20,0)
         # Draw down
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-80)
+        coords = self.update_coordinates(coords[0],coords[1],-20,-20,0,-80)
         # Draw left
         coords = self.update_coordinates(coords[0],coords[1],0,-360,0,0)
         # Draw up
@@ -435,14 +438,48 @@ class Generator(Turtle):
         coords = self.update_coordinates(coords[0],coords[1],0,0,20,0)
         coords = self.update_coordinates(coords[0],coords[1],0,-60,0,0)
         coords = self.update_coordinates(coords[0],coords[1],-20,-40,0,0)
-        
-        ###################################################################### TODO ################################################3
-        # Add conditionals to draw the blue lines and green lines
-        # 1st choice is draw all blue lines, then one of the 2 green line
-        ## Or draw both green lines if stairs does not dead end
-        
+        # Randomly choose which set of paths to close off
+        close_paths = random.choice(["red","red"])
+        # Option 1 - "Blue and green paths"
+        if close_paths == "blue":
+            
+            blue_line = self.update_coordinates(x_coordinate,top_coordinate,80,100,-180,-180)
+            blue_line = self.update_coordinates(blue_line[0],blue_line[1],140,160,60,60)
+            blue_line = self.update_coordinates(blue_line[0],blue_line[1],-20,10,40,40)
+            blue_line = self.update_coordinates(blue_line[0],blue_line[1],30,30,100,80)
+            blue_line = self.update_coordinates(blue_line[0],blue_line[1],40,40,20,0)
+            blue_line = self.update_coordinates(blue_line[0],blue_line[1],0,0,-60,-80)
+            blue_line = self.update_coordinates(blue_line[0],blue_line[1],-40,-40,-40,-60)
+            blue_line = self.update_coordinates(blue_line[0],blue_line[1],60,90,-40,-40)
+            blue_line = self.update_coordinates(blue_line[0],blue_line[1],130,150,20,20)
+            blue_line = self.update_coordinates(blue_line[0],blue_line[1],40,40,100,80)
+            # Randomly decide which "green" line to draw to close of that path, unless "stair" path does not dead ends, then draw both
+            if did_stairs_end:
+                if random.choice([True,False]):
+                    green_line = self.update_coordinates(x_coordinate,top_coordinate,340,370,-140,-140)
+                else:
+                    green_line = self.update_coordinates(x_coordinate,top_coordinate,360,360,-160,-180)
+            else:
+                green_line = self.update_coordinates(x_coordinate,top_coordinate,340,370,-140,-140)
+                green_line = self.update_coordinates(x_coordinate,top_coordinate,360,360,-160,-180)
+        # Option 2 - "red and green paths"
+        if close_paths == "red":
+            self.pencolor("red")
+            red_line = self.update_coordinates(x_coordinate,top_coordinate,260,260,20,0)
+            red_line = self.update_coordinates(red_line[0],red_line[1],80,80,20,0)
+            red_line = self.update_coordinates(red_line[0],red_line[1],20,0,-80,-80)
+            red_line = self.update_coordinates(red_line[0],red_line[1],-100,-80,-20,-20)
+            red_line = self.update_coordinates(red_line[0],red_line[1],0,0,-80,-60)
+            red_line = self.update_coordinates(red_line[0],red_line[1],40,40,40,20)
+            red_line = self.update_coordinates(red_line[0],red_line[1],40,40,20,0)
+            red_line = self.update_coordinates(red_line[0],red_line[1],-20,0,-40,-40)
+            red_line = self.update_coordinates(red_line[0],red_line[1],100,100,20,40)
+            red_line = self.update_coordinates(red_line[0],red_line[1],140,160,20,20)
+            ##################### TODO: add green paths
+            
+        ######## TODO: add dead ends to both blue and green when the spiral is in the 1st row instead of the second (go off of top_coordinate) TODO
+            
         
     def draw_third_row(self,top_coordinate):
         is_dead_end = self.draw_stair_paths(-390, top_coordinate)
         bottom = self.draw_many_random_choices(top_coordinate, is_dead_end)
-        print("Stairs section a dead end: " + str(is_dead_end))
