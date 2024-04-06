@@ -27,7 +27,8 @@ class Generator(Turtle):
     def draw_zig_zags(self, x_coordinate, y_coordinate):
         # randomly choose how long the vertical zig zags will be
         random_lengths = [(60,"even"),(80,"odd"),(100,"both"),(120,"both")]
-        choice = random.choice(random_lengths)
+        # choice = random.choice(random_lengths)
+        choice = random_lengths[3]
         end_of_zig = y_coordinate - choice[0]
         bottom_of_zig_zags = end_of_zig-20
         # randomly choose how many vertical zig zags there will be
@@ -439,7 +440,7 @@ class Generator(Turtle):
         coords = self.update_coordinates(coords[0],coords[1],0,-60,0,0)
         coords = self.update_coordinates(coords[0],coords[1],-20,-40,0,0)
         # Randomly choose which set of paths to close off
-        close_paths = random.choice(["red","red"])
+        close_paths = random.choice(["red","blue"])
         # Option 1 - "Blue and green paths"
         if close_paths == "blue":
             
@@ -462,24 +463,115 @@ class Generator(Turtle):
             else:
                 green_line = self.update_coordinates(x_coordinate,top_coordinate,340,370,-140,-140)
                 green_line = self.update_coordinates(x_coordinate,top_coordinate,360,360,-160,-180)
+                if top_coordinate == 10:
+                    green_line = self.update_coordinates(x_coordinate,top_coordinate,80,100,-100,-100)
+                    green_line = self.update_coordinates(x_coordinate,top_coordinate,240,260,-40,-40)
         # Option 2 - "red and green paths"
         if close_paths == "red":
-            self.pencolor("red")
             red_line = self.update_coordinates(x_coordinate,top_coordinate,260,260,20,0)
             red_line = self.update_coordinates(red_line[0],red_line[1],80,80,20,0)
             red_line = self.update_coordinates(red_line[0],red_line[1],20,0,-80,-80)
             red_line = self.update_coordinates(red_line[0],red_line[1],-100,-80,-20,-20)
             red_line = self.update_coordinates(red_line[0],red_line[1],0,0,-80,-60)
             red_line = self.update_coordinates(red_line[0],red_line[1],40,40,40,20)
-            red_line = self.update_coordinates(red_line[0],red_line[1],40,40,20,0)
-            red_line = self.update_coordinates(red_line[0],red_line[1],-20,0,-40,-40)
-            red_line = self.update_coordinates(red_line[0],red_line[1],100,100,20,40)
+            red_line = self.update_coordinates(red_line[0],red_line[1],40,40,20,-10)
+            red_line = self.update_coordinates(red_line[0],red_line[1],-20,10,-30,-30)
+            red_line = self.update_coordinates(red_line[0],red_line[1],90,90,20,40)
             red_line = self.update_coordinates(red_line[0],red_line[1],140,160,20,20)
-            ##################### TODO: add green paths
-            
-        ######## TODO: add dead ends to both blue and green when the spiral is in the 1st row instead of the second (go off of top_coordinate) TODO
-            
-        
+            if did_stairs_end:
+                if random.choice([True,False]):
+                    green_line = self.update_coordinates(x_coordinate,top_coordinate,180,200,-80,-80)
+                    green_line = self.update_coordinates(x_coordinate,top_coordinate,220,240,-40,-40)
+                else:
+                    green_line = self.update_coordinates(x_coordinate,top_coordinate,380,400,-120,-120)
+            else:
+                green_line = self.update_coordinates(x_coordinate,top_coordinate,180,200,-80,-80)
+                green_line = self.update_coordinates(x_coordinate,top_coordinate,220,240,-40,-40)
+                green_line = self.update_coordinates(x_coordinate,top_coordinate,380,400,-120,-120)
+        return (top_coordinate-180)
+                  
     def draw_third_row(self,top_coordinate):
         is_dead_end = self.draw_stair_paths(-390, top_coordinate)
         bottom = self.draw_many_random_choices(top_coordinate, is_dead_end)
+        return bottom
+    
+    def draw_60_80_fourth_row(self):
+        print("this is the 60 / 80 fourth row")
+        
+    def draw_100_fourth_row(self):
+        print("this is the 100 fourth row")
+        
+    def draw_120_fourth_row(self):
+        #draw left 3rd
+        coords = self.update_coordinates(-390,-170,0,160,-20,-20)
+        coords = self.update_coordinates(coords[0],coords[1],20,20,20,0)
+        coords = self.update_coordinates(coords[0],coords[1],60,60,20,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,-20,-80)
+        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],-20,-200,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,60)
+        coords = self.update_coordinates(coords[0],coords[1],0,60,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],20,120,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20)
+        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,-20,-60)
+        coords = self.update_coordinates(coords[0],coords[1],0,-180,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20)
+        for i in range(4):
+            coords = self.update_coordinates(coords[0],coords[1],20,20,20,0)
+            coords = self.update_coordinates(coords[0],coords[1],20,20,-20,0)
+        # Randomly draw dead ends in left 3rd
+        match random.randrange(0,3):
+            case 0:
+                green_line = self.update_coordinates(-390,-170,0,20,-80,-80)
+                green_line = self.update_coordinates(green_line[0],green_line[1],140,140,60,40)
+                green_line = self.update_coordinates(green_line[0],green_line[1],60,80,0,0)
+            case 1:
+                blue_line = self.update_coordinates(-390,-170,100,100,-40,-20)
+                blue_line = self.update_coordinates(blue_line[0],blue_line[1],120,120,0,-20)
+                blue_line = self.update_coordinates(blue_line[0],blue_line[1],0,-20,-60,-60)
+            case 2:
+                red_line = self.update_coordinates(-390,-170,80,80,-20,-41)
+                red_line = self.update_coordinates(red_line[0],red_line[1],140,161,21,21)
+        # Draw middle 3rd
+        coords = self.update_coordinates(coords[0],coords[1],40,200,40,40)
+        coords = self.update_coordinates(coords[0],coords[1],20,20,20,-20)
+        coords = self.update_coordinates(coords[0],coords[1],0,-180,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,20,-20,-20)
+        coords = self.update_coordinates(coords[0],coords[1],0,60,-20,-20)
+        coords = self.update_coordinates(coords[0],coords[1],-40,-40,0,20)
+        coords = self.update_coordinates(coords[0],coords[1],20,20,20,0)
+        for i in range(2):
+            coords = self.update_coordinates(coords[0],coords[1],20,20,-20,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,100,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-20)
+        coords = self.update_coordinates(coords[0],coords[1],20,0,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],-20,-20,0,-20)
+        coords = self.update_coordinates(coords[0],coords[1],-20,-20,40,20)
+        coords = self.update_coordinates(coords[0],coords[1],-20,-20,-20,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],-120,120,-20,-20)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,40)
+        coords = self.update_coordinates(coords[0],coords[1],20,-20,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20)
+        coords = self.update_coordinates(coords[0],coords[1],-20,-20,-20,20)
+        coords = self.update_coordinates(coords[0],coords[1],0,40,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-20)
+        coords = self.update_coordinates(coords[0],coords[1],0,40,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],-20,-20,20,40)
+        coords = self.update_coordinates(coords[0],coords[1],20,20,0,-80)
+        coords = self.update_coordinates(coords[0],coords[1],-20,0,0,0)
+        if random.choice([True, False]):
+            temp_coord = self.update_coordinates(coords[0],coords[1],-180,-200,0,0)
+        else:
+            temp_coord = self.update_coordinates(coords[0],coords[1],-200,-200,20,40)
+        # Draw right third
+    
+    def draw_forth_row(self,top_coordinate):
+        ####################DELETE THIS LINE 60 and 80 = -130 top coord, 100 = -150 top coord, 120 = -170 top coord
+        if top_coordinate >= -170:
+            self.draw_120_fourth_row()
+        if top_coordinate >= -150:
+            self.draw_100_fourth_row()
+        if top_coordinate >= -130:
+            self.draw_60_80_fourth_row()
