@@ -28,7 +28,7 @@ class Generator(Turtle):
         # randomly choose how long the vertical zig zags will be
         random_lengths = [(60,"even"),(80,"odd"),(100,"both"),(120,"both")]
         # choice = random.choice(random_lengths)
-        choice = random_lengths[3] # TODO: remove this line after testing
+        choice = random_lengths[2] # TODO: remove this line after testing
         end_of_zig = y_coordinate - choice[0]
         bottom_of_zig_zags = end_of_zig-20
         # randomly choose how many vertical zig zags there will be
@@ -500,8 +500,20 @@ class Generator(Turtle):
         print("this is the 60 / 80 fourth row")
         # TODO: finish this method
     def draw_100_fourth_row(self):
-        print("this is the 100 fourth row")
-        # TODO: finish this method
+        coords = self.update_coordinates(-390,-150,20,240,-20,-20)
+        coords = self.update_coordinates(coords[0],coords[1],-120,-120,20,0)
+        coords = self.update_coordinates(coords[0],coords[1],140,160,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,20,0)
+        coords = self.update_coordinates(coords[0],coords[1],20,20,-20,0)
+        coords = self.update_coordinates(coords[0],coords[1],20,20,20,0)
+        coords = self.update_coordinates(coords[0],coords[1],20,40,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,-20,0)
+        coords = self.update_coordinates(coords[0],coords[1],20,20,20,0)
+        coords = self.update_coordinates(coords[0],coords[1],20,20,-20,0)
+        coords = self.update_coordinates(coords[0],coords[1],20,100,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],-40,-40,20,0)
+        coords = self.update_coordinates(coords[0],coords[1],60,60,20,0)
+        coords = self.update_coordinates(coords[0],coords[1],20,260,0,0)
         
     def draw_120_fourth_row(self):
         #draw left 3rd

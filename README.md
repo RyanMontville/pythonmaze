@@ -13,10 +13,12 @@ Here is an example of a randomly generated maze:
 This attempt does not currently fill in the entire maze and is not truly random. I am testing having the program draw zig-zagging paths of random lengths. I want to test out having the program draw other shapes/patterns, then eventually have it choose a pattern at random to draw. Will update with an example screenshot after testing more patterns.
 
 #### V 0.021 - 4/7/2024
-This attempt is not truly random. I mapped out different patterns that can have variations to them with the program randomly blocking different pathways. There are 4 main sections that the program draws. While the maze will look similar every time it is run, the path from start to finish will change. There is currently a possibility that there is no possible path from start to finish, I need to figure out a way to ensure the program doesn't close off every possible path.
+This attempt is not truly random. I mapped out different patterns that can have variations to them with the program randomly blocking different pathways. There are 4 main sections that the program draws. While the maze will look similar every time it runs, the path from start to finish will change. There is currently a possibility that there is no possible path from start to finish, I need to figure out a way to ensure the program doesn't close off every possible path.
 
 Here are some variations of V 0.021
 <p align="center" width="100%">
-    <img width="45%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/v021-A.png" alt="A variation of v 0.021" title="A variation of v 0.021">
-    <img width="45%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/V021-B.png" alt="A variation of v 0.021" title="A variation of v 0.021">
+    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/v021-A.png" alt="A variation of v 0.021" title="A variation of v 0.021">
+    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/V021-B.png" alt="A variation of v 0.021" title="A variation of v 0.021">
+    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/V021-C.png" alt="A variation of v 0.021" title="A variation of v 0.021">
+    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/V021-D.png" alt="A variation of v 0.021" title="A variation of v 0.021">
 </p>
