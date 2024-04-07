@@ -28,7 +28,7 @@ class Generator(Turtle):
         # randomly choose how long the vertical zig zags will be
         random_lengths = [(60,"even"),(80,"odd"),(100,"both"),(120,"both")]
         # choice = random.choice(random_lengths)
-        choice = random_lengths[2] # TODO: remove this line after testing
+        choice = random_lengths[3] # TODO: remove this line after testing
         end_of_zig = y_coordinate - choice[0]
         bottom_of_zig_zags = end_of_zig-20
         # randomly choose how many vertical zig zags there will be
@@ -72,6 +72,7 @@ class Generator(Turtle):
             end_of_spiral = self.draw_spiral(right_edge_of_vertical_zig_zag,y_coordinate)
             self.draw_line_from_tuple((right_edge_of_vertical_zig_zag,(y_coordinate-140),(right_edge_of_vertical_zig_zag+120),(y_coordinate-140)))
             right_edge_of_vertical_zig_zag = end_of_spiral[0]
+            self.update_coordinates(-390,290,0,20,-260,-260)
         
         # start of horizontal zig zags
         start_of_zig = right_edge_of_vertical_zig_zag
@@ -197,7 +198,7 @@ class Generator(Turtle):
         # Draw right
         coords = self.update_coordinates(coords[0],coords[1],0,180,0,0)
         # Randomly decide if bottom right corner should be a dead end
-        if random.choice([True, False]):
+        if random.choice([True, True]) and (y_coordinate != 150):
             self.update_coordinates(x_coordinate,y_coordinate,400,420,-120,-120)
             return (x_coordinate+420,y_coordinate,True)
         else:
