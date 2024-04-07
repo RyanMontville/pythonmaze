@@ -28,7 +28,7 @@ class Generator(Turtle):
         # randomly choose how long the vertical zig zags will be
         random_lengths = [(60,"even"),(80,"odd"),(100,"both"),(120,"both")]
         # choice = random.choice(random_lengths)
-        choice = random_lengths[3]
+        choice = random_lengths[2] # TODO: remove this line after testing
         end_of_zig = y_coordinate - choice[0]
         bottom_of_zig_zags = end_of_zig-20
         # randomly choose how many vertical zig zags there will be
@@ -497,9 +497,10 @@ class Generator(Turtle):
     
     def draw_60_80_fourth_row(self):
         print("this is the 60 / 80 fourth row")
-        
+        # TODO: finish this method
     def draw_100_fourth_row(self):
         print("this is the 100 fourth row")
+        # TODO: finish this method
         
     def draw_120_fourth_row(self):
         #draw left 3rd
@@ -566,9 +567,36 @@ class Generator(Turtle):
         else:
             temp_coord = self.update_coordinates(coords[0],coords[1],-200,-200,20,40)
         # Draw right third
+        coords = self.update_coordinates(coords[0],coords[1],-40,240,-20,-20)
+        coords = self.update_coordinates(coords[0],coords[1],-240,0,20,20)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,60)
+        coords = self.update_coordinates(coords[0],coords[1],0,-80,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-20)
+        coords = self.update_coordinates(coords[0],coords[1],60,60,-20,0)
+        coords = self.update_coordinates(coords[0],coords[1],-0,-40,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-20)
+        coords = self.update_coordinates(coords[0],coords[1],20,20,-20,0)
+        coords = self.update_coordinates(coords[0],coords[1],-20,-60,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,60)
+        coords = self.update_coordinates(coords[0],coords[1],-20,-20,-60,-20)
+        coords = self.update_coordinates(coords[0],coords[1],0,-100,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,-40,-20)
+        for i in range(2):
+            coords = self.update_coordinates(coords[0],coords[1],20,20,20,0)
+            coords = self.update_coordinates(coords[0],coords[1],20,20,-20,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,-80,-20,-20)
+        match random.randrange(0,3):
+            case 0:
+                self.update_coordinates(coords[0],coords[1],0,0,20,40)
+                self.update_coordinates(coords[0],coords[1],0,0,40,60)
+            case 1:
+                self.update_coordinates(coords[0],coords[1],0,0,-20,0)
+                self.update_coordinates(coords[0],coords[1],0,0,40,60)
+            case 2:
+                self.update_coordinates(coords[0],coords[1],0,0,-20,0)
+                self.update_coordinates(coords[0],coords[1],0,0,20,40)
     
     def draw_forth_row(self,top_coordinate):
-        ####################DELETE THIS LINE 60 and 80 = -130 top coord, 100 = -150 top coord, 120 = -170 top coord
         if top_coordinate >= -170:
             self.draw_120_fourth_row()
         if top_coordinate >= -150:
