@@ -4,8 +4,7 @@ import random
 class Generator(Turtle):
     def __init__(self):
         super().__init__()
-        # starts with coordinates to draw the border of the maze
-        self.draw_from_array([(-390,290,390,290),(390,290,390,-270),(390,-290,-390,-290),(-390,-290,-390,270)])
+        self.draw_border()
         self.hideturtle()
         self.speed("fastest")
         
@@ -13,22 +12,37 @@ class Generator(Turtle):
         xint = int(self.xcor())
         yint = int(self.ycor())
         print("X: " + str(xint) + ", Y: " + str(yint))
-    
-    def draw_from_array(self, array):
-        for i in array:
-            self.draw_line_from_tuple(i)
-    
+        
     def draw_line_from_tuple(self,ct):
         self.pu()
         self.goto(ct[0],ct[1])
         self.pd()
         self.goto(ct[2],ct[3])
         
+    def update_coordinates(self,x_coordinate,y_coordinate,x_start_change,x_end_change,y_start_change,y_end_change):
+        x_start = x_coordinate + x_start_change
+        x_end = x_coordinate + x_end_change
+        y_start = y_coordinate + y_start_change
+        y_end = y_coordinate + y_end_change
+        self.draw_line_from_tuple((x_start,y_start,x_end,y_end))
+        return (x_end,y_end)
+        
+    def update_coordinates_from_array(self,st_coords,coords_array):
+        coordinates = self.update_coordinates(st_coords[0],st_coords[1],st_coords[2],st_coords[3],st_coords[4],st_coords[5])
+        for ct in coords_array:
+            coordinates = self.update_coordinates(coordinates[0],coordinates[1],ct[0],ct[1],ct[2],ct[3])
+        return coordinates
+            
+    def draw_border(self):      
+        border_start = (-390,290,0,780,0,0)
+        border_array = [(0,0,0,-560),(0,-780,-20,-20),(0,0,0,560)]
+        self.update_coordinates_from_array(border_start,border_array)
+        
     def draw_zig_zags(self, x_coordinate, y_coordinate):
         # randomly choose how long the vertical zig zags will be
         random_lengths = [(60,"even"),(80,"odd"),(100,"both"),(120,"both")]
         # choice = random.choice(random_lengths)
-        choice = random_lengths[2] # TODO: remove this line after testing
+        choice = random_lengths[0] # TODO: remove this line after testing
         end_of_zig = y_coordinate - choice[0]
         bottom_of_zig_zags = end_of_zig-20
         # randomly choose how many vertical zig zags there will be
@@ -114,89 +128,24 @@ class Generator(Turtle):
             self.draw_line_from_tuple((370,(y_coordinate-20),370,bottom_of_zig_zags))
         return (bottom_of_zig_zags, draw_spiral)
     
-    def update_coordinates(self,x_coordinate,y_coordinate,x_start_change,x_end_change,y_start_change,y_end_change):
-        x_start = x_coordinate + x_start_change
-        x_end = x_coordinate + x_end_change
-        y_start = y_coordinate + y_start_change
-        y_end = y_coordinate + y_end_change
-        self.draw_line_from_tuple((x_start,y_start,x_end,y_end))
-        return (x_end,y_end)
-            
     def draw_spiral(self, x_coordinate, y_coordinate):
-        # Draw outside bottom of spiral
-        coords = self.update_coordinates(x_coordinate,y_coordinate,0,120,-120,-120)
-        # Draw up
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,100)
-        # Draw left
-        coords = self.update_coordinates(coords[0],coords[1],0,-80,0,0)
-        # Draw down
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-60)
-        # Draw right
-        coords = self.update_coordinates(coords[0],coords[1],0,40,0,0)
-        # Draw up
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20)
-        # Draw the spiral going back out, starting with up
-        coords = self.update_coordinates(coords[0],coords[1],-20,-20,0,20)
-        # Draw right
-        coords = self.update_coordinates(coords[0],coords[1],0,40,0,0)
-        # Draw down
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-60)
-        # Draw left
-        coords = self.update_coordinates(coords[0],coords[1],0,-80,0,0)
-        # Draw up
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,100)
+        start_coords = (x_coordinate,y_coordinate,0,120,-120,-120)
+        coords_array = [(0,0,0,100),(0,-80,0,0),(0,0,0,-60),(0,40,0,0),(0,0,0,20),(-20,-20,0,20),(0,40,0,0),(0,0,0,-60),(0,-80,0,0),(0,0,0,100)]
+        self.update_coordinates_from_array(start_coords,coords_array)
         return (x_coordinate+120,y_coordinate)
     
     def draw_multipath_variation_one(self,x_coordinate,y_coordinate):
         # Draw 1st path, starting with right
-        coords = self.update_coordinates(x_coordinate,y_coordinate,20,400,-120,-120)
-        # Draw right edge
-        self.update_coordinates(coords[0],coords[1],20,20,0,120)
-        # Draw up
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,100)
+        start_coords = (x_coordinate,y_coordinate,20,400,-120,-120)
+        coords_array = [(20,20,0,120),(-20,-20,-20,-120),(-20,-20,100,20),(0,-360,0,0),(0,0,0,80),(20,20,0,-60),(0,200,0,0),(0,0,0,-20),
+                        (-180,-180,80,40),(0,220,0,0),(-20,-20,0,-20),(0,100,0,0),(20,-60,20,20),(0,0,0,40),(20,20,20,-20),(20,20,-20,20),
+                        (20,20,20,-20),(-80,-80,-20,40),(0,-180,-20,-20),(-20,-20,20,-20),(0,180,0,0)]
+        self.update_coordinates_from_array(start_coords,coords_array)
         #randomly close one of the paths
         if random.choice([True,False]):
             self.update_coordinates(x_coordinate,y_coordinate,380,400,-20,-20)
         else:
             self.update_coordinates(x_coordinate,y_coordinate,380,380,-20,0)
-        # Draw down
-        coords = self.update_coordinates(coords[0],coords[1],-20,-20,0,-80)
-        # Draw left
-        coords = self.update_coordinates(coords[0],coords[1],0,-360,0,0)
-        # Draw up
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,80)
-        # Draw 2nd path, starting with down
-        coords = self.update_coordinates(coords[0],coords[1],20,20,0,-60)
-        # Draw right
-        coords = self.update_coordinates(coords[0],coords[1],0,200,0,0)
-        # Draw down
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-20)
-        # Draw 3rd path, starting with down
-        coords = self.update_coordinates(x_coordinate,y_coordinate,60,60,-20,-60)
-        # Draw right
-        coords = self.update_coordinates(coords[0],coords[1],0,220,0,0)
-        # Draw down
-        coords = self.update_coordinates(coords[0],coords[1],-20,-20,0,-20)
-        # Draw right
-        coords = self.update_coordinates(coords[0],coords[1],0,100,0,0)
-        # Draw left
-        coords = self.update_coordinates(coords[0],coords[1],20,-60,20,20)
-        # Draw up
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,40)
-        # Draw down
-        coords = self.update_coordinates(coords[0],coords[1],20,20,20,-20)
-        # Draw up
-        coords = self.update_coordinates(coords[0],coords[1],20,20,-20,20)
-        # Draw down
-        coords = self.update_coordinates(coords[0],coords[1],20,20,20,-20)
-        # Draw 4th path, starting with up
-        coords = self.update_coordinates(coords[0],coords[1],-80,-80,-20,40)
-        # Draw left
-        coords = self.update_coordinates(coords[0],coords[1],0,-180,-20,-20)
-        # Draw down
-        coords = self.update_coordinates(coords[0],coords[1],-20,-20,20,-20)
-        # Draw right
-        coords = self.update_coordinates(coords[0],coords[1],0,180,0,0)
         # Randomly decide if bottom right corner should be a dead end
         if random.choice([True, True]) and (y_coordinate != 150):
             self.update_coordinates(x_coordinate,y_coordinate,400,420,-120,-120)
@@ -205,10 +154,10 @@ class Generator(Turtle):
             return (x_coordinate+420,y_coordinate,False)
     
     def draw_multipath_variation_two(self,x_coordinate,y_coordinate,is_one_dead_end):
-        # this multipath is drawn out of order, so it is hard to comment what is happening
         coords = self.update_coordinates(x_coordinate,y_coordinate,220,220,0,-20)
-        for i in range(3):
-            coords = self.update_coordinates(coords[0],coords[1],-40,-40,20,0)
+        coords = self.update_coordinates(coords[0],coords[1],-40,-40,20,0)
+        coords = self.update_coordinates(coords[0],coords[1],-40,-40,20,0)
+        coords = self.update_coordinates(coords[0],coords[1],-40,-40,20,0)
         coords = self.update_coordinates(coords[0],coords[1],-20,-80,0,0)
         coords = self.update_coordinates(coords[0],coords[1],0,0,0,-20)
         coords = self.update_coordinates(coords[0],coords[1],0,20,0,0)
@@ -262,9 +211,7 @@ class Generator(Turtle):
         return bottom_line
     
     def draw_stair_paths(self,x_coordinate,y_coordinate):
-        # Draw top line
         coords = self.update_coordinates(x_coordinate,y_coordinate,0,120,0,0)
-        # Draw right side of stairs section
         self.update_coordinates(coords[0],coords[1],20,20,20,-160)
         #randomly make either the right side or bottom of section a dead end
         bottom_path_dead_end = False
@@ -288,27 +235,11 @@ class Generator(Turtle):
                 # Draw the bottom with an opening
                 temp_coords = self.update_coordinates(temp_coords[0],temp_coords[1],-120,-60,-20,-20)
                 self.update_coordinates(temp_coords[0],temp_coords[1],20,100,0,0)
-        # Draw top left curl
-        coords = self.update_coordinates(coords[0],coords[1],-120,-80,-40,-40)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20)
-        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0)
-        # Draw top right group
-        coords = self.update_coordinates(coords[0],coords[1],40,80,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],-40,-40,0,-60)
-        coords = self.update_coordinates(coords[0],coords[1],0,20,40,40)
-        coords = self.update_coordinates(coords[0],coords[1],0,20,-20,-20)
-        coords = self.update_coordinates(coords[0],coords[1],-40,-20,-20,-20)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-20)
-        coords = self.update_coordinates(coords[0],coords[1],20,20,80,-20)
-        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0)
-        # Draw right side of stairs
-        coords = self.update_coordinates(coords[0],coords[1],40,20,-40,-40)
-        for i in range(3):
-            coords = self.update_coordinates(coords[0],coords[1],0,0,0,20)
-            coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20)
-        # Draw left side of stairs
-        coords = self.update_coordinates(coords[0],coords[1],0,-20,20,20)
+        start_coords = (coords[0],coords[1],-120,-80,-40,-40)
+        coord_array = [(0,0,0,20),(0,-20,0,0),(40,80,0,0),(-40,-40,0,-60),(0,20,40,40),(0,20,-20,-20),(-40,-20,-20,-20),
+                       (0,0,0,-20),(20,20,80,-20),(0,-20,0,0),(40,20,-40,-40),(0,0,0,20),(0,-20,0,0),(0,0,0,20),
+                       (0,-20,0,0),(0,0,0,20),(0,-20,0,0),(0,0,0,20),(0,-20,20,20)]       
+        coords = self.update_coordinates_from_array(start_coords,coord_array)
         temp_coords = self.update_coordinates(coords[0],coords[1],0,0,0,-100)
         self.update_coordinates(temp_coords[0],temp_coords[1],0,20,0,0)
         coords = self.update_coordinates(coords[0],coords[1],0,20,-60,-60)
@@ -323,138 +254,30 @@ class Generator(Turtle):
         
     def draw_many_random_choices(self, top_coordinate, did_stairs_end):
         x_coordinate = -230
-        # Draw left corner back abd forth
-        coords = self.update_coordinates(x_coordinate, top_coordinate,180,0,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-180)
-        coords = self.update_coordinates(coords[0],coords[1],0,40,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,140)
-        coords = self.update_coordinates(coords[0],coords[1],0,140,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],20,20,60,20)
-        coords = self.update_coordinates(coords[0],coords[1],0,-180,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-140)
-        coords = self.update_coordinates(coords[0],coords[1],180,180,160,100)
-        coords = self.update_coordinates(coords[0],coords[1],0,-140,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-100)
-        coords = self.update_coordinates(coords[0],coords[1],-20,20,-20,-20)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,100)
-        coords = self.update_coordinates(coords[0],coords[1],0,100,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],20,20,20,-20)
-        coords = self.update_coordinates(coords[0],coords[1],20,-100,0,0)
-        # Draw paths under left corner
-        coords = self.update_coordinates(coords[0],coords[1],0,140,-20,-20)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-40)
-        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,-80,20,20)
-        coords = self.update_coordinates(coords[0],coords[1],-20,-40,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-40)
-        coords = self.update_coordinates(coords[0],coords[1],0,100,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,40)
-        coords = self.update_coordinates(coords[0],coords[1],-80,-20,-20,-20)
-        # Draw middle block (between left corner and stairs), starting from top to bottom
-        coords = self.update_coordinates(coords[0],coords[1],40,40,160,80)
-        coords = self.update_coordinates(coords[0],coords[1],0,20,20,20)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-60)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,140,80)
-        coords = self.update_coordinates(coords[0],coords[1],20,20,-20,40)
-        coords = self.update_coordinates(coords[0],coords[1],0,40,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-40)
-        coords = self.update_coordinates(coords[0],coords[1],20,20,40,-60)
-        coords = self.update_coordinates(coords[0],coords[1],20,0,20,20)
-        coords = self.update_coordinates(coords[0],coords[1],0,-40,20,20)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,40,-20)
-        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0)
-        #----- Draw the sideways T
-        coords = self.update_coordinates(coords[0],coords[1],0,40,-20,-20)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,20,-20)
-        #----- Draw the backwards C
-        coords = self.update_coordinates(coords[0],coords[1],-40,-20,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-40)
-        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20)
-        #----- Draw the bottom line
-        coords = self.update_coordinates(coords[0],coords[1],-60,60,-40,-40)
-        # Draw the stairs, starting with the bottom of the stairs
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20)
-        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20)
-        # Draw top of stairs
-        coords = self.update_coordinates(coords[0],coords[1],-40,-40,-20,0)
-        for i in range(3):
-            coords = self.update_coordinates(coords[0],coords[1],0,20,0,0)
-            coords = self.update_coordinates(coords[0],coords[1],0,0,0,20)
-        # Draw everything to the right of the stairs
-        coords = self.update_coordinates(coords[0],coords[1],-20,-20,80,20)
-        coords = self.update_coordinates(coords[0],coords[1],280,200,60,60)
-        coords = self.update_coordinates(coords[0],coords[1],-20,-180,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20)
-        coords = self.update_coordinates(coords[0],coords[1],40,40,-20,-60)
-        coords = self.update_coordinates(coords[0],coords[1],-60,-20,20,20)
-        coords = self.update_coordinates(coords[0],coords[1],20,-20,-20,-20)
-        coords = self.update_coordinates(coords[0],coords[1],-20,80,-20,-20)
-        coords = self.update_coordinates(coords[0],coords[1],-80,-80,0,-80)
-        coords = self.update_coordinates(coords[0],coords[1],40,0,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,40,-20,-20)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,60)
-        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-20)
-        coords = self.update_coordinates(coords[0],coords[1],-40,-40,0,40)
-        coords = self.update_coordinates(coords[0],coords[1],0,100,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],-40,-40,0,-60)
-        coords = self.update_coordinates(coords[0],coords[1],-20,20,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],-40,-40,0,-20)
-        coords = self.update_coordinates(coords[0],coords[1],40,40,20,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,60,00,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,-40,20,20)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20)
-        coords = self.update_coordinates(coords[0],coords[1],0,-40,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],20,60,20,20)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,-20,60)
-        coords = self.update_coordinates(coords[0],coords[1],0,-40,-20,-20)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20)
-        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],-20,-20,-20,20)
-        coords = self.update_coordinates(coords[0],coords[1],60,60,-20,0)
-        coords = self.update_coordinates(coords[0],coords[1],-60,120,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],-100,-60,-20,-20)
-        coords = self.update_coordinates(coords[0],coords[1],80,40,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-20)
-        coords = self.update_coordinates(coords[0],coords[1],-20,-20,40,-40)
-        coords = self.update_coordinates(coords[0],coords[1],0,-40,40,40)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-40)
-        coords = self.update_coordinates(coords[0],coords[1],-20,60,-20,-20)
-        coords = self.update_coordinates(coords[0],coords[1],-40,-40,0,40)
-        coords = self.update_coordinates(coords[0],coords[1],60,60,20,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-60)
-        coords = self.update_coordinates(coords[0],coords[1],40,20,40,40)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-20)
-        coords = self.update_coordinates(coords[0],coords[1],-20,0,-20,-20)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-20)
-        coords = self.update_coordinates(coords[0],coords[1],-40,-40,40,20)
-        coords = self.update_coordinates(coords[0],coords[1],-20,-20,20,-20)
-        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0)
-        # Draw bottom right side
-        coords = self.update_coordinates(coords[0],coords[1],60,20,-20,-20)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20)
-        coords = self.update_coordinates(coords[0],coords[1],0,-140,-20,-20)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,20,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,-60,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],-20,-40,0,0)
+        start_coord = (x_coordinate, top_coordinate,180,0,0,0)
+        coords_array = [(0,0,0,-180),(0,40,0,0),(0,0,0,140),(0,140,0,0),(20,20,60,20),(0,-180,0,0),(0,0,0,-140),(180,180,160,100),
+                        (0,-140,0,0),(0,0,0,-100),(-20,20,-20,-20),(0,0,0,100),(0,100,0,0),(20,20,20,-20),(20,-100,0,0),
+                        (0,140,-20,-20),(0,0,0,-40),(0,-20,0,0),(0,-80,20,20),(-20,-40,0,0),(0,0,0,-40),(0,100,0,0),(0,0,0,40),
+                        (-80,-20,-20,-20),(40,40,160,80),(0,20,20,20),(0,0,0,-60),(0,0,140,80),(20,20,-20,40),(0,40,0,0),
+                        (0,0,0,-40),(20,20,40,-60),(20,0,20,20),(0,-40,20,20),(0,0,40,-20),(0,-20,0,0),(0,40,-20,-20),(0,0,20,-20),
+                        (-40,-20,0,0),(0,0,0,-40),(0,-20,0,0),(0,0,0,20),(-60,60,-40,-40),(0,0,0,20),(0,20,0,0),(0,0,0,20),
+                        (-40,-40,-20,0),(0,20,0,0),(0,0,0,20),(0,20,0,0),(0,0,0,20),(0,20,0,0),(0,0,0,20),(-20,-20,80,20),
+                        (280,200,60,60),(-20,-180,0,0),(0,0,0,20),(40,40,-20,-60),(-60,-20,20,20),(20,-20,-20,-20),(-20,80,-20,-20),
+                        (-80,-80,0,-80),(40,0,0,0),(0,40,-20,-20),(0,0,0,60),(0,20,0,0),(0,0,0,-20),(-40,-40,0,40),(0,100,0,0),
+                        (-40,-40,0,-60),(-20,20,0,0),(-40,-40,0,-20),(40,40,20,0),(0,60,00,0),(0,-40,20,20),(0,0,0,20),(0,-40,0,0),
+                        (20,60,20,20),(0,0,-20,60),(0,-40,-20,-20),(0,0,0,20),(0,-20,0,0),(-20,-20,-20,20),(60,60,-20,0),(-60,120,0,0),
+                        (-100,-60,-20,-20),(80,40,0,0),(0,0,0,-20),(-20,-20,40,-40),(0,-40,40,40),(0,0,0,-40),(-20,60,-20,-20),(-40,-40,0,40),
+                        (60,60,20,0),(0,-20,0,0),(0,0,0,-60),(40,20,40,40),(0,0,0,-20),(-20,0,-20,-20),(0,0,0,-20),(-40,-40,40,20),
+                        (-20,-20,20,-20),(0,20,0,0),(60,20,-20,-20),(0,0,0,20),(0,-140,-20,-20),(0,0,20,0),(0,-60,0,0),(-20,-40,0,0)]
+        coords = self.update_coordinates_from_array(start_coord,coords_array)
         # Randomly choose which set of paths to close off
         close_paths = random.choice(["red","blue"])
         # Option 1 - "Blue and green paths"
         if close_paths == "blue":
-            
-            blue_line = self.update_coordinates(x_coordinate,top_coordinate,80,100,-180,-180)
-            blue_line = self.update_coordinates(blue_line[0],blue_line[1],140,160,60,60)
-            blue_line = self.update_coordinates(blue_line[0],blue_line[1],-20,10,40,40)
-            blue_line = self.update_coordinates(blue_line[0],blue_line[1],30,30,100,80)
-            blue_line = self.update_coordinates(blue_line[0],blue_line[1],40,40,20,0)
-            blue_line = self.update_coordinates(blue_line[0],blue_line[1],0,0,-60,-80)
-            blue_line = self.update_coordinates(blue_line[0],blue_line[1],-40,-40,-40,-60)
-            blue_line = self.update_coordinates(blue_line[0],blue_line[1],60,90,-40,-40)
-            blue_line = self.update_coordinates(blue_line[0],blue_line[1],130,150,20,20)
-            blue_line = self.update_coordinates(blue_line[0],blue_line[1],40,40,100,80)
+            blue_start_coords = (x_coordinate,top_coordinate,80,100,-180,-180)
+            blue_array = [(140,160,60,60),(-20,10,40,40),(30,30,100,80),(40,40,20,0),(0,0,-60,-80),(-40,-40,-40,-60),
+                            (60,90,-40,-40),(130,150,20,20),(40,40,100,80)]
+            self.update_coordinates_from_array(blue_start_coords,blue_array)
             # Randomly decide which "green" line to draw to close of that path, unless "stair" path does not dead ends, then draw both
             if did_stairs_end:
                 if random.choice([True,False]):
@@ -469,16 +292,10 @@ class Generator(Turtle):
                     green_line = self.update_coordinates(x_coordinate,top_coordinate,240,260,-40,-40)
         # Option 2 - "red and green paths"
         if close_paths == "red":
-            red_line = self.update_coordinates(x_coordinate,top_coordinate,260,260,20,0)
-            red_line = self.update_coordinates(red_line[0],red_line[1],80,80,20,0)
-            red_line = self.update_coordinates(red_line[0],red_line[1],20,0,-80,-80)
-            red_line = self.update_coordinates(red_line[0],red_line[1],-100,-80,-20,-20)
-            red_line = self.update_coordinates(red_line[0],red_line[1],0,0,-80,-60)
-            red_line = self.update_coordinates(red_line[0],red_line[1],40,40,40,20)
-            red_line = self.update_coordinates(red_line[0],red_line[1],40,40,20,-10)
-            red_line = self.update_coordinates(red_line[0],red_line[1],-20,10,-30,-30)
-            red_line = self.update_coordinates(red_line[0],red_line[1],90,90,20,40)
-            red_line = self.update_coordinates(red_line[0],red_line[1],140,160,20,20)
+            red_start_coords = (x_coordinate,top_coordinate,260,260,20,0)
+            red_array = [(80,80,20,0),(20,0,-80,-80),(-100,-80,-20,-20),(0,0,-80,-60),(40,40,40,20),(40,40,20,-10),
+                         (-20,10,-30,-30),(90,90,20,40),(140,160,20,20)]
+            self.update_coordinates_from_array(red_start_coords,red_array)
             if did_stairs_end:
                 if random.choice([True,False]):
                     green_line = self.update_coordinates(x_coordinate,top_coordinate,180,200,-80,-80)
@@ -497,40 +314,22 @@ class Generator(Turtle):
         return bottom
     
     def draw_60_80_fourth_row(self):
-        print("this is the 60 / 80 fourth row")
-        # TODO: finish this method
+        start_coords = (-390,-150,0,100,0,0)
+        coords_array = [(20,20,20,0),(20,300,0,0),(0,0,-20,20),(20,20,0,-20),(20,40,0,0),(20,20,20,0),(20,20,20,0),(0,240,0,0)]
+        self.update_coordinates_from_array(start_coords,coords_array)
+        
     def draw_100_fourth_row(self):
-        coords = self.update_coordinates(-390,-150,20,240,-20,-20)
-        coords = self.update_coordinates(coords[0],coords[1],-120,-120,20,0)
-        coords = self.update_coordinates(coords[0],coords[1],140,160,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,20,0)
-        coords = self.update_coordinates(coords[0],coords[1],20,20,-20,0)
-        coords = self.update_coordinates(coords[0],coords[1],20,20,20,0)
-        coords = self.update_coordinates(coords[0],coords[1],20,40,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,-20,0)
-        coords = self.update_coordinates(coords[0],coords[1],20,20,20,0)
-        coords = self.update_coordinates(coords[0],coords[1],20,20,-20,0)
-        coords = self.update_coordinates(coords[0],coords[1],20,100,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],-40,-40,20,0)
-        coords = self.update_coordinates(coords[0],coords[1],60,60,20,0)
-        coords = self.update_coordinates(coords[0],coords[1],20,260,0,0)
+        start_coords = (-390,-150,20,240,-20,-20)
+        coords_array = [(-120,-120,20,0),(140,160,0,0),(0,0,20,0),(20,20,-20,0),(20,20,20,0),(20,40,0,0),(0,0,-20,0),
+                        (20,20,20,0),(20,20,-20,0),(20,100,0,0),(-40,-40,20,0),(60,60,20,0),(20,260,0,0)]
+        self.update_coordinates_from_array(start_coords,coords_array)
         
     def draw_120_fourth_row(self):
         #draw left 3rd
-        coords = self.update_coordinates(-390,-170,0,160,-20,-20)
-        coords = self.update_coordinates(coords[0],coords[1],20,20,20,0)
-        coords = self.update_coordinates(coords[0],coords[1],60,60,20,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,-20,-80)
-        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],-20,-200,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,60)
-        coords = self.update_coordinates(coords[0],coords[1],0,60,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],20,120,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20)
-        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,-20,-60)
-        coords = self.update_coordinates(coords[0],coords[1],0,-180,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20)
+        start_coords = (-390,-170,0,160,-20,-20)
+        coords_array = [(20,20,20,0),(60,60,20,0),(0,0,-20,-80),(0,-20,0,0),(-20,-200,0,0),(0,0,0,60),(0,60,0,0),
+                        (20,120,0,0),(0,0,0,20),(0,20,0,0),(0,0,-20,-60),(0,-180,0,0),(0,0,0,20)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
         for i in range(4):
             coords = self.update_coordinates(coords[0],coords[1],20,20,20,0)
             coords = self.update_coordinates(coords[0],coords[1],20,20,-20,0)
@@ -548,52 +347,21 @@ class Generator(Turtle):
                 red_line = self.update_coordinates(-390,-170,80,80,-20,-41)
                 red_line = self.update_coordinates(red_line[0],red_line[1],140,161,21,21)
         # Draw middle 3rd
-        coords = self.update_coordinates(coords[0],coords[1],40,200,40,40)
-        coords = self.update_coordinates(coords[0],coords[1],20,20,20,-20)
-        coords = self.update_coordinates(coords[0],coords[1],0,-180,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,20,-20,-20)
-        coords = self.update_coordinates(coords[0],coords[1],0,60,-20,-20)
-        coords = self.update_coordinates(coords[0],coords[1],-40,-40,0,20)
-        coords = self.update_coordinates(coords[0],coords[1],20,20,20,0)
-        for i in range(2):
-            coords = self.update_coordinates(coords[0],coords[1],20,20,-20,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,100,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-20)
-        coords = self.update_coordinates(coords[0],coords[1],20,0,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],-20,-20,0,-20)
-        coords = self.update_coordinates(coords[0],coords[1],-20,-20,40,20)
-        coords = self.update_coordinates(coords[0],coords[1],-20,-20,-20,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],-120,120,-20,-20)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,40)
-        coords = self.update_coordinates(coords[0],coords[1],20,-20,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20)
-        coords = self.update_coordinates(coords[0],coords[1],-20,-20,-20,20)
-        coords = self.update_coordinates(coords[0],coords[1],0,40,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-20)
-        coords = self.update_coordinates(coords[0],coords[1],0,40,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],-20,-20,20,40)
-        coords = self.update_coordinates(coords[0],coords[1],20,20,0,-80)
-        coords = self.update_coordinates(coords[0],coords[1],-20,0,0,0)
+        start_coords = (coords[0],coords[1],40,200,40,40)
+        coords_array = [(20,20,20,-20),(0,-180,0,0),(0,20,-20,-20),(0,60,-20,-20),(-40,-40,0,20),(20,20,20,0),(20,20,-20,0),
+                        (20,20,-20,0),(0,100,0,0),(0,0,0,-20),(20,0,0,0),(-20,-20,0,-20),(-20,-20,40,20),(-20,-20,-20,0),
+                        (0,-20,0,0),(-120,120,-20,-20),(0,0,0,40),(20,-20,0,0),(0,0,0,20),(-20,-20,-20,20),(0,40,0,0),(0,0,0,-20),
+                        (0,40,0,0),(-20,-20,20,40),(20,20,0,-80),(-20,0,0,0)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
         if random.choice([True, False]):
             temp_coord = self.update_coordinates(coords[0],coords[1],-180,-200,0,0)
         else:
             temp_coord = self.update_coordinates(coords[0],coords[1],-200,-200,20,40)
         # Draw right third
-        coords = self.update_coordinates(coords[0],coords[1],-40,240,-20,-20)
-        coords = self.update_coordinates(coords[0],coords[1],-240,0,20,20)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,60)
-        coords = self.update_coordinates(coords[0],coords[1],0,-80,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-20)
-        coords = self.update_coordinates(coords[0],coords[1],60,60,-20,0)
-        coords = self.update_coordinates(coords[0],coords[1],-0,-40,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-20)
-        coords = self.update_coordinates(coords[0],coords[1],20,20,-20,0)
-        coords = self.update_coordinates(coords[0],coords[1],-20,-60,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,60)
-        coords = self.update_coordinates(coords[0],coords[1],-20,-20,-60,-20)
-        coords = self.update_coordinates(coords[0],coords[1],0,-100,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,-40,-20)
+        start_coords = (coords[0],coords[1],-40,240,-20,-20)
+        coords_array = [(-240,0,20,20),(0,0,0,60),(0,-80,0,0),(0,0,0,-20),(60,60,-20,0),(-0,-40,0,0),(0,0,0,-20),(20,20,-20,0),
+                        (-20,-60,0,0),(0,0,0,60),(-20,-20,-60,-20),(0,-100,0,0),(0,0,-40,-20)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
         for i in range(2):
             coords = self.update_coordinates(coords[0],coords[1],20,20,20,0)
             coords = self.update_coordinates(coords[0],coords[1],20,20,-20,0)

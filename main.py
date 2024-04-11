@@ -15,6 +15,4 @@ generator.draw_forth_row(bottom_of_third_row)
 # Draw another line to make sure the last line isn't skipped by the tracer
 generator.update_coordinates(0,0,0,0,0,0)
 
-
-
 screen.exitonclick()
