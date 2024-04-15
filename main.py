@@ -8,11 +8,14 @@ screen.title("Maze Generator")
 screen.tracer(2,0)
 generator = Generator()
 
-bottom_of_zig_zags = generator.draw_zig_zags(-390,290)
-bottom_of_second_row = generator.draw_second_row(-390,bottom_of_zig_zags[0],bottom_of_zig_zags[1])
-bottom_of_third_row = generator.draw_third_row(bottom_of_second_row)
-generator.draw_forth_row(bottom_of_third_row)
-# Draw another line to make sure the last line isn't skipped by the tracer
+generator.draw_grid()
+generator.draw_border()
+start_info = generator.draw_a(-390, 290, "bottom")
+generator.draw_b(start_info[0],start_info[1],start_info[2])
+
+
+
+
 generator.update_coordinates(0,0,0,0,0,0)
 
 screen.exitonclick()

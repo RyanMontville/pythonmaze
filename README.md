@@ -22,3 +22,9 @@ Here are some variations of V 0.021
     <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/V021-C.png" alt="A variation of v 0.021" title="A variation of v 0.021">
     <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/V021-D.png" alt="A variation of v 0.021" title="A variation of v 0.021">
 </p>
+
+#### V 0.022 - 4/10/2024
+I optimized the functions to reduce the file size. Now instead of printing the same command over and over again, the command now takes an array of cordinates and loops through them.
+
+#### V 0.030 - 4/15/2024
+Taking a differnet approach with this version. Instead of generating an entirely random maze, the program now asks the user to input a word or phrase and then generates a maze that spells out the word or phase as paths. I am reusing the functions from 0.020. I am currently working on drawing the letters and their paths.
