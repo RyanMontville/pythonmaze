@@ -11,9 +11,8 @@ generator = Generator()
 generator.draw_grid()
 generator.draw_border()
 start_info = generator.draw_a(-390, 290, "top")
-generator.draw_b(start_info[0],start_info[1],start_info[2])
-
-
+info = generator.draw_b(start_info[0],start_info[1],start_info[2])
+info = generator.draw_d(info[0],info[1],start_info[2])
 
 
 generator.update_coordinates(0,0,0,0,0,0)

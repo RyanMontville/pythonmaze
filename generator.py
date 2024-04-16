@@ -7,6 +7,8 @@ class Generator(Turtle):
         self.draw_border()
         self.hideturtle()
         self.speed("fastest")
+        self.normal = 1
+        self.bold = 3
         
     def print_cors(self):
         xint = int(self.xcor())
@@ -37,10 +39,22 @@ class Generator(Turtle):
         border_start = (-390,290,0,780,0,0)
         border_array = [(0,0,0,-560),(0,-780,-20,-20),(0,0,0,560)]
         self.update_coordinates_from_array(border_start,border_array)
+    
+    def reset_coordinates(self,x_cord,y_cord):
+        self.pu()
+        self.goto(x_cord,y_cord)
 
-    def draw_semi_circle(self,radius):
-        self.setheading(0)
+    def draw_semi_circle(self,x_offset,y_offset,radius,heading):
+        self.reset_coordinates(self.xcor()+x_offset,self.ycor()+y_offset)
+        self.pd()
+        self.setheading(heading)
         self.circle(radius, 180)
+
+    def draw_quarter_circle(self,x_offset,y_offset,radius,heading):
+        self.reset_coordinates(self.xcor()+x_offset,self.ycor()+y_offset)
+        self.pd()
+        self.setheading(heading)
+        self.circle(radius, 90)
         
     def draw_grid(self):
         self.pencolor("LightGrey")
@@ -54,12 +68,12 @@ class Generator(Turtle):
 
     def draw_a(self,start_x, start_y,top_or_bottom):
         #Draw the A
-        self.pensize(2)
+        self.pensize(self.bold)
         start_coords = (start_x,start_y,40,70,-180,-40)
         coords_array = [(20,50,0,-140),(-20,-30,0,60),(0,-20,0,0),(0,-10,0,-60),(10,15,80,110),(0,10,0,0),
                         (0,5,0,-30),(0,-20,0,0)]
         self.update_coordinates_from_array(start_coords,coords_array)
-        self.pensize(1)
+        self.pensize(self.normal)
         #Draw left side, from top to bottom
         start_coords = (start_x,start_y,20,20,0,-40)
         coords_array = [(-20,20,-20,-20),(0,0,0,40),(0,20,0,0),(20,20,20,0),(-20,-60,-60,-60),(-20,20,-20,-20),
@@ -72,16 +86,16 @@ class Generator(Turtle):
         if top_or_bottom == "top":
             close_coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0)
             #close off either top of A or bottom left of A
-            self.pensize(2)
+            self.pensize(self.bold)
             if random.choice([True, False]):
                 self.update_coordinates(close_coords[0],close_coords[1],-10,10,-20,-20)
             else:
                 self.update_coordinates(close_coords[0],close_coords[1],-20,-40,-160,-160)
-            self.pensize(1)
+            self.pensize(self.normal)
         else:
-            self.pensize(2)
+            self.pensize(self.bold)
             close_coords = self.update_coordinates(start_x,start_y,70,90,-40,-40)
-            self.pensize(1)
+            self.pensize(self.normal)
             close_coords = self.update_coordinates(close_coords[0],close_coords[1],-10,-10,-180,-200)
         #close off top or bottom exit
         if random.choice([True, False]):
@@ -94,35 +108,93 @@ class Generator(Turtle):
         
     def draw_b(self,start_x, start_y,top_or_bottom):
         #Draw the B
-        self.pensize(2)
+        self.pensize(self.bold)
         start_coords = (start_x,start_y,20,20,-180,-80)
-        coords_Array = [(0,20,20,20),(-20,0,-140,-140),(0,0,125,85),(0,0,-30,-70),(0,0,-15,-15)]
-        coords = self.update_coordinates_from_array(start_coords,coords_Array)
+        coords_array = [(0,20,20,20),(-20,0,-140,-140),(0,0,125,85),(0,0,-30,-70),(0,0,-15,-15)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
         for i in range(2):
-            self.draw_semi_circle(35)
-        coords = self.update_coordinates(self.xcor(),self.ycor(),0,0,-125,-125)
-        self.draw_semi_circle(20)
-        coords = self.update_coordinates(self.xcor(),self.ycor(),0,0,30,30)
-        self.draw_semi_circle(20)
-        self.pensize(1)
+            self.draw_semi_circle(0,0,35, 0)
+        self.draw_semi_circle(0,-125,20, 0)
+        self.draw_semi_circle(0,30,20, 0)
+        self.pensize(self.normal)
         #Draw the paths around the B, starting from the top
         start_coords = (start_x,start_y,20,20,-60,-20)
-        coords_Array = [(0,60,0,0),(40,40,20,-40),(-20,-20,-120,40),(0,-60,-20,-20),(40,40,-20,-40),
+        coords_array = [(0,60,0,0),(40,40,20,-40),(-20,-20,-120,40),(0,-60,-20,-20),(40,40,-20,-40),
                         (0,-10,0,0),(5,18,-20,-20),(11,-9,-20,-20),(-15,10,-20,-20),(10,-5,-20,-20),
                         (16,36,-20,-20),(20,0,100,100),(0,-20,-20,-20),(0,40,-20,-20),(-40,-20,-20,-20),
                         (20,0,-20,-20),(0,0,-20,-60),(-20,-20,0,20),(0,-20,0,0),(0,-20,-20,-20),
                         (0,0,0,26),(-20,-20,-46,-26),(-20,-20,20,0),(-20,120,-20,-20)]
-        coords = self.update_coordinates_from_array(start_coords,coords_Array)
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        if top_or_bottom == "top":
+            start_coords = (start_x,start_y,20,20,0,-20)
+            coords_array = [(-20,0,-160,-160),(80,80,-40,-60)]
+            self.update_coordinates_from_array(start_coords,coords_array)
+        else:
+            start_coords = (start_x,start_y,0,20,-80,-80)
+            coords_array = [(60,60,-160,-140),(20,41,0,0)]
+            self.update_coordinates_from_array(start_coords,coords_array)
+
         #draw the right side line, closing off either the top or bottom
         if random.choice([True, False]):
             self.update_coordinates(coords[0],coords[1],0,0,0,220)
+            return (start_x + 140, start_y,"bottom")
         else:
             self.update_coordinates(coords[0],coords[1],0,0,20,240)
+            return (start_x + 140, start_y,"top")
+    
+    def draw_c(self,start_x, start_y,top_or_bottom):
+        #Draw the C
+        self.pensize(self.bold)
+        self.reset_coordinates(start_x,start_y)
+        self.draw_semi_circle(90,-60,40,90)
+        self.update_coordinates(self.xcor(),self.ycor(),0,0,0,-60)
+        self.draw_semi_circle(0,0,40,270)
+        self.draw_semi_circle(-60,0,20,270)
+        self.update_coordinates(self.xcor(),self.ycor(),-40,-40,0,60)
+        self.draw_semi_circle(40,0,20,90)
+        self.pensize(self.normal)
+        print("rest of function coming soon.")
+
+    def draw_d(self,start_x, start_y,top_or_bottom):
+        #Draw the D
+        self.pensize(self.bold)
+        self.update_coordinates(start_x,start_y,40,40,-40,-180)
+        self.draw_quarter_circle(20,0,60,0)
+        self.update_coordinates(self.xcor(),self.ycor(),0,0,0,20)
+        self.draw_quarter_circle(0,0,60,90)
+        self.update_coordinates(self.xcor(),self.ycor(),0,0,-20,-120)
+        self.draw_quarter_circle(0,0,40,0)
+        self.update_coordinates(self.xcor(),self.ycor(),0,0,0,20)
+        self.draw_quarter_circle(0,0,40,90)
+        self.pensize(self.normal)
+        #Draw the paths
+        start_coords = (start_x,start_y,20,40,-20,-20)
+        coord_array = [(0,0,0,-20),(-40,-20,0,0),(20,0,-20,-20),(-20,0,-20,-20),(20,0,-20,-20),
+                       (-20,0,-20,-20),(20,0,-20,-20),(-20,0,-20,-20),(20,0,-20,-20),(0,0,0,-40),
+                       (-20,120,-20,-20),(-100,-100,0,40),(20,20,20,-20),(20,20,-20,20),(0,40,0,0),
+                       (-20,20,-20,-20),(-65,-20,40,40),(0,20,20,20),(0,-20,100,100),(-45,0,20,20),
+                       (20,-40,20,20),(-20,-20,0,-20)]
+        coords = self.update_coordinates_from_array(start_coords,coord_array)
         if top_or_bottom == "top":
-            start_coords = (start_x,start_y,20,20,0,-20)
-            coords_Array = [(-20,0,-160,-160),(80,80,-40,-60)]
-            self.update_coordinates_from_array(start_coords,coords_Array)
+            if random.choice([True, False]):
+                # Draw the lines to close off the paths if enter from the top
+                closed_coord = self.update_coordinates(coords[0],coords[1],0,0,20,40)
+                closed_coord = self.update_coordinates(closed_coord[0],closed_coord[1],-40,-60,-20,-20)
+            else:
+                closed_coord = self.update_coordinates(coords[0],coords[1],-20,-20,40,20)
+                closed_coord = self.update_coordinates(closed_coord[0],closed_coord[1],20,40,-200,-200)
         else:
-            coords = self.update_coordinates(start_x,start_y,0,20,-80,-80)
-            coords = self.update_coordinates(coords[0],coords[1],60,60,-160,-140)
-            coords = self.update_coordinates(coords[0],coords[1],20,41,0,0)
+            # Draw the lines to colse off the paths if enter from the bottom
+            if random.choice([True, False]):
+                closed_coord = self.update_coordinates(coords[0],coords[1],0,0,40,20)
+                closed_coord = self.update_coordinates(closed_coord[0],closed_coord[1],-20,-20,-160,-180)
+            else:
+                closed_coord = self.update_coordinates(coords[0],coords[1],-60,-40,20,20)
+                closed_coord = self.update_coordinates(closed_coord[0],closed_coord[1],40,40,-220,-200)
+        # Draw the right side, closing off the top or bottom, then return the info
+        if random.choice([True, False]):
+            self.update_coordinates(start_x + 140, start_y,0,0,0,-220)
+            return (start_x + 140, start_y,"bottom")
+        else:
+            self.update_coordinates(start_x + 140, start_y,0,0,-20,-240)
+            return (start_x + 140, start_y,"top")
