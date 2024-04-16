@@ -66,6 +66,14 @@ class Generator(Turtle):
             coords = self.update_coordinates(coords[0],290,20,20,0,-580)
         self.pencolor("black")
 
+    def draw_right_side(self,start_x,start_y):
+        if random.choice([True, False]):
+            self.update_coordinates(start_x + 140, start_y,0,0,0,-220)
+            return (start_x + 140, start_y,"bottom")
+        else:
+            self.update_coordinates(start_x + 140, start_y,0,0,-20,-240)
+            return (start_x + 140, start_y,"top")
+
     def draw_a(self,start_x, start_y,top_or_bottom):
         #Draw the A
         self.pensize(self.bold)
@@ -98,13 +106,7 @@ class Generator(Turtle):
             self.pensize(self.normal)
             close_coords = self.update_coordinates(close_coords[0],close_coords[1],-10,-10,-180,-200)
         #close off top or bottom exit
-        if random.choice([True, False]):
-            # Exit on top
-            self.update_coordinates(coords[0],coords[1],40,40,0,-220)
-            return (start_x + 140, start_y,"top")
-        else:
-            self.update_coordinates(coords[0],coords[1],40,40,20,-200)
-            return (start_x + 140, start_y,"bottom")
+        return self.draw_right_side(start_x,start_y)
         
     def draw_b(self,start_x, start_y,top_or_bottom):
         #Draw the B
@@ -135,12 +137,7 @@ class Generator(Turtle):
             self.update_coordinates_from_array(start_coords,coords_array)
 
         #draw the right side line, closing off either the top or bottom
-        if random.choice([True, False]):
-            self.update_coordinates(coords[0],coords[1],0,0,0,220)
-            return (start_x + 140, start_y,"bottom")
-        else:
-            self.update_coordinates(coords[0],coords[1],0,0,20,240)
-            return (start_x + 140, start_y,"top")
+        return self.draw_right_side(start_x,start_y)
     
     def draw_c(self,start_x, start_y,top_or_bottom):
         #Draw the C
@@ -192,9 +189,47 @@ class Generator(Turtle):
                 closed_coord = self.update_coordinates(coords[0],coords[1],-60,-40,20,20)
                 closed_coord = self.update_coordinates(closed_coord[0],closed_coord[1],40,40,-220,-200)
         # Draw the right side, closing off the top or bottom, then return the info
-        if random.choice([True, False]):
-            self.update_coordinates(start_x + 140, start_y,0,0,0,-220)
-            return (start_x + 140, start_y,"bottom")
-        else:
-            self.update_coordinates(start_x + 140, start_y,0,0,-20,-240)
-            return (start_x + 140, start_y,"top")
+        return self.draw_right_side(start_x,start_y)
+        
+    def draw_e(self,start_x, start_y,top_or_bottom):
+        # Draw the E
+        self.pensize(self.bold)
+        start_coords = (start_x,start_y,20,100,-20,-20)
+        coord_Array =[(0,-60,-20,-20),(0,0,0,-40),(0,40,0,0),(0,-40,-20,-20),
+                      (0,0,0,-40),(0,60,0,0),(0,-80,-20,-20),(0,0,0,120)]
+        coords = self.update_coordinates_from_array(start_coords,coord_Array)
+        self.pensize(self.normal)
+        # Draw the paths, starting from the bottom
+        start_coords = (coords[0],coords[1],0,0,-120,-200)
+        coord_Array = [(-20,120,0,0),(-60,-20,20,20),(0,-60,20,20),(0,0,0,-20),
+                       (-20,-20,0,40),(0,100,0,0),(-20,-40,20,20),(0,20,20,20),
+                       (-60,0,20,20),(0,0,0,40),(0,-40,0,0),(-20,40,20,20),
+                       (0,0,0,60),(-120,-100,-20,-20)]
+        coords = self.update_coordinates_from_array(start_coords,coord_Array)
+        # Close off 2 of the E exit paths
+        match random.choice([1,2,3]):
+            case 1:
+                exit = self.update_coordinates(coords[0],coords[1],100,100,-100,-120)
+                exit = self.update_coordinates(exit[0],exit[1],0,0,0,-20)
+            case 2:
+                exit = self.update_coordinates(coords[0],coords[1],100,100,-40,-60)
+                exit = self.update_coordinates(exit[0],exit[1],0,0,-60,-80)
+            case 3:
+                exit = self.update_coordinates(coords[0],coords[1],100,100,-40,-60)
+                exit = self.update_coordinates(exit[0],exit[1],0,0,-40,-60)
+        # Draw one of 4 bottom path configurations
+        match random.choice([1,2,3,4]):
+            case 1:
+                block = self.update_coordinates(start_x,start_y,60,60,-220,-240)
+                block = self.update_coordinates(block[0],block[1],20,20,0,20)
+            case 2:
+                block = self.update_coordinates(start_x,start_y,60,60,-220,-240)
+                block = self.update_coordinates(block[0],block[1],60,80,20,20)
+            case 3:
+                block = self.update_coordinates(start_x,start_y,60,80,-220,-220)
+                block = self.update_coordinates(block[0],block[1],40,40,0,-20)
+            case 4:
+                block = self.update_coordinates(start_x,start_y,120,120,-180,-200)
+                block = self.update_coordinates(block[0],block[1],-40,-40,-20,-40)
+        # Draw the right side
+        return self.draw_right_side(start_x,start_y)
