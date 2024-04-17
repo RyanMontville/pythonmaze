@@ -233,3 +233,25 @@ class Generator(Turtle):
                 block = self.update_coordinates(block[0],block[1],-40,-40,-20,-40)
         # Draw the right side
         return self.draw_right_side(start_x,start_y)
+    
+    def draw_f(self,start_x, start_y,top_or_bottom):
+        # Draw the F
+        self.pensize(self.bold)
+        start_coords = (start_x,start_y,20,100,-20,-20)
+        coord_Array =[(0,-60,-20,-20),(0,0,0,-40),(0,40,0,0),(0,-40,-20,-20),
+                      (0,0,0,-60),(-20,-20,0,120)]
+        coords = self.update_coordinates_from_array(start_coords,coord_Array)
+        self.pensize(self.normal)
+        # Draw the shared paths
+        coord_Array = [(0,20,0,0),(0,0,0,-40),(0,-60,0,0),(80,20,-20,-20),
+                       (0,40,-20,-20),(0,0,0,-120),(20,-120,-20,-20),(20,100,20,20),
+                       (0,0,0,100),(0,-40,0,0),(0,0,0,-60),(20,20,40,-20),(0,-40,0,0),
+                       (0,0,0,40),(-40,-20,40,40),(-20,0,-60,-60),(20,0,-20,-20),
+                       (-20,0,-20,-20),(60,60,220,200)]
+        coords = self.update_coordinates_from_array(start_coords,coord_Array)
+        if top_or_bottom == "top":
+            coords = self.update_coordinates(coords[0],coords[1],40,60,-200,-200)
+        else :
+            coords = self.update_coordinates(coords[0],coords[1],40,40,-200,-220)
+        # Draw the right side
+        return self.draw_right_side(start_x,start_y)
