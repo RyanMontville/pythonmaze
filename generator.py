@@ -284,3 +284,42 @@ class Generator(Turtle):
             self.update_coordinates(coords[0],coords[1],-20,-40,-80,-80)
         # Draw the right side
         return self.draw_right_side(start_x,start_y)
+    
+    def draw_h(self,start_x, start_y,top_or_bottom):
+        # Draw the H
+        self.pensize(self.bold)
+        start_coords = (start_x,start_y,40,40,-40,-160)
+        coords_array = [(0,20,-20,-20),(0,0,0,60),(0,40,0,0),(0,0,0,-60),
+                        (0,20,0,0),(0,0,20,120),(0,-20,20,20),(0,0,0,-60),
+                        (0,-40,0,0),(0,0,0,40),(0,-20,20,20)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        self.pensize(self.normal)
+        # Draw the paths
+        start_coords = (coords[0],coords[1],-20,60,20,20)
+        coords_array = [(-20,-20,0,-60),(0,-20,40,40),(-40,-40,20,-100),(-20,0,0,0),
+                        (20,0,-20,-20),(0,0,0,-60),(80,0,0,0),(0,80,20,20),(-20,-20,60,0),\
+                        (40,40,-40,20),(20,0,80,80),(0,0,60,100)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        # Draw the right side
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_i(self,start_x, start_y,top_or_bottom):
+        # Draw the I
+        self.pensize(self.bold)
+        coords = self.update_coordinates(start_x,start_y,20,20,-60,-80) # Top left
+        coords = self.update_coordinates(coords[0],coords[1],0,30,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-100)
+        coords = self.update_coordinates(coords[0],coords[1],0,-30,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-20) # Bottom left
+        coords = self.update_coordinates(coords[0],coords[1],0,80,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20) # Bottom right
+        coords = self.update_coordinates(coords[0],coords[1],0,-30,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,100)
+        coords = self.update_coordinates(coords[0],coords[1],0,30,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20) # Top right
+        coords = self.update_coordinates(coords[0],coords[1],0,-80,0,0)
+        self.pensize(self.normal)
+        # Draw the paths
+        
+        # Draw the right side
+        return self.draw_right_side(start_x,start_y)
