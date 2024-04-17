@@ -67,6 +67,7 @@ class Generator(Turtle):
         self.pencolor("black")
 
     def draw_right_side(self,start_x,start_y):
+        self.update_coordinates(start_x,start_y,0,140,-240,-240)
         if random.choice([True, False]):
             self.update_coordinates(start_x + 140, start_y,0,0,0,-220)
             return (start_x + 140, start_y,"bottom")
@@ -253,5 +254,33 @@ class Generator(Turtle):
             coords = self.update_coordinates(coords[0],coords[1],40,60,-200,-200)
         else :
             coords = self.update_coordinates(coords[0],coords[1],40,40,-200,-220)
+        # Draw the right side
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_g(self,start_x, start_y,top_or_bottom):
+        # Draw the G
+        self.pensize(self.bold)
+        self.reset_coordinates(start_x,start_y)
+        self.draw_semi_circle(120,-140,40,90)
+        self.update_coordinates(self.xcor(),self.ycor(),0,0,-20,-60)
+        self.draw_semi_circle(0,0,40,270)
+        self.draw_semi_circle(-60,0,20,270)
+        self.update_coordinates(self.xcor(),self.ycor(),-40,-40,0,60)
+        self.draw_semi_circle(40,0,20,90)
+        start_coords = (self.xcor(),self.ycor(),40,30,-60,-60)
+        coords_array = [(0,0,0,20),(0,50,0,0),(0,0,0,-40),(-20,-20,0,20)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        self.pensize(self.normal)
+        # Draw the paths
+        start_coords = (start_x,start_y,20,20,-220,-20)
+        coords_array = [(0,40,-20,-20),(0,40,-20,-20),(0,0,-20,40),(-20,-20,20,-20),
+                        (0,0,-60,-40),(-20,-20,0,60),(-20,-20,20,0),(0,0,-40,-120),
+                        (35,35,-60,0),(0,45,-20,-20),(0,0,0,160)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        # Draw a line to close off one of the paths
+        if random.choice([True, False]):
+            self.update_coordinates(coords[0],coords[1],-100,-100,-220,-240)
+        else:
+            self.update_coordinates(coords[0],coords[1],-20,-40,-80,-80)
         # Draw the right side
         return self.draw_right_side(start_x,start_y)
