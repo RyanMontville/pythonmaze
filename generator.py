@@ -44,17 +44,11 @@ class Generator(Turtle):
         self.pu()
         self.goto(x_cord,y_cord)
 
-    def draw_semi_circle(self,x_offset,y_offset,radius,heading):
+    def draw_circle(self,x_offset,y_offset,radius,angle,heading):
         self.reset_coordinates(self.xcor()+x_offset,self.ycor()+y_offset)
         self.pd()
         self.setheading(heading)
-        self.circle(radius, 180)
-
-    def draw_quarter_circle(self,x_offset,y_offset,radius,heading):
-        self.reset_coordinates(self.xcor()+x_offset,self.ycor()+y_offset)
-        self.pd()
-        self.setheading(heading)
-        self.circle(radius, 90)
+        self.circle(radius, angle)
         
     def draw_grid(self):
         self.pencolor("LightGrey")
@@ -116,9 +110,9 @@ class Generator(Turtle):
         coords_array = [(0,20,20,20),(-20,0,-140,-140),(0,0,125,85),(0,0,-30,-70),(0,0,-15,-15)]
         coords = self.update_coordinates_from_array(start_coords,coords_array)
         for i in range(2):
-            self.draw_semi_circle(0,0,35, 0)
-        self.draw_semi_circle(0,-125,20, 0)
-        self.draw_semi_circle(0,30,20, 0)
+            self.draw_circle(0,0,35,180, 0)
+        self.draw_circle(0,-125,20,180, 0)
+        self.draw_circle(0,30,20,180, 0)
         self.pensize(self.normal)
         #Draw the paths around the B, starting from the top
         start_coords = (start_x,start_y,20,20,-60,-20)
@@ -144,26 +138,28 @@ class Generator(Turtle):
         #Draw the C
         self.pensize(self.bold)
         self.reset_coordinates(start_x,start_y)
-        self.draw_semi_circle(90,-60,40,90)
+        self.draw_circle(90,-60,40,180,90)
         self.update_coordinates(self.xcor(),self.ycor(),0,0,0,-60)
-        self.draw_semi_circle(0,0,40,270)
-        self.draw_semi_circle(-60,0,20,270)
+        self.draw_circle(0,0,40,180,270)
+        self.draw_circle(-60,0,20,180,270)
         self.update_coordinates(self.xcor(),self.ycor(),-40,-40,0,60)
-        self.draw_semi_circle(40,0,20,90)
+        self.draw_circle(40,0,20,180,90)
         self.pensize(self.normal)
         print("rest of function coming soon.")
+        # Draw the right side, closing off the top or bottom, then return the info
+        return self.draw_right_side(start_x,start_y)
 
     def draw_d(self,start_x, start_y,top_or_bottom):
         #Draw the D
         self.pensize(self.bold)
         self.update_coordinates(start_x,start_y,40,40,-40,-180)
-        self.draw_quarter_circle(20,0,60,0)
+        self.draw_circle(20,0,60,90,0)
         self.update_coordinates(self.xcor(),self.ycor(),0,0,0,20)
-        self.draw_quarter_circle(0,0,60,90)
+        self.draw_circle(0,0,60,90,90)
         self.update_coordinates(self.xcor(),self.ycor(),0,0,-20,-120)
-        self.draw_quarter_circle(0,0,40,0)
+        self.draw_circle(0,0,40,90,0)
         self.update_coordinates(self.xcor(),self.ycor(),0,0,0,20)
-        self.draw_quarter_circle(0,0,40,90)
+        self.draw_circle(0,0,40,90,90)
         self.pensize(self.normal)
         #Draw the paths
         start_coords = (start_x,start_y,20,40,-20,-20)
@@ -261,12 +257,12 @@ class Generator(Turtle):
         # Draw the G
         self.pensize(self.bold)
         self.reset_coordinates(start_x,start_y)
-        self.draw_semi_circle(120,-140,40,90)
+        self.draw_circle(120,-140,40,180,90)
         self.update_coordinates(self.xcor(),self.ycor(),0,0,-20,-60)
-        self.draw_semi_circle(0,0,40,270)
-        self.draw_semi_circle(-60,0,20,270)
+        self.draw_circle(0,0,40,180,270)
+        self.draw_circle(-60,0,20,180,270)
         self.update_coordinates(self.xcor(),self.ycor(),-40,-40,0,60)
-        self.draw_semi_circle(40,0,20,90)
+        self.draw_circle(40,0,20,180,90)
         start_coords = (self.xcor(),self.ycor(),40,30,-60,-60)
         coords_array = [(0,0,0,20),(0,50,0,0),(0,0,0,-40),(-20,-20,0,20)]
         coords = self.update_coordinates_from_array(start_coords,coords_array)
@@ -322,4 +318,169 @@ class Generator(Turtle):
         # Draw the paths
         
         # Draw the right side
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_j(self,start_x, start_y,top_or_bottom):
+        # Draw the J
+        self.pensize(self.bold)
+        coords = self.update_coordinates(start_x,start_y,20,20,-60,-80) # Top left
+        coords = self.update_coordinates(coords[0],coords[1],0,40,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-90)
+        self.draw_circle(-20,0,10,180,270)
+        coords = self.update_coordinates(coords[0],coords[1],-20,-40,0,0) # bottom of J
+        self.draw_circle(0,0,30,180,270)
+        coords = self.update_coordinates(coords[0],coords[1],60,60,0,90)
+        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20) # top right
+        coords = self.update_coordinates(coords[0],coords[1],0,-80,0,0)
+        self.pensize(self.normal)
+        # Draw the paths
+        
+        # Draw the right side
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_k(self,start_x, start_y,top_or_bottom):
+        # Draw the K
+        self.pensize(self.bold)
+        coords = self.update_coordinates(start_x,start_y,40,40,-40,-180)
+        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0) # bottom left
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,60)
+        coords = self.update_coordinates(coords[0],coords[1],0,40,0,-60)
+        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0) # bottom right
+        coords = self.update_coordinates(coords[0],coords[1],0,-40,0,70)
+        coords = self.update_coordinates(coords[0],coords[1],0,40,0,70)
+        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0) # Top right
+        coords = self.update_coordinates(coords[0],coords[1],0,-40,0,-60)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,60)
+        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0) # Top left
+        self.pensize(self.normal)
+        # Draw the paths
+        
+        # Draw the right side
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_l(self,start_x, start_y,top_or_bottom):
+        # Draw the L
+        self.pensize(self.bold)
+        coords = self.update_coordinates(start_x,start_y,40,40,-40,-160) # bottom left is open
+        coords = self.update_coordinates(coords[0],coords[1],0,80,-20,-20)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20) # bottom right
+        coords = self.update_coordinates(coords[0],coords[1],0,-60,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,120)
+        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0) # top of L
+        self.pensize(self.normal)
+        # Draw the paths
+        
+        # Draw the right side
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_m(self,start_x, start_y,top_or_bottom):
+        # Draw the M
+        self.pensize(self.bold)
+        coords = self.update_coordinates(start_x,start_y,20,20,-40,-180)
+        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0) # bottom left
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,100)
+        coords = self.update_coordinates(coords[0],coords[1],0,20,0,-40)
+        coords = self.update_coordinates(coords[0],coords[1],0,20,0,40)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-100)
+        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0) # bottom right
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,140)
+        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0) # top right
+        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,-40)
+        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,40)
+        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0) # top left
+        self.pensize(self.normal)
+        # Draw the paths
+        
+        # Draw the right side
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_n(self,start_x, start_y,top_or_bottom):
+        # Draw the N
+        self.pensize(self.bold)
+        coords = self.update_coordinates(start_x,start_y,20,20,-40,-180)
+        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0) # bottom left
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,100)
+        coords = self.update_coordinates(coords[0],coords[1],0,40,0,-100)
+        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0) # bottom right
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,140)
+        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0) # top right
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-100)
+        coords = self.update_coordinates(coords[0],coords[1],0,-40,0,100)
+        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0) # top left
+
+        self.pensize(self.normal)
+        # Draw the paths
+        
+        # Draw the right side
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_o(self,start_x, start_y,top_or_bottom):
+        #Draw the O
+        self.pensize(self.bold)
+        self.reset_coordinates(start_x,start_y)
+        self.draw_circle(100,-60,40,180,90)
+        self.update_coordinates(self.xcor(),self.ycor(),0,0,0,-60)
+        self.draw_circle(0,0,40,180,270)
+        self.update_coordinates(self.xcor(),self.ycor(),0,0,0,60)
+        self.draw_circle(-20,0,20,180,90)
+        self.update_coordinates(self.xcor(),self.ycor(),0,0,0,-60)
+        self.draw_circle(0,0,20,180,270)
+        self.update_coordinates(self.xcor(),self.ycor(),0,0,0,60)
+        self.pensize(self.normal)
+        # Draw the right side, closing off the top or bottom, then return the info
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_p(self,start_x, start_y,top_or_bottom):
+        #Draw the P
+        self.pensize(self.bold)
+        coords = self.update_coordinates(start_x,start_y,20,20,-40,-180)
+        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0) # bottom of P
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,60) 
+        self.draw_circle(0,0,40,180,0) # Top of P is open
+        coords = self.update_coordinates(self.xcor(),self.ycor(),-5,-5,-20,-60)
+        self.draw_circle(0,0,20,180,0)
+        self.pensize(self.normal)
+        # Draw the right side, closing off the top or bottom, then return the info
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_q(self,start_x, start_y,top_or_bottom):
+        #Draw the Q
+        self.pensize(self.bold)
+        self.reset_coordinates(start_x-10,start_y)
+        self.draw_circle(110,-60,39,180,90)
+        self.update_coordinates(self.xcor(),self.ycor(),0,0,-20,-60) # left side top of Q open
+        self.draw_circle(0,0,35,160,270)
+        coords = self.update_coordinates(self.xcor(),self.ycor(),0,10,0,-20)
+        #coords = self.update_coordinates(coords[0],coords[1],0,20,0,20) # bottom of Q
+        coords = self.update_coordinates(coords[0],coords[1],10,0,20,40) 
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,30) # right side top of Q open
+        self.draw_circle(-20,20,20,180,90)
+        self.update_coordinates(self.xcor(),self.ycor(),0,0,0,-60)
+        self.draw_circle(0,0,15,170,270)
+        coords = self.update_coordinates(self.xcor(),self.ycor(),0,-10,0,15)
+        coords = self.update_coordinates(coords[0],coords[1],0,15,0,10)
+        coords = self.update_coordinates(coords[0],coords[1],0,5,0,-10)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,47)
+        self.pensize(self.normal)
+        # Draw the right side, closing off the top or bottom, then return the info
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_r(self,start_x, start_y,top_or_bottom):
+        #Draw the R
+        self.pensize(self.bold)
+        coords = self.update_coordinates(start_x,start_y,20,20,-20,-160)
+        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0) # bottom left
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,60)
+        coords = self.update_coordinates(coords[0],coords[1],0,40,0,-60)
+        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0) # bottom right
+        coords = self.update_coordinates(coords[0],coords[1],0,-40,0,60)
+        self.draw_circle(0,0,40,180,0) 
+        coords = self.update_coordinates(self.xcor(),self.ycor(),0,-20,0,0) # Top of R is open ( could do -40 to close it)
+        coords = self.update_coordinates(self.xcor(),self.ycor(),0,0,-20,-60)
+        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0)
+        self.draw_circle(0,0,20,180,0)
+        coords = self.update_coordinates(self.xcor(),self.ycor(),0,-20,0,0)
+        self.pensize(self.normal)
+        # Draw the right side, closing off the top or bottom, then return the info
         return self.draw_right_side(start_x,start_y)
