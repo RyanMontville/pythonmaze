@@ -484,3 +484,114 @@ class Generator(Turtle):
         self.pensize(self.normal)
         # Draw the right side, closing off the top or bottom, then return the info
         return self.draw_right_side(start_x,start_y)
+    
+    def draw_s(self,start_x, start_y,top_or_bottom):
+        # Draw the S
+        self.pensize(self.bold)
+        self.reset_coordinates(start_x + 120, start_y - 80)
+        self.draw_circle(0,0,40,270,90)
+        self.draw_circle(-20,-20,20,270,270)
+        self.reset_coordinates(self.xcor()-40,self.ycor()-20)
+        self.draw_circle(0,0,40,270,270)
+        self.draw_circle(20,20,20,270,90)
+        self.pensize(self.normal)
+        # Draw the right side, closing off the top or bottom, then return the info
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_t(self,start_x, start_y,top_or_bottom):
+        # Draw the T
+        self.pensize(self.bold)
+        coords = self.update_coordinates(start_x,start_y,20,20,-60,-80) # Top left
+        coords = self.update_coordinates(coords[0],coords[1],0,30,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-120)
+        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0) # bottom of T
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,120)
+        coords = self.update_coordinates(coords[0],coords[1],0,30,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20) # top right
+        coords = self.update_coordinates(coords[0],coords[1],0,-80,0,0)
+        self.pensize(self.normal)
+        # Draw the right side, closing off the top or bottom, then return the info
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_u(self,start_x, start_y,top_or_bottom):
+        # Draw the U
+        self.pensize(self.bold)
+        coords = self.update_coordinates(start_x,start_y,40,40,-80,-180)
+        self.draw_circle(0,0,40,180,270)
+        coords = self.update_coordinates(self.xcor(),self.ycor(),0,0,0,100)
+        coords = self.update_coordinates(coords[0],coords[1],-20,-20,0,-100)
+        self.draw_circle(-40,0,20,180,270)
+        coords = self.update_coordinates(self.xcor(),self.ycor(),-40,-40,0,100)
+        self.pensize(self.normal)
+        # Draw the right side, closing off the top or bottom, then return the info
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_v(self,start_x, start_y,top_or_bottom):
+        # Draw the V
+        self.pensize(self.bold)
+        coords = self.update_coordinates(start_x,start_y,20,50,-40,-180)
+        coords = self.update_coordinates(coords[0],coords[1],20,50,0,140) # bottom is open
+        coords = self.update_coordinates(coords[0],coords[1],-20,-40,0,-90)
+        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,90)
+        
+        self.pensize(self.normal)
+        # Draw the right side, closing off the top or bottom, then return the info
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_w(self,start_x, start_y,top_or_bottom):
+        # Draw the W
+        self.pensize(self.bold)
+        coords = self.update_coordinates(start_x,start_y,60,70,-20,-160)
+        coords = self.update_coordinates(coords[0],coords[1],20,30,0,40)
+        coords = self.update_coordinates(coords[0],coords[1],0,10,0,-40)
+        coords = self.update_coordinates(coords[0],coords[1],20,30,0,140)
+        coords = self.update_coordinates(coords[0],coords[1],-20,-25,0,-100)
+        coords = self.update_coordinates(coords[0],coords[1],0,-15,0,40)
+        coords = self.update_coordinates(coords[0],coords[1],0,-15,0,-40)
+        coords = self.update_coordinates(coords[0],coords[1],0,-5,0,100)
+        
+        self.pensize(self.normal)
+        # Draw the right side, closing off the top or bottom, then return the info
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_x(self,start_x, start_y,top_or_bottom):
+        # Draw the X
+        self.pensize(self.bold)
+        coords = self.update_coordinates(start_x,start_y,40,70,-40,-100)
+        coords = self.update_coordinates(coords[0],coords[1],0,-30,0,-80)
+        coords = self.update_coordinates(coords[0],coords[1],20,40,0,60)
+        coords = self.update_coordinates(coords[0],coords[1],0,20,0,-60)
+        coords = self.update_coordinates(coords[0],coords[1],20,-10,0,80)
+        coords = self.update_coordinates(coords[0],coords[1],0,30,0,60)
+        coords = self.update_coordinates(coords[0],coords[1],-20,-40,0,-40)
+        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,40)
+        self.pensize(self.normal)
+        # Draw the right side, closing off the top or bottom, then return the info
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_y(self,start_x, start_y,top_or_bottom):
+        # Draw the Y
+        self.pensize(self.bold)
+        coords = self.update_coordinates(start_x,start_y,40,70,-40,-100)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-80)
+        coords = self.update_coordinates(coords[0],coords[1],20,20,0,80)
+        coords = self.update_coordinates(coords[0],coords[1],0,30,0,60)
+        coords = self.update_coordinates(coords[0],coords[1],-20,-40,0,-40)
+        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,40)
+        self.pensize(self.normal)
+        # Draw the right side, closing off the top or bottom, then return the info
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_z(self,start_x, start_y,top_or_bottom):
+        # Draw the Z
+        self.pensize(self.bold)
+        coords = self.update_coordinates(start_x,start_y,40,100,-60,-60)
+        coords = self.update_coordinates(coords[0],coords[1],0,-60,0,-60)
+        coords = self.update_coordinates(coords[0],coords[1],0,80,-20,-20)
+        coords = self.update_coordinates(coords[0],coords[1],0,-60,20,20)
+        coords = self.update_coordinates(coords[0],coords[1],0,60,0,60)
+        coords = self.update_coordinates(coords[0],coords[1],0,-80,20,20)
+
+        self.pensize(self.normal)
+        # Draw the right side, closing off the top or bottom, then return the info
+        return self.draw_right_side(start_x,start_y)
