@@ -145,7 +145,6 @@ class Generator(Turtle):
         self.update_coordinates(self.xcor(),self.ycor(),-40,-40,0,60)
         self.draw_circle(40,0,20,180,90)
         self.pensize(self.normal)
-        print("rest of function coming soon.")
         # Draw the right side, closing off the top or bottom, then return the info
         return self.draw_right_side(start_x,start_y)
 
@@ -586,12 +585,18 @@ class Generator(Turtle):
         # Draw the Z
         self.pensize(self.bold)
         coords = self.update_coordinates(start_x,start_y,40,100,-60,-60)
-        coords = self.update_coordinates(coords[0],coords[1],0,-60,0,-60)
-        coords = self.update_coordinates(coords[0],coords[1],0,80,-20,-20)
+        coords = self.update_coordinates(coords[0],coords[1],0,-60,0,-100)
+        coords = self.update_coordinates(coords[0],coords[1],0,80,-20,-20) 
         coords = self.update_coordinates(coords[0],coords[1],0,-60,20,20)
-        coords = self.update_coordinates(coords[0],coords[1],0,60,0,60)
+        coords = self.update_coordinates(coords[0],coords[1],0,60,0,100)
         coords = self.update_coordinates(coords[0],coords[1],0,-80,20,20)
 
         self.pensize(self.normal)
+        # Draw the right side, closing off the top or bottom, then return the info
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_space(self,start_x, start_y,top_or_bottom):
+        
+
         # Draw the right side, closing off the top or bottom, then return the info
         return self.draw_right_side(start_x,start_y)
