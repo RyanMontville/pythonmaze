@@ -28,3 +28,12 @@ I optimized the functions to reduce the file size. Now instead of printing the s
 
 #### V 0.030 - 4/15/2024
 Taking a differnet approach with this version. Instead of generating an entirely random maze, the program now asks the user to input a word or phrase and then generates a maze that spells out the word or phase as paths. I am reusing the functions from 0.020. I am currently working on drawing the letters and their paths.
+
+#### V 0.031 - 4/15/2024
+I have created the templates for every letter. Some letters are complete, some are still a work in progress. The program now prompts the user to enter a word or phrase that is 10 letters long or less. It then prints the word/phrase within the maze. Still need to create the rest of the maze around the letters. Might change the size of the maze to allow longer strings.
+<p align="center" width="100%">
+    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/A-J.png" alt="Current progress of letters A - J" title="Current progress of letters A - J">
+    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/K-T.png" alt="Current progress of letters K - T" title="Current progress of letters K - T">
+    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/U-Z.png" alt="Current progress of letters U - Z" title="Current progress of letters U - Z">
+    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/test-print.png" alt="An example of the created maze" title="An example of the created maze">
+</p>
