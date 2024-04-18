@@ -36,8 +36,8 @@ class Generator(Turtle):
         return coordinates
             
     def draw_border(self):      
-        border_start = (-390,290,0,780,0,0)
-        border_array = [(0,0,0,-560),(0,-780,-20,-20),(0,0,0,560)]
+        border_start = (-450,290,0,880,0,0)
+        border_array = [(0,0,0,-560),(0,-880,-20,-20),(0,0,0,560)]
         self.update_coordinates_from_array(border_start,border_array)
     
     def reset_coordinates(self,x_cord,y_cord):
@@ -52,11 +52,11 @@ class Generator(Turtle):
         
     def draw_grid(self):
         self.pencolor("LightGrey")
-        coords = self.update_coordinates(-390,270,0,780,0,0)
+        coords = self.update_coordinates(-450,270,0,880,0,0)
         while coords[1] > -270:
-            coords = self.update_coordinates(-390,coords[1],0,780,-20,-20)
-        coords = self.update_coordinates(-370,290,0,0,0,-580)
-        while coords[0] < 370:
+            coords = self.update_coordinates(-450,coords[1],0,880,-20,-20)
+        coords = self.update_coordinates(-430,290,0,0,0,-580)
+        while coords[0] < 430:
             coords = self.update_coordinates(coords[0],290,20,20,0,-580)
         self.pencolor("black")
 
@@ -609,3 +609,48 @@ class Generator(Turtle):
 
         # Draw the right side, closing off the top or bottom, then return the info
         return self.draw_right_side(start_x,start_y)
+    
+    def draw_row_one_end(self, draw_second_row_ends):
+        start_coords = (430,290,-20,-20,-20,-40)
+        coords_array = [(-20,0,0,0),(20,0,-20,-20),(-20,0,-20,-20),(0,0,0,-20),(20,0,-20,-20),
+                        (-20,0,-20,-20),(20,0,-20,-20),(0,0,0,-20),(-20,0,-20,-20),(20,0,-20,-20),
+                        (-20,0,-20,-20)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        if draw_second_row_ends:
+            coords = self.update_coordinates(coords[0],coords[1],20,-1,-240,-240)
+            coords = self.update_coordinates(-430,coords[1],0,0,0,220)
+
+    def two_row_finish(self):
+        start_coords = (-450,-290,0,120,20,20)
+        coords_array = [(20,20,-20,20),(0,-120,0,0),(0,200,20,20),(-60,-60,0,-40),(20,20,-20,20),
+                        (20,20,20,-20),(20,20,-20,20),(-200,60,40,40),(-40,-40,0,-60),(0,20,0,0),
+                        (0,0,0,20),(0,20,0,0),(0,0,0,20),(-20,20,0,0),(0,0,0,20),(0,20,0,0),
+                        (20,20,0,-40),(0,-20,20,20),(0,0,0,-20),(0,-20,0,0),(0,0,0,-20),
+                        (0,-20,0,0),(0,0,0,-20),(40,60,20,20),(0,0,-20,0),(20,20,80,0),
+                        (0,80,0,0),(0,0,0,40),(0,-40,0,0),(20,-20,-20,-20),(0,0,0,40),
+                        (0,80,0,0),(0,0,0,-80),(20,20,20,80),(20,20,-20,-80),(20,20,20,80),
+                        (20,20,-20,-80),(20,20,20,80),(20,20,-20,-80),(20,20,20,80),
+                        (-120,0,0,0),(20,20,20,-20),(0,0,-20,-40),(20,20,-20,0),(20,20,20,0),
+                        (20,20,-20,0),(20,20,20,0),(20,20,-20,0),(20,20,20,0),(20,20,-20,0),
+                        (20,20,20,0),(20,20,-20,0),(20,20,20,0),(20,20,-20,0),(20,20,0,60),
+                        (0,-220,0,0),(-20,200,-20,-20),(20,-220,-20,-20)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        match random.choice([1, 2, 3]):
+            case 1:
+                coords = self.update_coordinates(-230,-290,0,0,40,60)
+                self.update_coordinates(coords[0],coords[1],100,120,20,20)
+            case 2:
+                self.update_coordinates(-130,-290,0,0,100,80)
+                self.update_coordinates(-230,-290,0,0,40,60)
+            case 3:
+                self.update_coordinates(-130,-290,0,0,100,80)
+                self.update_coordinates(-230,-290,0,20,60,60)
+        if random.choice([True, False]):
+            self.update_coordinates(150,-290,0,0,100,78)
+        else:
+            self.update_coordinates(150,-290,0,0,0,20)
+        if random.choice([True, False]):
+            self.update_coordinates(190,-290,0,0,100,80)
+        else:
+            self.update_coordinates(330,-290,0,0,0,21)
+        

@@ -3,11 +3,11 @@ from generator import Generator
 import random
 
 def prompt_for_letter():
-    word = input("Type a word or phrase 10 letter long or less: ")
+    word = input("Type a word or phrase 12 letter long or less: ")
     while True:
-        if len(word) > 10:
-            print(f"Error! Word or Phase can't be longer than 10 letters. You entered {len(word)} letters.")
-            word = input("Type a word or phrase 10 letter long or less: ")
+        if len(word) > 12:
+            print(f"Error! Word or Phase can't be longer than 12 letters. You entered {len(word)} letters.")
+            word = input("Type a word or phrase 12 letter long or less: ")
         else:
             return word.lower()
 def draw_letter_return_info(info, letter):
@@ -67,10 +67,10 @@ def draw_letter_return_info(info, letter):
         case _:
             return generator.draw_space(info[0],info[1],info[2])
 
-word_to_create = prompt_for_letter()
-#word_to_create = "i"
+#word_to_create = prompt_for_letter()
+word_to_create = "abcdefhijklm"
 screen = Screen()
-screen.setup(width=800,height=600)
+screen.setup(width=920,height=600)
 screen.title("Maze Generator")
 screen.tracer(2,0)
 generator = Generator()
@@ -81,26 +81,21 @@ generator.draw_border()
 
 
 if len(word_to_create) <= 5:
-    info = draw_letter_return_info((-390,290,"Top"),word_to_create[0])
+    info = draw_letter_return_info((-450,290,"Top"),word_to_create[0])
     for i in range(1,len(word_to_create)):
         info = draw_letter_return_info(info,word_to_create[i])
-elif len(word_to_create) <= 10:
-    info = draw_letter_return_info((-390,290,"Top"),word_to_create[0])
-    for i in range(1,5):
+    generator.draw_row_one_end(False)
+elif len(word_to_create) <= 12:
+    info = draw_letter_return_info((-450,290,"Top"),word_to_create[0])
+    for i in range(1,6):
         info = draw_letter_return_info(info,word_to_create[i])
-    info = draw_letter_return_info((-390,50,"Top"),word_to_create[5])
-    for i in range(6,len(word_to_create)):
+    generator.draw_row_one_end(True)
+    info = draw_letter_return_info((-430,50,"top"),word_to_create[6])
+    for i in range(7,len(word_to_create)):
         info = draw_letter_return_info(info,word_to_create[i])
+    generator.two_row_finish()
 else:
     print("Error. Something went wrong.")
-
-# start_info = generator.draw_u(-390, 290, "top")
-# info = generator.draw_v(start_info[0],start_info[1],start_info[2])
-# info = generator.draw_w(info[0],info[1],start_info[2])
-# info = generator.draw_space(info[0],info[1],start_info[2])
-# info = generator.draw_x(info[0],info[1],start_info[2])
-# info = generator.draw_y(-390,50,start_info[2])
-# info = generator.draw_z(info[0],info[1],start_info[2])
 
 generator.update_coordinates(0,0,0,0,0,0)
 
