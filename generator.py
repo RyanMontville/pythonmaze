@@ -180,10 +180,10 @@ class Generator(Turtle):
             # Draw the lines to colse off the paths if enter from the bottom
             if random.choice([True, False]):
                 closed_coord = self.update_coordinates(coords[0],coords[1],0,0,40,20)
-                closed_coord = self.update_coordinates(closed_coord[0],closed_coord[1],-20,-20,-160,-180)
+                closed_coord = self.update_coordinates(closed_coord[0],closed_coord[1],-20,-20,-160,-181)
             else:
                 closed_coord = self.update_coordinates(coords[0],coords[1],-60,-40,20,20)
-                closed_coord = self.update_coordinates(closed_coord[0],closed_coord[1],40,40,-220,-200)
+                closed_coord = self.update_coordinates(closed_coord[0],closed_coord[1],40,40,-220,-199)
         # Draw the right side, closing off the top or bottom, then return the info
         return self.draw_right_side(start_x,start_y)
         
