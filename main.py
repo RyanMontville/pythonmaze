@@ -68,14 +68,14 @@ def draw_letter_return_info(info, letter):
             return generator.draw_space(info[0],info[1],info[2])
 
 word_to_create = prompt_for_letter()
-
+#word_to_create = "i"
 screen = Screen()
 screen.setup(width=800,height=600)
 screen.title("Maze Generator")
 screen.tracer(2,0)
 generator = Generator()
 
-generator.draw_grid()
+#generator.draw_grid()
 generator.draw_border()
 
 

@@ -292,7 +292,7 @@ class Generator(Turtle):
         # Draw the paths
         start_coords = (coords[0],coords[1],-20,60,20,20)
         coords_array = [(-20,-20,0,-60),(0,-20,40,40),(-40,-40,20,-100),(-20,0,0,0),
-                        (20,0,-20,-20),(0,0,0,-60),(80,0,0,0),(0,80,20,20),(-20,-20,60,0),\
+                        (20,0,-20,-20),(0,0,0,-60),(80,0,0,0),(0,80,20,20),(-20,-20,60,0),
                         (40,40,-40,20),(20,0,80,80),(0,0,60,100)]
         coords = self.update_coordinates_from_array(start_coords,coords_array)
         # Draw the right side
@@ -301,20 +301,29 @@ class Generator(Turtle):
     def draw_i(self,start_x, start_y,top_or_bottom):
         # Draw the I
         self.pensize(self.bold)
-        coords = self.update_coordinates(start_x,start_y,20,20,-60,-80) # Top left
-        coords = self.update_coordinates(coords[0],coords[1],0,30,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-100)
-        coords = self.update_coordinates(coords[0],coords[1],0,-30,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-20) # Bottom left
-        coords = self.update_coordinates(coords[0],coords[1],0,80,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20) # Bottom right
-        coords = self.update_coordinates(coords[0],coords[1],0,-30,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,100)
-        coords = self.update_coordinates(coords[0],coords[1],0,30,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20) # Top right
-        coords = self.update_coordinates(coords[0],coords[1],0,-80,0,0)
+        start_coords = (start_x,start_y,30,60,-40,-40)
+        coords_array = [(0,0,0,-100),(0,-30,0,0),(0,80,-20,-20),(0,-30,20,20),(0,0,0,100),
+                        (0,30,0,0),(0,-80,20,20)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        # Close one of the entrances
+        if random.choice([True, False]):
+            self.update_coordinates(start_x,start_y,30,30,-20,-40)
+        else:
+            self.update_coordinates(start_x,start_y,30,30,-140,-160)
+        # Close one of the exits
+        if random.choice([True, False]):
+            self.update_coordinates(start_x,start_y,110,110,-20,-40)
+        else:
+            self.update_coordinates(start_x,start_y,110,110,-140,-160)
         self.pensize(self.normal)
         # Draw the paths
+        start_coords = (coords[0],coords[1],-13,-30,0,0)
+        coords_array = [(15,30,-20,-20),(-30,10,-20,-20),(0,0,0,-60),(-10,-20,-20,-20),
+                        (0,0,60,0),(-3,-20,-20,-20),(120,10,-20,-20),(-10,10,-20,-20),
+                        (-3,10,-20,-20),(0,0,-20,40),(90,40,-40,-40),(0,0,-20,0),
+                        (-20,-20,0,20),(0,90,0,0),(-20,-20,20,40),(-10,0,0,0),
+                        (-40,0,40,40),(0,0,0,40),(-20,-20,-20,20),(0,40,0,0),(-30,-30,40,60)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
         
         # Draw the right side
         return self.draw_right_side(start_x,start_y)
