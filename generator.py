@@ -350,20 +350,31 @@ class Generator(Turtle):
     def draw_k(self,start_x, start_y,top_or_bottom):
         # Draw the K
         self.pensize(self.bold)
-        coords = self.update_coordinates(start_x,start_y,40,40,-40,-180)
-        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0) # bottom left
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,60)
-        coords = self.update_coordinates(coords[0],coords[1],0,40,0,-60)
-        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0) # bottom right
-        coords = self.update_coordinates(coords[0],coords[1],0,-40,0,70)
-        coords = self.update_coordinates(coords[0],coords[1],0,40,0,70)
-        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0) # Top right
-        coords = self.update_coordinates(coords[0],coords[1],0,-40,0,-60)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,60)
-        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0) # Top left
+        start_coords = (start_x,start_y,40,40,-60,-160)
+        coords_array = [(0,20,-20,-20),(0,0,0,60),(0,40,0,-60),(20,-20,0,70),
+                        (0,40,0,70),(-20,-60,0,-60),(0,0,0,60),(0,-20,0,0)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        #close off one entrance and one exit path
+        if random.choice([True, False]):
+            self.update_coordinates(coords[0],coords[1],0,0,0,-20)
+        else:
+            self.update_coordinates(coords[0],coords[1],0,0,-120,-140)
+        if random.choice([True, False]):
+            self.update_coordinates(coords[0],coords[1],60,80,0,0)
+        else:
+            self.update_coordinates(coords[0],coords[1],60,80,-140,-140)
         self.pensize(self.normal)
         # Draw the paths
-        
+        if top_or_bottom == "top":
+            self.update_coordinates(coords[0],coords[1],0,-20,0,0)
+        else:
+            self.update_coordinates(coords[0],coords[1],-20,-20,-180,-200)
+        start_coords = (coords[0],coords[1],-20,-20,0,-180)
+        coords_array = [(20,20,-20,40),(20,100,-40,-40),(-80,-20,20,20),(0,0,0,20),
+                        (-50,-31,20,20),(20,31,0,0),(-10,20,20,20),(-52,-20,20,20),
+                        (20,-20,20,20),(-2,20,20,20),(5,20,20,20),(-40,-40,20,60),
+                        (-20,-20,-40,-20),(0,-80,0,0)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
         # Draw the right side
         return self.draw_right_side(start_x,start_y)
     

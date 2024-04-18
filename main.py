@@ -1,38 +1,7 @@
 from turtle import Turtle, mainloop, Screen
 from generator import Generator
+from words import Words
 import random
-
-def prompt_for_letters():
-    word = input("Type a word or phrase 12 letter long or less: ")
-    while True:
-        if len(word) > 12:
-            print(f"Error! Word or Phase can't be longer than 12 letters. You entered {len(word)} letters.")
-            word = input("Type a word or phrase 12 letter long or less: ")
-        else:
-            return word.lower()
-
-def format_string(word):
-    words = word.split()
-    line_one = ""
-    if len(words) == 1:
-        line_one = word[:6]
-        line_two = word[6:]
-    elif len(words[0]) == 6:
-        line_one = words[0]
-        line_two = word[6:]
-    elif len(words[0]) + len(words[1]) < 6:
-        line_one = words[0] + " " + words[1]
-        line_two = word[len(line_one):]
-    else:
-        line_one = words[0]
-        line_two = word[len(line_one):]
-    line_one_final = line_one.strip()
-    line_two_final = line_two.strip()
-    while len(line_one_final) < 6:
-        line_one_final += "-"
-    while len(line_two_final) < 6:
-        line_two_final += "-"
-    return (line_one_final,line_two_final)
 
 def draw_letter_return_info(info, letter):
     match letter:
@@ -91,8 +60,11 @@ def draw_letter_return_info(info, letter):
         case _:
             return generator.draw_space(info[0],info[1],info[2])
 
-word_to_create = prompt_for_letters()
-lines = format_string(word_to_create)
+word_input = Words()
+word_input.prompt_for_words()
+# word_input.set_word("cork") - Used for testing
+word_input.format_string()
+
 screen = Screen()
 screen.setup(width=920,height=600)
 screen.title("Maze Generator")
@@ -101,12 +73,12 @@ generator = Generator()
 
 #generator.draw_grid()
 generator.draw_border()
-info = (-450,290,"Top")
-for i in lines[0]:
+info = (-450,290,"top")
+for i in word_input.line_one:
     info = draw_letter_return_info(info,i)
 generator.draw_row_one_end(True)
 info = (-430,50,"top")
-for i in lines[1]:
+for i in word_input.line_two:
     info = draw_letter_return_info(info,i)
 generator.two_row_finish()
 
