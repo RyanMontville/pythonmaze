@@ -34,6 +34,6 @@ I have created the templates for every letter. Some letters are complete, some a
 <p align="center" width="100%">
     <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/a-l.png" alt="Current progress of letters A - L" title="Current progress of letters A - L">
     <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/m-x.png" alt="Current progress of letters M - X" title="Current progress of letters M - X">
-    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/y-z.png" alt="Current progress of letters Y, Z, and space variations" title="Current progress of letters Y, Z, and space variations">
-    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/hellow-world.png" alt="An example of the created maze" title="An example of the created maze">
+    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/y-z-spaces.png" alt="Current progress of letters Y, Z, and space variations" title="Current progress of letters Y, Z, and space variations">
+    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/hello-world.png" alt="An example of the created maze" title="An example of the created maze">
 </p>
