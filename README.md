@@ -32,8 +32,8 @@ Taking a differnet approach with this version. Instead of generating an entirely
 #### V 0.031 - 4/15/2024
 I have created the templates for every letter. Some letters are complete, some are still a work in progress. The program now prompts the user to enter a word or phrase that is 10 letters long or less. It then prints the word/phrase within the maze. Still need to create the rest of the maze around the letters. Might change the size of the maze to allow longer strings.
 <p align="center" width="100%">
-    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/A-J.png" alt="Current progress of letters A - J" title="Current progress of letters A - J">
-    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/K-T.png" alt="Current progress of letters K - T" title="Current progress of letters K - T">
-    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/U-Z.png" alt="Current progress of letters U - Z" title="Current progress of letters U - Z">
-    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/test-print.png" alt="An example of the created maze" title="An example of the created maze">
+    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/a-l.png" alt="Current progress of letters A - L" title="Current progress of letters A - L">
+    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/m-x.png" alt="Current progress of letters M - X" title="Current progress of letters M - X">
+    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/y-z.png" alt="Current progress of letters Y, Z, and space variations" title="Current progress of letters Y, Z, and space variations">
+    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/hellow-world.png" alt="An example of the created maze" title="An example of the created maze">
 </p>

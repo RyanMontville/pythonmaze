@@ -382,15 +382,25 @@ class Generator(Turtle):
     def draw_l(self,start_x, start_y,top_or_bottom):
         # Draw the L
         self.pensize(self.bold)
-        coords = self.update_coordinates(start_x,start_y,40,40,-40,-160) # bottom left is open
-        coords = self.update_coordinates(coords[0],coords[1],0,80,-20,-20)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20) # bottom right
-        coords = self.update_coordinates(coords[0],coords[1],0,-60,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,120)
-        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0) # top of L
+        start_coords = (start_x,start_y,0,0,-100,-220)
+        coords_array = [(0,80,-20,-20),(0,-60,20,20),(0,0,0,120)]
+        coords = self.update_coordinates_from_array(start_coords, coords_array)
+        if top_or_bottom == "top":
+            self.update_coordinates(start_x,start_y,0,0,-220,-240)
         self.pensize(self.normal)
         # Draw the paths
-        
+        start_coords = (coords[0],coords[1],0,0,0,100)
+        coords_array = [(0,20,-20,-20),(0,0,-20,-40),(20,0,0,0),(-20,0,-20,-20),(0,0,0,-20),
+                        (20,0,-20,-20),(-20,0,-20,-20),(0,20,-20,-20),(0,0,0,140),(0,60,0,0),
+                        (-20,-20,0,-20),(-20,-20,0,-20),(0,60,0,0),(-20,-20,20,0),
+                        (-60,0,-20,-20),(20,-40,-20,-20),(0,0,0,-80),(0,-40,0,0),(0,60,-20,-20),
+                        (0,0,-40,80),(0,20,0,0),(20,0,-20,-20),(-20,0,-20,-20),(20,0,-20,-20),
+                        (-20,0,-20,-20),(20,0,-20,-20)]
+        coords = self.update_coordinates_from_array(start_coords, coords_array)
+        if random.choice([True, False]):
+            self.update_coordinates(start_x,start_y,80,100,-40,-40)
+        else:
+            self.update_coordinates(start_x,start_y,40,40,-60,-80)
         # Draw the right side
         return self.draw_right_side(start_x,start_y)
     
@@ -438,16 +448,21 @@ class Generator(Turtle):
     def draw_o(self,start_x, start_y,top_or_bottom):
         #Draw the O
         self.pensize(self.bold)
-        self.reset_coordinates(start_x,start_y)
-        self.draw_circle(100,-60,40,180,90)
-        self.update_coordinates(self.xcor(),self.ycor(),0,0,0,-60)
-        self.draw_circle(0,0,40,180,270)
-        self.update_coordinates(self.xcor(),self.ycor(),0,0,0,60)
-        self.draw_circle(-20,0,20,180,90)
-        self.update_coordinates(self.xcor(),self.ycor(),0,0,0,-60)
-        self.draw_circle(0,0,20,180,270)
-        self.update_coordinates(self.xcor(),self.ycor(),0,0,0,60)
+        start_coords = (start_x,start_y,20,20,-80,-100)
+        coords_array = [(20,20,40,-20),(40,40,0,60),(20,20,-20,-40)]
+        self.update_coordinates_from_array(start_coords, coords_array)
+        self.draw_circle(0,40,40,180,90)
+        self.draw_circle(0,-60,40,180,270)
+        self.draw_circle(-20,60,20,180,90)
+        self.draw_circle(0,-60,20,180,270)
         self.pensize(self.normal)
+        start_coords = (start_x,start_y,60,60,0,-20)
+        coords_array = [(0,-40,0,0),(0,-20,-60,-60),(0,20,-100,-100),(0,20,20,20),(0,0,0,-40),
+                         (-40,0,-20,-20),(-20,20,20,20),(0,0,0,-40),(0,20,20,20),(20,20,-20,0),
+                         (0,20,0,0),(20,-40,20,20),(-20,40,20,20),(-40,-40,23,0),(40,40,20,40),
+                         (20,0,0,0),(-20,0,20,20),(-20,0,20,20),(0,0,0,20),(20,0,0,0),
+                         (-20,0,20,20),(0,0,0,40),(-20,0,0,0)]
+        self.update_coordinates_from_array(start_coords,coords_array)
         # Draw the right side, closing off the top or bottom, then return the info
         return self.draw_right_side(start_x,start_y)
     

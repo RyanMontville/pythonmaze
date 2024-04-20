@@ -61,8 +61,8 @@ def draw_letter_return_info(info, letter):
             return generator.draw_space_options(info[0],info[1],info[2])
 
 word_input = Words()
-word_input.prompt_for_words()
-#word_input.set_word("wwwwwwwwwwww") #Used for testing
+#word_input.prompt_for_words()
+word_input.set_word("yz") #Used for testing
 word_input.format_string()
 
 screen = Screen()
