@@ -58,11 +58,11 @@ def draw_letter_return_info(info, letter):
         case "z":
             return generator.draw_z(info[0],info[1],info[2])
         case _:
-            return generator.draw_space(info[0],info[1],info[2])
+            return generator.draw_space_options(info[0],info[1],info[2])
 
 word_input = Words()
 word_input.prompt_for_words()
-# word_input.set_word("cork") - Used for testing
+#word_input.set_word("-") #Used for testing
 word_input.format_string()
 
 screen = Screen()

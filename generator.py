@@ -9,6 +9,7 @@ class Generator(Turtle):
         self.speed("fastest")
         self.normal = 1
         self.bold = 3
+        self.space_options = [1,2,3,4]
         
     def print_cors(self):
         xint = int(self.xcor())
@@ -615,11 +616,84 @@ class Generator(Turtle):
         # Draw the right side, closing off the top or bottom, then return the info
         return self.draw_right_side(start_x,start_y)
     
-    def draw_space(self,start_x, start_y,top_or_bottom):
-        
-
-        # Draw the right side, closing off the top or bottom, then return the info
+    def draw_space_one(self,start_x, start_y,top_or_bottom):
+        start_coords = (start_x,start_y,20,60,-20,-20)
+        coords_array = [(20,60,0,0),(-20,-80,-20,-20),(-20,0,-20,-20),(40,80,0,0),
+                        (-20,-80,-20,-20),(40,80,-20,-20),(-20,-20,0,-20),(0,20,-40,-40),
+                        (0,0,0,140),(-60,-60,0,-100),(0,20,0,0),(0,0,0,-20),(0,20,0,0),
+                        (40,20,-40,-40),(0,-20,-20,-20),(0,0,0,20),(0,-20,0,0),(0,0,0,20),
+                        (0,-20,0,0),(0,0,0,20),(0,-20,0,0),(0,0,0,40),(0,-20,0,0),(0,0,60,0),
+                        (0,0,-20,-100),(0,20,40,40),(0,0,0,-20),(0,20,0,0),(0,0,0,-20),(0,20,0,0),
+                        (0,0,0,-20),(0,20,0,0),(40,20,0,0),(-120,-80,0,0),(0,0,0,20)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        if top_or_bottom == "top":
+            start_coords = (coords[0],coords[1],59,81,-20,-20)
+            coords_array = [(19,-1,200,200),(-60,-60,20,0),(-40,-60,-20,-20)]
+            coords = self.update_coordinates_from_array(start_coords,coords_array)
+        else:
+            coords = self.update_coordinates(coords[0],coords[1],60,60,-19,-40)
+            coords = self.update_coordinates(coords[0],coords[1],20,20,240,219)
+            coords = self.update_coordinates(coords[0],coords[1],-100,-100,-80,-100)
+            if random.choice([True, False]):
+                coords = self.update_coordinates(coords[0],coords[1],60,60,-20,-40)
+            else:
+                coords = self.update_coordinates(coords[0],coords[1],80,80,-20,-40)
         return self.draw_right_side(start_x,start_y)
+    
+    def draw_space_two(self,start_x, start_y,top_or_bottom):
+        start_coords = (start_x,start_y,40,40,0,-100)
+        coords_array = [(0,80,0,0),(0,0,0,60),(0,-40,0,0),(0,0,0,-20),(20,20,0,-20),
+                        (0,-40,0,0),(0,0,0,60),(0,80,0,0),(-120,-120,0,-200),(0,80,0,0),
+                        (0,0,0,60),(0,-40,0,0),(0,0,0,-20),(20,20,0,-20),(0,-40,0,0),
+                        (0,0,0,60),(0,80,0,0),(0,0,-100,0),(20,-100,20,20)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        return self.draw_right_side(start_x,start_y)
+
+    def draw_space_three(self,start_x, start_y,top_or_bottom):
+        start_coords = (start_x,start_y,20,40,-20,-20)
+        coords_array = [(0,0,0,-20),(80,80,40,20),(-20,-20,-20,0),(-40,-20,0,0),
+                        (0,0,20,-40),(20,20,40,20),(20,-80,0,0),(0,0,0,-20),
+                        (20,40,0,0),(20,60,0,0),(0,0,0,-20),(0,-60,0,0),
+                        (-20,-20,20,0),(0,-40,0,0),(20,20,-40,0),(40,60,-20,-20),
+                        (0,0,20,0),(20,60,0,0),(-20,-100,-20,-20),(0,0,-80,20),
+                        (-20,0,-40,-40),(20,20,-20,0),(0,20,0,0),(0,0,20,0),
+                        (60,20,0,0),(0,0,0,-20),(0,-20,0,0),(0,0,-20,0),
+                        (-80,-60,0,0),(20,0,-20,-20),(0,0,0,-40),(0,20,0,0),
+                        (0,60,20,20),(-40,-40,-40,0),(20,40,-20,-20),(0,0,0,20),
+                        (-40,-20,20,20),(20,40,0,0),(0,0,20,-60)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        return self.draw_right_side(start_x,start_y)
+
+    def draw_space_four(self,start_x, start_y,top_or_bottom):
+        if top_or_bottom == "top":
+            self.update_coordinates(start_x,start_y,60,60,-20,-220)
+        else:
+            self.update_coordinates(start_x,start_y,60,60,-40,-240)
+        start_coords = (start_x,start_y,20,40,-20,-20)
+        coords_array = [(0,0,0,-20),(20,0,0,0),(-40,-20,0,0),(20,0,-20,-20),(0,0,0,-20),(-20,0,0,0),
+                        (20,20,0,-20),(20,-20,0,0),(-20,20,-20,-20),(0,0,0,-40),(0,-20,0,0),(0,0,0,-20),
+                        (-20,0,40,40),(-20,0,-60,-60),(0,0,-40,-20),(20,20,0,40),(0,20,0,0),
+                        (60,60,-60,-40),(20,-20,20,20),(0,0,0,-20),(0,-20,0,0),(-20,0,20,20),(40,0,20,20),
+                        (0,0,0,40),(0,-20,0,0),(80,40,-20,-20),(0,0,0,60),(20,20,-40,0),(20,0,0,0),
+                        (-40,-40,-20,20),(-20,40,0,0),(-20,-20,60,0),(-20,0,20,20),(20,20,0,20),(20,0,0,0),
+                        (-60,-40,0,0),(40,20,20,20),(-40,-20,0,0),(0,0,0,20)]
+        self.update_coordinates_from_array(start_coords,coords_array)
+        return self.draw_right_side(start_x,start_y)
+
+    def draw_space_options(self,start_x,start_y,top_or_bottom):
+        if len(self.space_options) == 0:
+            self.space_options = [1,2,3,4]
+        random_space = random.choice(self.space_options)
+        self.space_options.remove(random_space)
+        match random_space:
+            case 1:
+                return self.draw_space_one(start_x,start_y,top_or_bottom)
+            case 2:
+                return self.draw_space_two(start_x,start_y,top_or_bottom)
+            case 3:
+                return self.draw_space_three(start_x,start_y,top_or_bottom)
+            case 4:
+                return self.draw_space_four(start_x,start_y,top_or_bottom)
     
     def draw_row_one_end(self, draw_second_row_ends):
         start_coords = (430,290,-20,-20,-20,-40)
