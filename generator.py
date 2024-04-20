@@ -489,21 +489,41 @@ class Generator(Turtle):
     def draw_r(self,start_x, start_y,top_or_bottom):
         #Draw the R
         self.pensize(self.bold)
-        coords = self.update_coordinates(start_x,start_y,20,20,-20,-160)
-        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0) # bottom left
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,60)
-        coords = self.update_coordinates(coords[0],coords[1],0,40,0,-60)
-        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0) # bottom right
-        coords = self.update_coordinates(coords[0],coords[1],0,-40,0,60)
-        self.draw_circle(0,0,40,180,0) 
-        coords = self.update_coordinates(self.xcor(),self.ycor(),0,-20,0,0) # Top of R is open ( could do -40 to close it)
-        coords = self.update_coordinates(self.xcor(),self.ycor(),0,0,-20,-60)
-        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0)
-        self.draw_circle(0,0,20,180,0)
-        coords = self.update_coordinates(self.xcor(),self.ycor(),0,-20,0,0)
+        start_coords = (start_x,start_y,20,20,-20,-160)
+        coords_Array = [(20,20,0,60),(0,40,0,-60),(20,-20,0,60),(0,-20,20,20),
+                        (0,0,0,40),(0,20,0,0),(0,-20,20,20)]
+        self.update_coordinates_from_array(start_coords,coords_Array)
+        self.draw_circle(20,-80,40,180,0) 
+        self.draw_circle(0,-60,20,180,0)
         self.pensize(self.normal)
-        # Draw the right side, closing off the top or bottom, then return the info
-        return self.draw_right_side(start_x,start_y)
+        # Draw the paths
+        coords = self.update_coordinates(start_x,start_y,20,20,0,-20)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,-220,-160)
+        coords = self.update_coordinates(coords[0],coords[1],0,40,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],-20,-20,0,20)
+        coords = self.update_coordinates(coords[0],coords[1],10,35,20,-20)
+        coords = self.update_coordinates(coords[0],coords[1],65,-1,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-20)
+        coords = self.update_coordinates(coords[0],coords[1],0,-34,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],-20,60,-20,-20)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20)
+        coords = self.update_coordinates(coords[0],coords[1],20,20,-40,0)
+        coords = self.update_coordinates(coords[0],coords[1],20,0,40,40)
+        coords = self.update_coordinates(coords[0],coords[1],-35,0,20,20)
+        coords = self.update_coordinates(coords[0],coords[1],20,-30,20,20)
+        coords = self.update_coordinates(coords[0],coords[1],-20,30,20,20)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,60)
+        coords = self.update_coordinates(coords[0],coords[1],20,-20,20,20)
+
+        # Draw the right side, closing off the top or bottom, close top or bottom of R, then return the info
+        right_side = self.draw_right_side(start_x,start_y)
+        self.pensize(self.bold)
+        if right_side[2] == "top":
+            self.update_coordinates(start_x,start_y,20,40,-20,-20)
+        else:
+            self.update_coordinates(start_x,start_y,80,100,-160,-160)
+        self.pensize(self.normal)
+        return right_side
     
     def draw_s(self,start_x, start_y,top_or_bottom):
         # Draw the S
