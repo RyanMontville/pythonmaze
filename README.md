@@ -31,6 +31,9 @@ Taking a differnet approach with this version. Instead of generating an entirely
 
 #### V 0.031 - 4/15/2024
 I have created the templates for every letter. Some letters are complete, some are still a work in progress. The program now prompts the user to enter a word or phrase that is 10 letters long or less. It then prints the word/phrase within the maze. Still need to create the rest of the maze around the letters. Might change the size of the maze to allow longer strings.
+
+#### V 0.031 - 4/20/2024
+The maze can now be 6 letters wide for a total of 12 letters. I have finished more of the letters and have 4 variations of spaces between words. I have also finished the rest of the maze around the letters.
 <p align="center" width="100%">
     <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/a-l.png" alt="Current progress of letters A - L" title="Current progress of letters A - L">
     <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/m-x.png" alt="Current progress of letters M - X" title="Current progress of letters M - X">
