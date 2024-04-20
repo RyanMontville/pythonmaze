@@ -581,16 +581,22 @@ class Generator(Turtle):
     def draw_w(self,start_x, start_y,top_or_bottom):
         # Draw the W
         self.pensize(self.bold)
-        coords = self.update_coordinates(start_x,start_y,60,70,-20,-160)
-        coords = self.update_coordinates(coords[0],coords[1],20,30,0,40)
-        coords = self.update_coordinates(coords[0],coords[1],0,10,0,-40)
-        coords = self.update_coordinates(coords[0],coords[1],20,30,0,140)
-        coords = self.update_coordinates(coords[0],coords[1],-20,-25,0,-100)
-        coords = self.update_coordinates(coords[0],coords[1],0,-15,0,40)
-        coords = self.update_coordinates(coords[0],coords[1],0,-15,0,-40)
-        coords = self.update_coordinates(coords[0],coords[1],0,-5,0,100)
-        
+        start_coords = (start_x,start_y,60,70,-20,-160)
+        coords_array = [(20,30,0,40),(0,10,0,-40),(20,30,0,140),(-20,-25,0,-100),
+                        (0,-15,0,40),(0,-15,0,-40),(0,-5,0,100)]
+        self.update_coordinates_from_array(start_coords,coords_array)
         self.pensize(self.normal)
+        # Draw the paths
+        start_coords = (start_x,start_y,20,60,-20,-20)
+        coords_array = [(40,40,20,-45),(-80,-60,-15,-15),(-20,-20,-160,0),(43,20,-20,-20),
+                        (-20,0,-20,-20),(27,0,-20,-20),(-20,10,-20,-20),(40,37,0,-20),
+                        (-47,53,0,0),(-20,-120,-20,-20),(20,120,-20,-20),(-120,-120,140,180),
+                        (0,20,0,0),(21,0,-20,-20),(-20,-20,20,40)]
+        self.update_coordinates_from_array(start_coords,coords_array)
+        if top_or_bottom == "top":
+            self.update_coordinates(start_x,start_y,120,120,0,-20)
+        else:
+            self.update_coordinates(start_x,start_y,80,80,0,-20)
         # Draw the right side, closing off the top or bottom, then return the info
         return self.draw_right_side(start_x,start_y)
     
