@@ -556,15 +556,24 @@ class Generator(Turtle):
     def draw_t(self,start_x, start_y,top_or_bottom):
         # Draw the T
         self.pensize(self.bold)
-        coords = self.update_coordinates(start_x,start_y,20,20,-60,-80) # Top left
-        coords = self.update_coordinates(coords[0],coords[1],0,30,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-120)
-        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0) # bottom of T
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,120)
-        coords = self.update_coordinates(coords[0],coords[1],0,30,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20) # top right
-        coords = self.update_coordinates(coords[0],coords[1],0,-80,0,0)
+        start_coords = (start_x,start_y,20,50,-80,-80)
+        coords_array = [(0,0,0,-120),(20,20,0,120),(0,30,0,0),(0,-80,20,20)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
         self.pensize(self.normal)
+        # Draw the paths
+        start_coords = (coords[0],coords[1],0,0,60,20)
+        coords_array = [(0,60,0,0),(-40,20,20,20),(0,0,-20,-40),(20,20,60,-20),(0,-20,0,0),(-80,-85,0,0),(0,0,0,-120),
+                        (-15,20,-20,-20),(0,0,0,120),(15,15,-100,-140),(20,20,40,20),(20,30,0,0),(0,0,0,120),(0,-15,0,0),
+                        (-15,0,-20,-20),(15,0,-20,-20),(-15,0,-20,-20),(15,0,-20,-20),(-15,0,-20,-20),(35,35,-40,100)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        self.update_coordinates(start_x,start_y,0,20,-60,-60)
+        # Block off paths randomly
+        if random.choice([True, False]):
+            self.update_coordinates(coords[0],coords[1],0,-20,0,0)
+            self.update_coordinates(coords[0],coords[1],-40,-40,60,80)
+        else:
+            self.update_coordinates(coords[0],coords[1],-35,-50,0,0)
+            self.update_coordinates(coords[0],coords[1],-20,-20,60,80)
         # Draw the right side, closing off the top or bottom, then return the info
         return self.draw_right_side(start_x,start_y)
     
