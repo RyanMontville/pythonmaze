@@ -62,7 +62,7 @@ def draw_letter_return_info(info, letter):
 
 word_input = Words()
 word_input.prompt_for_words()
-#word_input.set_word("test print") #Used for testing
+#word_input.set_word("qqqqqqqqqqqq") #Used for testing
 word_input.format_string()
 
 screen = Screen()
@@ -71,7 +71,7 @@ screen.title("Maze Generator")
 screen.tracer(2,0)
 generator = Generator()
 
-generator.draw_grid()
+#generator.draw_grid()
 generator.draw_border()
 info = (-450,290,"top")
 for i in word_input.line_one:

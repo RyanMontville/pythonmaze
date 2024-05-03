@@ -482,23 +482,22 @@ class Generator(Turtle):
     def draw_q(self,start_x, start_y,top_or_bottom):
         #Draw the Q
         self.pensize(self.bold)
-        self.reset_coordinates(start_x-10,start_y)
-        self.draw_circle(110,-60,39,180,90)
-        self.update_coordinates(self.xcor(),self.ycor(),0,0,-20,-60) # left side top of Q open
-        self.draw_circle(0,0,35,160,270)
-        coords = self.update_coordinates(self.xcor(),self.ycor(),0,10,0,-20)
-        #coords = self.update_coordinates(coords[0],coords[1],0,20,0,20) # bottom of Q
-        coords = self.update_coordinates(coords[0],coords[1],10,0,20,40) 
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,30) # right side top of Q open
-        self.draw_circle(-20,20,20,180,90)
-        self.update_coordinates(self.xcor(),self.ycor(),0,0,0,-60)
-        self.draw_circle(0,0,15,170,270)
-        coords = self.update_coordinates(self.xcor(),self.ycor(),0,-10,0,15)
-        coords = self.update_coordinates(coords[0],coords[1],0,15,0,10)
-        coords = self.update_coordinates(coords[0],coords[1],0,5,0,-10)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,47)
+        start_coords = (start_x,start_y,20,20,-80,-120)
+        coords_array = [(20,20,0,60),(40,40,0,-50),(0,-5,0,10),(0,-15,0,-10),(0,14,0,-20),
+                        (26,26,50,-6),(0,10,0,-16),(-10,-21,-14,4)]
+        coords = self.update_coordinates_from_array(start_coords, coords_array)
+        self.reset_coordinates(start_x, start_y)
+        self.draw_circle(100,-60,40,180,90)
+        self.draw_circle(60,0,20,180,90)
+        self.draw_circle(0,-60,20,145,270)
+        self.draw_circle(-56,10,40,135,270)
         self.pensize(self.normal)
-        # Draw the right side, closing off the top or bottom, then return the info
+        start_coords = (start_x,start_y,20,20,0,-60)
+        coords_array = [(40,100,40,40),(20,-10,-20,-20),(-10,10,-20,-20),(20,-20,-20,-20),(25,25,-20,-100),
+                        (0,-25,13,13),(0,0,-13,-33),(-20,-20,45,20),(0,60,-20,-20),(-20,-20,0,-20),
+                        (-20,-20,-20,0),(-20,-20,0,20),(-20,-20,40,-40),(-60,-20,20,20),(0,0,0,20),
+                        (-20,-20,0,20),(0,40,0,0),(-35,-60,20,20),(10,27,20,20)]
+        self.update_coordinates_from_array(start_coords,coords_array)
         return self.draw_right_side(start_x,start_y)
     
     def draw_r(self,start_x, start_y,top_or_bottom):
@@ -512,24 +511,11 @@ class Generator(Turtle):
         self.draw_circle(0,-60,20,180,0)
         self.pensize(self.normal)
         # Draw the paths
-        coords = self.update_coordinates(start_x,start_y,20,20,0,-20)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,-220,-160)
-        coords = self.update_coordinates(coords[0],coords[1],0,40,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],-20,-20,0,20)
-        coords = self.update_coordinates(coords[0],coords[1],10,35,20,-20)
-        coords = self.update_coordinates(coords[0],coords[1],65,-1,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-20)
-        coords = self.update_coordinates(coords[0],coords[1],0,-34,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],-20,60,-20,-20)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20)
-        coords = self.update_coordinates(coords[0],coords[1],20,20,-40,0)
-        coords = self.update_coordinates(coords[0],coords[1],20,0,40,40)
-        coords = self.update_coordinates(coords[0],coords[1],-35,0,20,20)
-        coords = self.update_coordinates(coords[0],coords[1],20,-30,20,20)
-        coords = self.update_coordinates(coords[0],coords[1],-20,30,20,20)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,60)
-        coords = self.update_coordinates(coords[0],coords[1],20,-20,20,20)
-
+        start_coords = (start_x,start_y,20,20,0,-20)
+        coords_array = [(0,0,-220,-160),(0,40,0,0),(-20,-20,0,20),(10,35,20,-20),(65,-1,0,0),(0,0,0,-20),(0,-34,0,0),
+                        (-20,60,-20,-20),(0,0,0,20),(20,20,-40,0),(20,0,40,40),(-35,0,20,20),(20,-30,20,20),(-20,30,20,20),
+                        (0,0,0,60),(20,-20,20,20)]
+        coords = self.update_coordinates_from_array(start_coords, coords_array)
         # Draw the right side, closing off the top or bottom, close top or bottom of R, then return the info
         right_side = self.draw_right_side(start_x,start_y)
         self.pensize(self.bold)
