@@ -428,20 +428,19 @@ class Generator(Turtle):
     def draw_n(self,start_x, start_y,top_or_bottom):
         # Draw the N
         self.pensize(self.bold)
-        coords = self.update_coordinates(start_x,start_y,20,20,-40,-180)
-        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0) # bottom left
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,100)
-        coords = self.update_coordinates(coords[0],coords[1],0,40,0,-100)
-        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0) # bottom right
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,140)
-        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0) # top right
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-100)
-        coords = self.update_coordinates(coords[0],coords[1],0,-40,0,100)
-        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0) # top left
-
+        start_coords = (start_x,start_y,20,20,-40,-180)
+        coords_array = [(20,20,0,100),(0,40,0,-100),(0,20,0,0),(0,0,0,140),
+                        (-20,-20,0,-100),(0,-40,0,100),(0,-20,0,0)]
+        self.update_coordinates_from_array(start_coords, coords_array)
         self.pensize(self.normal)
         # Draw the paths
-        
+        start_coords = (start_x,start_y,20,20,0,-40)
+        coords_array = [(0,20,-160,-160),(0,0,0,20),(10,20,30,0),(0,0,0,-20),(0,20,0,0),(0,0,0,-20),(0,-80,0,0),
+                        (100,100,-20,40),(0,20,0,0),(20,0,-40,-40),(0,0,0,20),(20,0,40,40),(0,0,20,40),(-20,0,0,0),
+                        (20,0,20,20),(-20,0,20,20),(20,0,20,20),(0,0,20,40),(0,-20,0,0),(0,0,-20,0),(0,-60,0,0),
+                        (0,20,0,-20),(0,5,0,-20)]
+        self.update_coordinates_from_array(start_coords, coords_array)
+
         # Draw the right side
         return self.draw_right_side(start_x,start_y)
     
