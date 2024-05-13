@@ -612,15 +612,25 @@ class Generator(Turtle):
     def draw_x(self,start_x, start_y,top_or_bottom):
         # Draw the X
         self.pensize(self.bold)
-        coords = self.update_coordinates(start_x,start_y,40,70,-40,-100)
-        coords = self.update_coordinates(coords[0],coords[1],0,-30,0,-80)
-        coords = self.update_coordinates(coords[0],coords[1],20,40,0,60)
-        coords = self.update_coordinates(coords[0],coords[1],0,20,0,-60)
-        coords = self.update_coordinates(coords[0],coords[1],20,-10,0,80)
-        coords = self.update_coordinates(coords[0],coords[1],0,30,0,60)
-        coords = self.update_coordinates(coords[0],coords[1],-20,-40,0,-40)
-        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,40)
+        start_coords = (start_x,start_y,40,70,-40,-100)
+        coords_array = [(0,-30,0,-80),(20,40,0,60),(0,20,0,-60),(20,-10,0,80),
+                        (0,30,0,60),(-20,-40,0,-40),(0,-20,0,40)]
+        self.update_coordinates_from_array(start_coords, coords_array)
         self.pensize(self.normal)
+        start_coords = (start_x,start_y,0,20,-20,-20)
+        coords_array = [(20,20,0,-20),(0,-20,0,0),(-20,10,-20,-20),(30,-10,-20,-20),(0,0,0,-40),(20,20,20,-20),(15,-20,0,0),
+                        (0,0,0,-20),(-20,0,-20,-20),(0,0,-60,-20),(20,20,-20,20),(20,20,0,-40),(20,20,70,-20),(20,20,20,60),
+                        (20,20,0,-40),(20,0,40,80),(0,0,0,20),(-30,0,20,20),(20,0,20,20),(-10,0,20,20),(0,0,20,40),
+                        (-20,-20,0,-20),(-20,-20,-15,40),(-20,-20,-20,-40),(-5,-20,-60,-60)]
+        self.update_coordinates_from_array(start_coords, coords_array)
+        if(random.choice([True, False])):
+            self.update_coordinates(start_x,start_y,40,40,0,-20)
+        else:
+            self.update_coordinates(start_x,start_y,40,40,-220,-240)
+        if(random.choice([True, False])):
+            self.update_coordinates(start_x,start_y,120,120,0,-22)
+        else:
+            self.update_coordinates(start_x,start_y,120,120,-220,-240)
         # Draw the right side, closing off the top or bottom, then return the info
         return self.draw_right_side(start_x,start_y)
     
