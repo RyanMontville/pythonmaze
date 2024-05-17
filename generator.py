@@ -637,13 +637,17 @@ class Generator(Turtle):
     def draw_y(self,start_x, start_y,top_or_bottom):
         # Draw the Y
         self.pensize(self.bold)
-        coords = self.update_coordinates(start_x,start_y,40,70,-40,-100)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-80)
-        coords = self.update_coordinates(coords[0],coords[1],20,20,0,80)
-        coords = self.update_coordinates(coords[0],coords[1],0,30,0,60)
-        coords = self.update_coordinates(coords[0],coords[1],-20,-40,0,-40)
-        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,40)
+        start_coords = (start_x,start_y,20,50,-80,-140)
+        coords_array = [(0,0,0,-80),(20,20,0,80),(0,30,0,60),(-20,-40,0,-40),(0,-20,0,40)]
+        self.update_coordinates_from_array(start_coords, coords_array)
         self.pensize(self.normal)
+        start_coords = (start_x,start_y,20,20,0,-80)
+        coords_array = [(-20,10,0,-60),(20,-5,-20,-20),(0,-10,0,20),(-15,5,0,-40),(0,20,0,0),(10,-25,-20,-20),
+                        (0,-5,0,10),(-10,0,-10,-30),(0,25,0,0),(35,35,-20,0),(20,20,-20,0),(-10,0,20,0),(0,30,0,20),
+                        (-50,-20,60,0),(20,-10,0,60),(0,30,0,60),(-15,-5,-130,-150),(15,-5,50,85),(0,30,0,65),
+                        (-60,-60,0,20),(60,0,0,0),(-60,-35,0,0),(15,-25,-30,50),(60,30,-70,-10),(15,35,20,-20),
+                        (15,35,20,-20),(-5,5,60,40)]
+        self.update_coordinates_from_array(start_coords, coords_array)
         # Draw the right side, closing off the top or bottom, then return the info
         return self.draw_right_side(start_x,start_y)
     
