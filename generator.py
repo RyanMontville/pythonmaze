@@ -572,6 +572,11 @@ class Generator(Turtle):
         self.draw_circle(-40,0,20,180,270)
         coords = self.update_coordinates(self.xcor(),self.ycor(),-40,-40,0,100)
         self.pensize(self.normal)
+        start_coords = (start_x,start_y,20,20,-40,-220)
+        coords_array = [(20,0,0,0),(0,40,160,160),(0,0,60,-20),(-20,-20,40,60),
+                        (-40,0,0,0),(40,40,0,-160),(0,0,-60,-40),(35,60,0,0),
+                        (0,-60,160,160),(20,20,60,20),(0,20,0,0),(0,20,20,20)]
+        self.update_coordinates_from_array(start_coords, coords_array)
         # Draw the right side, closing off the top or bottom, then return the info
         return self.draw_right_side(start_x,start_y)
     
