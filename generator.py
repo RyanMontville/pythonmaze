@@ -468,13 +468,23 @@ class Generator(Turtle):
     def draw_p(self,start_x, start_y,top_or_bottom):
         #Draw the P
         self.pensize(self.bold)
-        coords = self.update_coordinates(start_x,start_y,20,20,-40,-180)
-        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0) # bottom of P
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,60) 
+        coords = self.update_coordinates(start_x,start_y,20,20,-20,-160)
+        coords = self.update_coordinates(coords[0],coords[1],20,20,0,60) 
         self.draw_circle(0,0,40,180,0) # Top of P is open
         coords = self.update_coordinates(self.xcor(),self.ycor(),-5,-5,-20,-60)
         self.draw_circle(0,0,20,180,0)
         self.pensize(self.normal)
+
+        start_coords = (start_x,start_y,40,40,0,-20)
+        coords_array = [(-20,-20,-140,-220),(20,20,20,60),(20,20,-20,-60),(20,20,20,60),(20,20,-20,-60),
+                        (20,20,20,60),(0,-80,0,0),(20,20,0,60),(20,20,60,-40),(20,20,-20,140),(-20,0,0,0),
+                        (20,20,20,-140)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        if random.choice([True,False]):
+            self.update_coordinates(coords[0],coords[1],0,0,0,-20)
+        else:
+            self.update_coordinates(coords[0],coords[1],0,0,-60,-80)
+
         # Draw the right side, closing off the top or bottom, then return the info
         return self.draw_right_side(start_x,start_y)
     
