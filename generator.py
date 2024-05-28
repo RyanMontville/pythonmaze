@@ -407,20 +407,22 @@ class Generator(Turtle):
     def draw_m(self,start_x, start_y,top_or_bottom):
         # Draw the M
         self.pensize(self.bold)
-        coords = self.update_coordinates(start_x,start_y,20,20,-40,-180)
-        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0) # bottom left
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,100)
-        coords = self.update_coordinates(coords[0],coords[1],0,20,0,-40)
-        coords = self.update_coordinates(coords[0],coords[1],0,20,0,40)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-100)
-        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0) # bottom right
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,140)
-        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0) # top right
-        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,-40)
-        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,40)
-        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0) # top left
+        start_coord = (start_x,start_y,60,60,-60,-200)
+        coords_array = [(20,20,0,100),(0,20,0,-40),(0,20,0,40),(0,0,0,-100),
+                        (20,20,0,140),(-20,-40,0,-40),(0,-20,0,40)]
+        self.update_coordinates_from_array(start_coord,coords_array)
+        if random.choice([True,False]):
+            self.update_coordinates(start_x,start_y,60,80,-60,-60)
+        else:
+            self.update_coordinates(start_x,start_y,60,80,-200,-200)
         self.pensize(self.normal)
-        # Draw the paths
+        start_coord = (start_x,start_y,0,100,-20,-20)
+        coords_array = [(20,20,20,-40),(-20,-20,-10,40),(-20,-20,-40,-20),
+                        (0,-60,0,0),(-20,20,-20,-20),(20,-20,-20,-20),(0,0,0,-20),
+                        (20,20,0,-20),(0,-40,0,0),(20,60,-20,-20),(-60,-20,-20,-20),
+                        (0,0,0,-20),(-20,-20,0,-20),(0,40,0,0),(-60,40,-20,-20),
+                        (0,0,60,0),(20,20,20,-20)]
+        self.update_coordinates_from_array(start_coord,coords_array)
         
         # Draw the right side
         return self.draw_right_side(start_x,start_y)
@@ -470,11 +472,10 @@ class Generator(Turtle):
         self.pensize(self.bold)
         coords = self.update_coordinates(start_x,start_y,20,20,-20,-160)
         coords = self.update_coordinates(coords[0],coords[1],20,20,0,60) 
-        self.draw_circle(0,0,40,180,0) # Top of P is open
+        self.draw_circle(0,0,40,180,0)
         coords = self.update_coordinates(self.xcor(),self.ycor(),-5,-5,-20,-60)
         self.draw_circle(0,0,20,180,0)
         self.pensize(self.normal)
-
         start_coords = (start_x,start_y,40,40,0,-20)
         coords_array = [(-20,-20,-140,-220),(20,20,20,60),(20,20,-20,-60),(20,20,20,60),(20,20,-20,-60),
                         (20,20,20,60),(0,-80,0,0),(20,20,0,60),(20,20,60,-40),(20,20,-20,140),(-20,0,0,0),
@@ -484,7 +485,6 @@ class Generator(Turtle):
             self.update_coordinates(coords[0],coords[1],0,0,0,-20)
         else:
             self.update_coordinates(coords[0],coords[1],0,0,-60,-80)
-
         # Draw the right side, closing off the top or bottom, then return the info
         return self.draw_right_side(start_x,start_y)
     
