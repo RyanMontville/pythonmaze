@@ -669,14 +669,35 @@ class Generator(Turtle):
     def draw_z(self,start_x, start_y,top_or_bottom):
         # Draw the Z
         self.pensize(self.bold)
-        coords = self.update_coordinates(start_x,start_y,40,100,-60,-60)
-        coords = self.update_coordinates(coords[0],coords[1],0,-60,0,-100)
-        coords = self.update_coordinates(coords[0],coords[1],0,80,-20,-20) 
-        coords = self.update_coordinates(coords[0],coords[1],0,-60,20,20)
-        coords = self.update_coordinates(coords[0],coords[1],0,60,0,100)
-        coords = self.update_coordinates(coords[0],coords[1],0,-80,20,20)
-
+        start_coord = (start_x,start_y,40,100,-20,-20)
+        coords_array = [(0,-60,0,-100),(0,80,-20,-20),(0,-60,20,20),
+                        (0,60,0,100),(-80,0,20,20),(0,0,0,-20)]
+        self.update_coordinates_from_array(start_coord,coords_array)
         self.pensize(self.normal)
+        #left side zig zags
+        coords = self.update_coordinates(start_x,start_y,20,20,0,-100)
+        coords = self.update_coordinates(coords[0],coords[1],0,15,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,35,0,60)
+        coords = self.update_coordinates(coords[0],coords[1],-10,-35,20,-20)
+        coords = self.update_coordinates(coords[0],coords[1],5,-35,-60,-60)
+        #end of left side zig zags, starting right side zig zags
+        coords = self.update_coordinates(coords[0],coords[1],80,130,0,80)
+        coords = self.update_coordinates(coords[0],coords[1],10,-17,-20,-65)
+        coords = self.update_coordinates(coords[0],coords[1],-73,-93,-35,-35)
+        coords = self.update_coordinates(coords[0],coords[1],-0,0,0,-100)
+        coords = self.update_coordinates(coords[0],coords[1],20,120,20,20)
+        coords = self.update_coordinates(coords[0],coords[1],-40,-40,80,40)
+        coords = self.update_coordinates(coords[0],coords[1],20,20,20,-20)
+        coords = self.update_coordinates(coords[0],coords[1],0,-40,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,40)
+        coords = self.update_coordinates(coords[0],coords[1],-20,-20,-60,-20)
+        coords = self.update_coordinates(coords[0],coords[1],20,-20,20,20)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-40)
+        if random.choice([True,False]):
+            self.update_coordinates(coords[0],coords[1],80,80,40,60)
+        else:
+            self.update_coordinates(coords[0],coords[1],80,80,0,-20)
+
         # Draw the right side, closing off the top or bottom, then return the info
         return self.draw_right_side(start_x,start_y)
     

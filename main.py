@@ -62,7 +62,7 @@ def draw_letter_return_info(info, letter):
 
 word_input = Words()
 word_input.prompt_for_words()
-# word_input.set_word("") #Used for testing
+#word_input.set_word("") #Used for testing
 word_input.format_string()
 
 screen = Screen()
