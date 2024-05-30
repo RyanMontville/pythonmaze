@@ -332,18 +332,17 @@ class Generator(Turtle):
     def draw_j(self,start_x, start_y,top_or_bottom):
         # Draw the J
         self.pensize(self.bold)
-        coords = self.update_coordinates(start_x,start_y,20,20,-60,-80) # Top left
-        coords = self.update_coordinates(coords[0],coords[1],0,40,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-90)
-        self.draw_circle(-20,0,10,180,270)
-        coords = self.update_coordinates(coords[0],coords[1],-20,-40,0,0) # bottom of J
-        self.draw_circle(0,0,30,180,270)
-        coords = self.update_coordinates(coords[0],coords[1],60,60,0,90)
-        coords = self.update_coordinates(coords[0],coords[1],0,20,0,0)
-        coords = self.update_coordinates(coords[0],coords[1],0,0,0,20) # top right
-        coords = self.update_coordinates(coords[0],coords[1],0,-80,0,0)
+        start_cords = (start_x,start_y,60,100,-20,-20)
+        coords_array = [(0,0,0,-90),(20,20,0,90),(0,20,0,0),(0,-80,20,20)]
+        self.update_coordinates_from_array(start_cords,coords_array)
+        self.draw_circle(20,-110,10,180,270)
+        self.draw_circle(-40,0,30,180,270)
         self.pensize(self.normal)
-        # Draw the paths
+        start_coords = (start_x,start_y,20,20,0,-220)
+        coords_array = [(0,80,0,0),(0,0,0,40),(0,-40,0,0),(-20,20,-20,-20),
+                        (40,40,-40,40),(0,-80,0,0),(0,0,-40,100),(0,60,0,0),
+                        (-20,-20,-40,-20),(0,-20,0,0),(0,0,-30,0),(20,-40,40,40)]
+        self.update_coordinates_from_array(start_coords, coords_array)
         
         # Draw the right side
         return self.draw_right_side(start_x,start_y)
