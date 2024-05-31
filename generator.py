@@ -592,12 +592,23 @@ class Generator(Turtle):
     def draw_v(self,start_x, start_y,top_or_bottom):
         # Draw the V
         self.pensize(self.bold)
-        coords = self.update_coordinates(start_x,start_y,20,50,-40,-180)
-        coords = self.update_coordinates(coords[0],coords[1],20,50,0,140) # bottom is open
-        coords = self.update_coordinates(coords[0],coords[1],-20,-40,0,-90)
-        coords = self.update_coordinates(coords[0],coords[1],0,-20,0,90)
-        
+        start_coords = (start_x,start_y,20,50,-80,-220)
+        coords_Array = [(20,50,0,140),(-20,-40,0,-90),(0,-20,0,90)]
+        self.update_coordinates_from_array(start_coords,coords_Array)
         self.pensize(self.normal)
+        start_coords = (start_x,start_y,40,40,-80,0)
+        coords_Array = [(-40,-20,-20,-20),(80,0,-20,-20),(-20,0,-20,-20),
+                        (0,0,-20,-60),(-20,0,-20,-20),(15,0,-20,-20),
+                        (-20,10,-20,-20),(15,-10,-20,-20),(-20,15,-20,-20),
+                        (15,15,-20,0),(90,20,0,0),(50,50,40,20),(0,-25,0,0),
+                        (0,10,0,40),(15,0,0,0),(0,15,0,80),(0,0,0,60),
+                        (0,-60,0,0),(0,0,-95,-40),(0,60,0,0)]
+        self.update_coordinates_from_array(start_coords, coords_Array)
+        if random.choice([True,False]):
+            self.update_coordinates(start_x,start_y,40,60,-60,-60)
+        else:
+            self.update_coordinates(start_x,start_y,95,95,-200,-220)
+
         # Draw the right side, closing off the top or bottom, then return the info
         return self.draw_right_side(start_x,start_y)
     
