@@ -555,14 +555,18 @@ class Generator(Turtle):
         # Draw the S
         self.pensize(self.bold)
         self.reset_coordinates(start_x + 120, start_y - 80)
-        self.pencolor("red")
         self.draw_circle(0,0,40,270,90)
-        self.pencolor("black")
         self.draw_circle(-20,-20,20,270,270)
         self.reset_coordinates(self.xcor()-40,self.ycor()-20)
         self.draw_circle(0,0,40,270,270)
         self.draw_circle(20,20,20,270,90)
         self.pensize(self.normal)
+        start_coords = (start_x,start_y,20,20,0,-20)
+        coords_array = [(40,20,0,-20),(-40,0,0,0),(0,0,20,0),(-20,-20,-20,-40),(20,0,0,0),(-20,0,-20,-20),(0,0,0,-20),
+                        (60,20,-20,0),(0,0,0,-20),(-20,-20,0,-20),(0,20,0,0),(0,0,10,-60),(0,-10,20,40),(0,-30,0,0),
+                        (20,20,-20,-60),(40,60,20,20),(0,0,-20,0),(20,20,0,20),(-60,0,0,0),(20,20,-40,60),(-40,0,60,40),
+                        (0,0,0,100),(-40,-40,0,-20),(20,40,0,-20)]
+        self.update_coordinates_from_array(start_coords,coords_array)
         return self.draw_right_side(start_x,start_y)
     
     def draw_t(self,start_x, start_y,top_or_bottom):
