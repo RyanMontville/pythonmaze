@@ -34,6 +34,9 @@ I have created the templates for every letter. Some letters are complete, some a
 
 #### V 0.032 - 4/20/2024
 The maze can now be 6 letters wide for a total of 12 letters. I have finished more of the letters and have 4 variations of spaces between words. I have also finished the rest of the maze around the letters.
+
+#### V 0.033 - 6/7/2024
+I have updated the method for text input from the terminal to an input window. All letters are now finished.
 <p align="center" width="100%">
     <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/A-I.png" alt="Examples of letters A - I" title="Examples of letters A - I">
     <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/J-R.png" alt="Examples of letters J - R" title="Examples of letters J - R">
