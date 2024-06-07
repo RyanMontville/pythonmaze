@@ -59,19 +59,27 @@ def draw_letter_return_info(info, letter):
             return generator.draw_z(info[0],info[1],info[2])
         case _:
             return generator.draw_space_options(info[0],info[1],info[2])
-
+        
 word_input = Words()
-word_input.prompt_for_words()
-#word_input.set_word("") #Used for testing
-word_input.format_string()
+# word_input.prompt_for_words()
+#word_input.set_word("ssssssssssss") #Used for testing
+#word_input.format_string()
 
 screen = Screen()
+phrase_is_good = False
+prompt = "Type a word or phrase 12 letter long or less (not including spaces):"
+while not phrase_is_good:
+    phrase = screen.textinput("Input", prompt)
+    reponse = word_input.check_phrase(phrase)
+    phrase_is_good = reponse[0]
+    prompt = reponse[1]
+word_input.format_string()
 screen.setup(width=920,height=600)
 screen.title("Maze Generator")
 screen.tracer(2,0)
 generator = Generator()
 
-#generator.draw_grid()
+generator.draw_grid()
 generator.draw_border()
 info = (-450,290,"top")
 for i in word_input.line_one:

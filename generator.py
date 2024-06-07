@@ -538,13 +538,14 @@ class Generator(Turtle):
         # Draw the S
         self.pensize(self.bold)
         self.reset_coordinates(start_x + 120, start_y - 80)
+        self.pencolor("red")
         self.draw_circle(0,0,40,270,90)
+        self.pencolor("black")
         self.draw_circle(-20,-20,20,270,270)
         self.reset_coordinates(self.xcor()-40,self.ycor()-20)
         self.draw_circle(0,0,40,270,270)
         self.draw_circle(20,20,20,270,90)
         self.pensize(self.normal)
-        # Draw the right side, closing off the top or bottom, then return the info
         return self.draw_right_side(start_x,start_y)
     
     def draw_t(self,start_x, start_y,top_or_bottom):
