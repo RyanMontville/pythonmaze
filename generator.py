@@ -139,13 +139,30 @@ class Generator(Turtle):
         #Draw the C
         self.pensize(self.bold)
         self.reset_coordinates(start_x,start_y)
-        self.draw_circle(90,-60,40,180,90)
+        self.draw_circle(80,-60,40,180,90)
         self.update_coordinates(self.xcor(),self.ycor(),0,0,0,-60)
         self.draw_circle(0,0,40,180,270)
         self.draw_circle(-60,0,20,180,270)
         self.update_coordinates(self.xcor(),self.ycor(),-40,-40,0,60)
         self.draw_circle(40,0,20,180,90)
         self.pensize(self.normal)
+        #draw shared lines
+        start_coords = (start_x,start_y,120,120,-40,-160)
+        coords_Array = [(0,-40,0,-40),(0,-20,0,0),(0,-20,0,0),(-20,20,20,20),(0,40,0,40),
+                        (0,0,0,100),(0,-40,-40,-40),(0,0,0,20),(-20,-20,0,-60),
+                        (0,40,20,20),(0,0,0,-20)]
+        coords = self.update_coordinates_from_array(start_coords,coords_Array)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,20,0)
+        if top_or_bottom == "bottom":
+            start_coords = (coords[0],coords[1],20,40,120,100)
+            coords_Array = [(0,0,-20,0),(-40,-20,0,-20),(-80,-80,-140,-200),
+                            (0,80,20,20),(0,20,0,20)]
+            coords = self.update_coordinates_from_array(start_coords,coords_Array)
+        else:
+            start_coords = (coords[0],coords[1],-20,20,120,80)
+            coords_Array = [(20,20,20,0),(20,-20,-140,-180),(0,-80,0,0),
+                            (20,-10,20,20),(0,-10,0,10)]
+            coords = self.update_coordinates_from_array(start_coords,coords_Array)
         # Draw the right side, closing off the top or bottom, then return the info
         return self.draw_right_side(start_x,start_y)
 
