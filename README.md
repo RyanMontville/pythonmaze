@@ -35,8 +35,8 @@ I have created the templates for every letter. Some letters are complete, some a
 #### V 0.032 - 4/20/2024
 The maze can now be 6 letters wide for a total of 12 letters. I have finished more of the letters and have 4 variations of spaces between words. I have also finished the rest of the maze around the letters.
 <p align="center" width="100%">
-    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/a-l.png" alt="Current progress of letters A - L" title="Current progress of letters A - L">
-    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/m-x.png" alt="Current progress of letters M - X" title="Current progress of letters M - X">
-    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/y-z-spaces.png" alt="Current progress of letters Y, Z, and space variations" title="Current progress of letters Y, Z, and space variations">
+    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/A-I.png" alt="Examples of letters A - I" title="Examples of letters A - I">
+    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/J-R.png" alt="Examples of letters J - R" title="Examples of letters J - R">
+    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/S-Z.png" alt="Examples of letters S - Z" title="Examples of letters S - Z">
     <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/hello-world.png" alt="An example of the created maze" title="An example of the created maze">
 </p>

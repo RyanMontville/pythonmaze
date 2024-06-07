@@ -76,7 +76,7 @@ screen.title("Maze Generator")
 screen.tracer(2,0)
 generator = Generator()
 
-generator.draw_grid()
+#generator.draw_grid()
 generator.draw_border()
 info = (-450,290,"top")
 for i in word_input.line_one:
