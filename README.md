@@ -1,6 +1,13 @@
 # Python Maze Generator
 Generate a maze in Python using [Turtle graphics](https://docs.python.org/3/library/turtle.html).
+
 <a href="https://ryanmontville.github.io/pythonmaze/">Click here to read my write-up about this project on my portfolio.</a>
+
+<a href="https://ryanmontville.github.io/pythonmaze/version-one.html">Run the version 3 generator</a>
+
+<a href="https://ryanmontville.github.io/pythonmaze/version-two.html">Run the version 3 generator</a>
+
+<a href="https://ryanmontville.github.io/pythonmaze/version-three.html">Run the version 3 generator</a>
 
 #### V 0.010 - 3/27/2024
 First attempt at randomly generating a maze. The program starts at the top left corner, then heading down, randomly chooses if the next segment should be drawn in or not, then moves forwards 20px until it reaches the edge of the maze. It then moves to the right 20px and repeats until it has reached the right edge of the maze, which draws all of the vertical lines. It then does a similar process to draw all the horizontal lines.The generated maze most likely does not have a possible path from start to finish. This is more of a test to see what randomly generating the segments would do.
