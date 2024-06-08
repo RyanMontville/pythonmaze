@@ -3,7 +3,7 @@ Generate a maze in Python using [Turtle graphics](https://docs.python.org/3/libr
 
 <a href="https://ryanmontville.github.io/pythonmaze/">Click here to read my write-up about this project on my portfolio.</a>
 
-<a href="https://ryanmontville.github.io/pythonmaze/version-one.html">Run the version 1 generator</a>
+<a href="https://ryanmontville.github.io/pythonmaze/version-one.html">Run the version 1 generator</a> Note: this version is not solvable.
 
 <a href="https://ryanmontville.github.io/pythonmaze/version-two.html">Run the version 2 generator</a>
 
