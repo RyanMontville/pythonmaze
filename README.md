@@ -1,53 +1,40 @@
 # Python Maze Generator
-Generate a maze in Python using [Turtle graphics](https://docs.python.org/3/library/turtle.html).
+I wanted to try to use [Turtle graphics](https://docs.python.org/3/library/turtle.html) to randomly generate mazes using python. I still consider this project a work in progress because I have not yet achieved the level of randomness that I imagined when I started this project.
 
-<a href="https://ryanmontville.github.io/pythonmaze/">Click here to read my write-up about this project on my portfolio.</a>
+For my first attempt, I created a grid and then had the program randomly draw lines on the grid. It <i>Kinda</i> looks like a maze at first glance, but the paths are not continuous and most of the time it is impossible to go from the start of the maze to the finish. You can see an example of the random lines below. It was a good experiment at what randomly drawing lines can do, but I knew I could do better.
 
-<a href="https://ryanmontville.github.io/pythonmaze/version-one.html">Run the version 1 generator</a> Note: this version is not solvable.
-
-<a href="https://ryanmontville.github.io/pythonmaze/version-two.html">Run the version 2 generator</a>
-
-<a href="https://ryanmontville.github.io/pythonmaze/version-three.html">Run the version 3 generator</a>
-
-#### V 0.010 - 3/27/2024
-First attempt at randomly generating a maze. The program starts at the top left corner, then heading down, randomly chooses if the next segment should be drawn in or not, then moves forwards 20px until it reaches the edge of the maze. It then moves to the right 20px and repeats until it has reached the right edge of the maze, which draws all of the vertical lines. It then does a similar process to draw all the horizontal lines.The generated maze most likely does not have a possible path from start to finish. This is more of a test to see what randomly generating the segments would do.
-
-Here is an example of a randomly generated maze:
+Generate a maze in Python using .
 <p align="center" width="100%">
     <img width="50%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/V010.png" alt="An example of a randomly generated maze" title="An example of a randomly generated maze">
 </p>
+<a href="https://ryanmontville.github.io/pythonmaze/version-one.html">Run the version 1 generator</a>
 
-#### V 0.020 - 3/30/2024
-This attempt does not currently fill in the entire maze and is not truly random. I am testing having the program draw zig-zagging paths of random lengths. I want to test out having the program draw other shapes/patterns, then eventually have it choose a pattern at random to draw. Will update with an example screenshot after testing more patterns.
+Next, I decided to draw a few different patterns. Some of the patterns could vary in width and height, while other patterns randomly decieded which paths were dead-ends and which paths would lead you into the next section of the maze. It still wasn't as random as I was hoping for, but it was good progress. With the amount of random decisions the program made, even though the maze will look similar overall each time it is generated, the path from start to finish will always be different. I knew I could still do better.
 
-#### V 0.021 - 4/7/2024
-This attempt is not truly random. I mapped out different patterns that can have variations to them with the program randomly blocking different pathways. There are 4 main sections that the program draws. While the maze will look similar every time it runs, the path from start to finish will change. There is currently a possibility that there is no possible path from start to finish, I need to figure out a way to ensure the program doesn't close off every possible path.
-
-Here are some variations of V 0.021
+Here are several examples below with the path from start to finish highlighted:
 <p align="center" width="100%">
     <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/v021-A.png" alt="A variation of v 0.021" title="A variation of v 0.021">
     <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/V021-B.png" alt="A variation of v 0.021" title="A variation of v 0.021">
     <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/V021-C.png" alt="A variation of v 0.021" title="A variation of v 0.021">
     <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/V021-D.png" alt="A variation of v 0.021" title="A variation of v 0.021">
 </p>
+<a href="https://ryanmontville.github.io/pythonmaze/version-two.html">Run the version 2 generator</a>
 
-#### V 0.022 - 4/10/2024
-I optimized the functions to reduce the file size. Now instead of printing the same command over and over again, the command now takes an array of cordinates and loops through them.
+While looking at mazes online, I found a maze generator that could generate mazes in several different patterns, including mazes that aren't just rectangular. One of the mazes was in an "X" pattern, which gave me the idea to try to make a generator where you could type a word or phrase and have a maze generated with the letters making up the maze. I started planning by drawing the letters, then taking screenshots of the letters into Photoshop to draw the paths around and through the letters. Each letter is a function that takes the coordinates of the top-left corner of the letter segment and whether the path into the segment from the last segment is on the top or bottom. Every letter randomly chooses whether  you exit the segment through the top or bottom and passes it on to the next segment. Some letters generate different paths depending on if you enter from the top or the bottom. Some letters randomly decide which paths will be dead-ends while other letters always have the same paths through the segment. While this version of the maze generator is different from my plan when I started this project, I am happy with how it turned out.
 
-#### V 0.030 - 4/15/2024
-Taking a differnet approach with this version. Instead of generating an entirely random maze, the program now asks the user to input a word or phrase and then generates a maze that spells out the word or phase as paths. I am reusing the functions from 0.020. I am currently working on drawing the letters and their paths.
-
-#### V 0.031 - 4/15/2024
-I have created the templates for every letter. Some letters are complete, some are still a work in progress. The program now prompts the user to enter a word or phrase that is 10 letters long or less. It then prints the word/phrase within the maze. Still need to create the rest of the maze around the letters. Might change the size of the maze to allow longer strings.
-
-#### V 0.032 - 4/20/2024
-The maze can now be 6 letters wide for a total of 12 letters. I have finished more of the letters and have 4 variations of spaces between words. I have also finished the rest of the maze around the letters.
-
-#### V 0.033 - 6/7/2024
-I have updated the method for text input from the terminal to an input window. All letters are now finished.
+Here are all of the letters with the grid lines showing along with the different choices for the spaces between words:
 <p align="center" width="100%">
-    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/A-I.png" alt="Examples of letters A - I" title="Examples of letters A - I">
-    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/J-R.png" alt="Examples of letters J - R" title="Examples of letters J - R">
-    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/S-Z.png" alt="Examples of letters S - Z" title="Examples of letters S - Z">
-    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/hello-world.png" alt="An example of the created maze" title="An example of the created maze">
+    <img width="31%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/A-I.png" alt="Examples of letters A - I" title="Examples of letters A - I">
+    <img width="31%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/J-R.png" alt="Examples of letters J - R" title="Examples of letters J - R">
+    <img width="31%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/S-Z.png" alt="Examples of letters S - Z" title="Examples of letters S - Z">
 </p>
+
+Here are a few examples of the maze generated from a phrase:
+<p align="center" width="100%">
+<img width="31%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/hello-world.png" alt="An example of the created maze" title="An example of the created maze">
+<img width="31%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/a-cool-monkey.png" alt="An example of the created maze" title="An example of the created maze">
+<img width="31%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/montville.png" alt="An example of the created maze" title="An example of the created maze">
+</p>
+<a href="https://ryanmontville.github.io/pythonmaze/version-three.html">Run the version 3 generator</a>
+
+I still want to attempt to create a generator that draws mazes that are so random that I have never seen before and would have no clue how to solve the maze without tracing out the paths.
