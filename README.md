@@ -13,7 +13,7 @@ Example of randomly drawn lines:
 ### Version 2
 Next, I decided to draw a few different patterns. Some of the patterns could vary in width and height, while other patterns randomly decieded which paths were dead-ends and which paths would lead you into the next section of the maze. It still wasn't as random as I was hoping for, but it was good progress. With the amount of random decisions the program made, even though the maze will look similar overall each time it is generated, the path from start to finish will always be different. I knew I could still do better.
 
-Here are several examples below with the path from start to finish highlighted:
+Here are several examples with the path from start to finish highlighted:
 <p align="center" width="100%">
     <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/v021-A.png" alt="A variation of v 0.021" title="A variation of v 0.021">
     <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/V021-B.png" alt="A variation of v 0.021" title="A variation of v 0.021">
