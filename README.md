@@ -4,7 +4,7 @@ I wanted to try to use [Turtle graphics](https://docs.python.org/3/library/turtl
 ### Version 1
 For my first attempt, I created a grid and then had the program randomly draw lines on the grid. It <i>Kinda</i> looks like a maze at first glance, but the paths are not continuous and most of the time it is impossible to go from the start of the maze to the finish. You can see an example of the random lines below. It was a good experiment at what randomly drawing lines can do, but I knew I could do better.
 
-Generate a maze in Python using .
+Example of randomly drawn lines:
 <p align="center" width="100%">
     <img width="50%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/V010.png" alt="An example of a randomly generated maze" title="An example of a randomly generated maze">
 </p>
