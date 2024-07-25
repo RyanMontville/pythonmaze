@@ -16,9 +16,9 @@ Next, I decided to draw a few different patterns. Some of the patterns could var
 Here are several examples with the path from start to finish highlighted:
 <p align="center" width="100%">
     <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/v021-A.png" alt="A variation of v 0.021" title="A variation of v 0.021">
-    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/v021-b.png" alt="A variation of v 0.021" title="A variation of v 0.021">
-    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/v021-c.png" alt="A variation of v 0.021" title="A variation of v 0.021">
-    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/v021-d.png" alt="A variation of v 0.021" title="A variation of v 0.021">
+    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/v021-B.png" alt="A variation of v 0.021" title="A variation of v 0.021">
+    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/v021-C.png" alt="A variation of v 0.021" title="A variation of v 0.021">
+    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/v021-D.png" alt="A variation of v 0.021" title="A variation of v 0.021">
 </p>
 <a href="https://ryanmontville.github.io/pythonmaze/version-two.html">Run the version 2 generator</a>
 
