@@ -40,4 +40,5 @@ Here are a few examples of the maze generated from a phrase:
 </p>
 <a href="https://ryanmontville.github.io/pythonmaze/version-three.html">Run the version 3 generator</a>
 
+
 I still want to attempt to create a generator that draws mazes that are so random that I have never seen before and would have no clue how to solve the maze without tracing out the paths.
