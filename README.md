@@ -16,9 +16,9 @@ Next, I decided to draw a few different patterns. Some of the patterns could var
 Here are several examples with the path from start to finish highlighted:
 <p align="center" width="100%">
     <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/v021-A.png" alt="A variation of v 0.021" title="A variation of v 0.021">
-    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/V021-B.png" alt="A variation of v 0.021" title="A variation of v 0.021">
-    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/V021-C.png" alt="A variation of v 0.021" title="A variation of v 0.021">
-    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/V021-D.png" alt="A variation of v 0.021" title="A variation of v 0.021">
+    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/v021-b.png" alt="A variation of v 0.021" title="A variation of v 0.021">
+    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/v021-c.png" alt="A variation of v 0.021" title="A variation of v 0.021">
+    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/v021-d.png" alt="A variation of v 0.021" title="A variation of v 0.021">
 </p>
 <a href="https://ryanmontville.github.io/pythonmaze/version-two.html">Run the version 2 generator</a>
 
@@ -27,9 +27,9 @@ While looking at mazes online, I found a maze generator that could generate maze
 
 Here are all of the letters with the grid lines showing along with the different choices for the spaces between words:
 <p align="center" width="100%">
-    <img width="31%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/A-I.png" alt="Examples of letters A - I" title="Examples of letters A - I">
-    <img width="31%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/J-R.png" alt="Examples of letters J - R" title="Examples of letters J - R">
-    <img width="31%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/S-Z.png" alt="Examples of letters S - Z" title="Examples of letters S - Z">
+    <img width="31%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/a-i.png" alt="Examples of letters A - I" title="Examples of letters A - I">
+    <img width="31%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/j-r.png" alt="Examples of letters J - R" title="Examples of letters J - R">
+    <img width="31%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/s-z.png" alt="Examples of letters S - Z" title="Examples of letters S - Z">
 </p>
 
 Here are a few examples of the maze generated from a phrase:
