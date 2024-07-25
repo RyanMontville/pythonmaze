@@ -16,7 +16,7 @@ Next, I decided to draw a few different patterns. Some of the patterns could var
 Here are several examples with the path from start to finish highlighted:
 <p align="center" width="100%">
     <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/v021-A.png" alt="A variation of v 0.021" title="A variation of v 0.021">
-    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/V021-B.png" alt="A variation of v 0.021" title="A variation of v 0.021">
+    <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/v021-b.png" alt="A variation of v 0.021" title="A variation of v 0.021">
     <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/V021-C.png" alt="A variation of v 0.021" title="A variation of v 0.021">
     <img width="23%" src="https://github.com/RyanMontville/pythonmaze/blob/main/images/V021-D.png" alt="A variation of v 0.021" title="A variation of v 0.021">
 </p>
