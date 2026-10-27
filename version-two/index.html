@@ -14,6 +14,12 @@
     <div id="page-wrapper">
         <header>
             <h1>Python Maze Generator V2</h1>
+            <nav>
+                <a href="../version-one/">View V1</a>
+                <a href="../version-two/" class="active">View V2</a>
+                <a href="../version-three/">View V3</a>
+                <a href="https://github.com/RyanMontville/pythonmaze" target="_blank">View GitHub Repo</a>
+            </nav>
         </header>
         <main>
             <div id="turtle-div"></div>
@@ -72,7 +78,7 @@
                 
             def draw_zig_zags(self, x_coordinate, y_coordinate):
                 random_lengths = [(60,"even"),(80,"odd"),(100,"both"),(120,"both")]
-                choice = random_lengths[0] # TODO: remove this line after testing
+                choice = random_lengths[0]
                 end_of_zig = y_coordinate - choice[0]
                 bottom_of_zig_zags = end_of_zig-20
                 range_options = []

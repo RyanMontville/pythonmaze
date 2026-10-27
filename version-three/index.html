@@ -4,272 +4,991 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Python Maze Generator</title>
-    <!-- Load Brython engines -->
+    <title>Python Maze Generator V3</title>
     <script src="https://cdn.jsdelivr.net/npm/brython@3/brython.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/brython@3/brython_stdlib.js"></script>
     <link rel="stylesheet" href="../css/style.css">
-    <style>
-        /* Simple styling for the input form container */
-        #input-container {
-            margin: 20px 0;
-            text-align: center;
-        }
-        #phrase-input {
-            padding: 8px;
-            font-size: 16px;
-            width: 300px;
-        }
-        #submit-btn {
-            padding: 8px 16px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        #error-msg {
-            color: red;
-            margin-top: 5px;
-            font-weight: bold;
-        }
-    </style>
 </head>
 
 <body onload="brython()">
     <div id="page-wrapper">
         <header>
             <h1>Python Maze Generator V3</h1>
+            <nav>
+                <a href="../version-one/">View V1</a>
+                <a href="../version-two/">View V2</a>
+                <a href="../version-three/" class="active">View V3</a>
+                <a href="https://github.com/RyanMontville/pythonmaze" target="_blank">View GitHub Repo</a>
+            </nav>
         </header>
-        <main>
-            <!-- HTML Input Form -->
+        <div id="prompt-wrapper">
             <div id="input-container">
-                <label for="phrase-input">Type a word or phrase (12 letters max, no spaces counted):</label><br><br>
-                <input type="text" id="phrase-input" placeholder="Enter word or phrase...">
+                <div id="prompt-label">Type a word or phrase 12 letters long or less (not including spaces):</div>
+                <br>
+                <input type="text" id="phrase-input" placeholder="Enter word/phrase" autofocus>
                 <button id="submit-btn">Generate Maze</button>
                 <div id="error-msg"></div>
             </div>
-
-            <!-- Target container for the turtle canvas wrapper -->
-            <div id="turtle-div"></div>
+        </div>
+        <main>
+            <div id="turtle-div-v3"></div>
         </main>
     </div>
 
-    <!-- 1. generator.py module -->
-    <script type="text/python" id="generator">
-        from turtle import Turtle
-        import random
-
-        class Generator(Turtle):
-            def __init__(self):
-                super().__init__()
-                self.hideturtle()
-                self.speed("fastest")
-                self.normal = 1
-                self.bold = 3
-                self.space_options = [1,2,3,4]
-                
-            def draw_line_from_tuple(self,ct):
-                self.pu()
-                self.goto(ct[0],ct[1])
-                self.pd()
-                self.goto(ct[2],ct[3])
-                
-            def update_coordinates(self,x_coordinate,y_coordinate,x_start_change,x_end_change,y_start_change,y_end_change):
-                x_start = x_coordinate + x_start_change
-                x_end = x_coordinate + x_end_change
-                y_start = y_coordinate + y_start_change
-                y_end = y_coordinate + y_end_change
-                self.draw_line_from_tuple((x_start,y_start,x_end,y_end))
-                return (x_end,y_end)
-                
-            def update_coordinates_from_array(self,st_coords,coords_array):
-                coordinates = self.update_coordinates(st_coords[0],st_coords[1],st_coords[2],st_coords[3],st_coords[4],st_coords[5])
-                for ct in coords_array:
-                    coordinates = self.update_coordinates(coordinates[0],coordinates[1],ct[0],ct[1],ct[2],ct[3])
-                return coordinates
-                    
-            def draw_border(self):      
-                border_start = (-450,290,0,880,0,0)
-                border_array = [(0,0,0,-560),(0,-880,-20,-20),(0,0,0,560)]
-                self.update_coordinates_from_array(border_start,border_array)
-            
-            def reset_coordinates(self,x_cord,y_cord):
-                self.pu()
-                self.goto(x_cord,y_cord)
-
-            def draw_circle(self,x_offset,y_offset,radius,angle,heading):
-                self.reset_coordinates(self.xcor()+x_offset,self.ycor()+y_offset)
-                self.pd()
-                self.setheading(heading)
-                self.circle(radius, angle)
-
-            def draw_right_side(self,start_x,start_y):
-                self.update_coordinates(start_x,start_y,0,140,-240,-240)
-                if random.choice([True, False]):
-                    self.update_coordinates(start_x + 140, start_y,0,0,0,-220)
-                    return (start_x + 140, start_y,"bottom")
-                else:
-                    self.update_coordinates(start_x + 140, start_y,0,0,-20,-240)
-                    return (start_x + 140, start_y,"top")
-
-            # Include your letter drawing methods (draw_a through draw_z) and space methods here...
-            def draw_row_one_end(self, draw_second_row_ends):
-                start_coords = (430,290,-20,-20,-20,-40)
-                coords_array = [(-20,0,0,0),(20,0,-20,-20),(-20,0,-20,-20),(0,0,0,-20),(20,0,-20,-20),
-                                (-20,0,-20,-20),(20,0,-20,-20),(0,0,0,-20),(-20,0,-20,-20),(20,0,-20,-20),
-                                (-20,0,-20,-20)]
-                coords = self.update_coordinates_from_array(start_coords,coords_array)
-                if draw_second_row_ends:
-                    coords = self.update_coordinates(coords[0],coords[1],20,-1,-240,-240)
-                    coords = self.update_coordinates(-430,coords[1],0,0,0,220)
-
-            def two_row_finish(self):
-                # (your two_row_finish array logic)
-                pass
-    </script>
-
-    <!-- 2. words.py module -->
     <script type="text/python" id="words">
-        class Words():
-            def __init__(self):
-                self.input_string = ""
-                self.line_one = ""
-                self.line_two = ""
+class Words():
+    def __init__(self):
+        self.input_string = ""
+        self.line_one = ""
+        self.line_two = ""
 
-            def check_phrase(self,phrase_to_check):
-                if not phrase_to_check:
-                    return (False, "Please enter at least 1 letter.")
-                phrase_no_spaces = phrase_to_check.replace(" ","")
-                if len(phrase_no_spaces) == 0:
-                    return (False, "Error! Please enter at least 1 letter.")
-                elif len(phrase_no_spaces) > 12:
-                    return (False, "Error! Word or Phrase is too long (max 12 letters).")
-                elif len(phrase_no_spaces) == 12:
-                    self.input_string = phrase_no_spaces.lower()
-                    return (True,"")
-                else:
-                    self.input_string = phrase_to_check.lower()
-                    return (True,"")
+    def check_phrase(self, phrase_to_check):
+        if phrase_to_check is None:
+            return (
+                False,
+                "Cancelled.\nType a word or phrase 12 letter long or less (not including spaces):",
+            )
+        print(phrase_to_check)
+        phrase_no_spaces = phrase_to_check.replace(" ", "")
+        if len(phrase_no_spaces) == 0:
+            return (False, "Error! Please enter at least 1 letter.\nType a word or phrase 12 letter long or less (not including spaces):")
+        elif len(phrase_no_spaces) > 12:
+            return (False, "Error! Word or Phrase is too long.\nType a word or phrase 12 letter long or less (not including spaces):")
+        elif len(phrase_no_spaces) == 12:
+            self.input_string = phrase_no_spaces.lower()
+            return (True, "")
+        else:
+            self.input_string = phrase_to_check.lower()
+            return (True, "")
 
-            def format_string(self):
-                words = self.input_string.split()
-                line_one = ""
-                if len(words) == 1:
-                    line_one = self.input_string[:6]
-                    line_two = self.input_string[6:]
-                elif len(words[0]) == 6:
-                    line_one = words[0]
-                    line_two = self.input_string[6:]
-                elif len(words[0]) + len(words[1]) == 6:
-                    line_one = words[0] + words[1]
-                    line_two = self.input_string[len(line_one) + 1:]
-                elif len(words[0]) + len(words[1]) < 6:
-                    line_one = words[0] + " " + words[1]
-                    line_two = self.input_string[len(line_one):]
-                else:
-                    line_one = words[0]
-                    line_two = self.input_string[len(line_one):]
-                line_one_final = line_one.strip()
-                line_two_final = line_two.strip()
-                while len(line_one_final) < 6:
-                    line_one_final += "-"
-                while len(line_two_final) < 6:
-                    line_two_final += "-"
-                if len(line_two_final) > 6:
-                    no_spaces = self.input_string.replace(" ","")
-                    self.line_one = no_spaces[0:6]
-                    second_line = no_spaces[6:]
-                    while len(second_line) < 6:
-                        second_line += "-"
-                    self.line_two = second_line
-                else:
-                    self.line_one = line_one_final
-                    self.line_two = line_two_final
+    def set_word(self, word_input):
+        self.input_string = word_input
+
+    def format_string(self):
+        words = self.input_string.split()
+        line_one = ""
+        if len(words) == 1:
+            line_one = self.input_string[:6]
+            line_two = self.input_string[6:]
+        elif len(words[0]) == 6:
+            line_one = words[0]
+            line_two = self.input_string[6:]
+        elif len(words[0]) + len(words[1]) == 6:
+            line_one = words[0] + words[1]
+            line_two = self.input_string[len(line_one) + 1:]
+        elif len(words[0]) + len(words[1]) < 6:
+            line_one = words[0] + " " + words[1]
+            line_two = self.input_string[len(line_one):]
+        else:
+            line_one = words[0]
+            line_two = self.input_string[len(line_one):]
+        line_one_final = line_one.strip()
+        line_two_final = line_two.strip()
+        while len(line_one_final) < 6:
+            line_one_final += "-"
+        while len(line_two_final) < 6:
+            line_two_final += "-"
+        if len(line_two_final) > 6:
+            no_spaces = self.input_string.replace(" ", "")
+            self.line_one = no_spaces[0:6]
+            second_line = no_spaces[6:]
+            while len(second_line) < 6:
+                second_line += "-"
+            self.line_two = second_line
+        else:
+            self.line_one = line_one_final
+            self.line_two = line_two_final
     </script>
 
-    <!-- 3. main.py execution script -->
-    <script type="text/python">
-        from browser import document
-        from generator import Generator
-        import words
-        import turtle
+    <script type="text/python" id="generator">
+import turtle
+import random
 
-        # Map turtle to your custom HTML div container
-        turtle.set_defaults(
-            canvwidth = 850,
-            canvheight = 650,
-            turtle_canvas_wrapper = document["turtle-div"]
-        )
+class Generator(turtle.Turtle):
+    def __init__(self):
+        super().__init__()
+        self.draw_border()
+        self.hideturtle()
+        self.speed("fastest")
+        self.normal = 1
+        self.bold = 3
+        self.space_options = [1,2,3,4]
+        
+    def print_cors(self):
+        xint = int(self.xcor())
+        yint = int(self.ycor())
+        print("X: " + str(xint) + ", Y: " + str(yint))
+        
+    def draw_line_from_tuple(self,ct):
+        self.pu()
+        self.goto(ct[0],ct[1])
+        self.pd()
+        self.goto(ct[2],ct[3])
+        
+    def update_coordinates(self,x_coordinate,y_coordinate,x_start_change,x_end_change,y_start_change,y_end_change):
+        x_start = x_coordinate + x_start_change
+        x_end = x_coordinate + x_end_change
+        y_start = y_coordinate + y_start_change
+        y_end = y_coordinate + y_end_change
+        self.draw_line_from_tuple((x_start,y_start,x_end,y_end))
+        return (x_end,y_end)
+        
+    def update_coordinates_from_array(self,st_coords,coords_array):
+        coordinates = self.update_coordinates(st_coords[0],st_coords[1],st_coords[2],st_coords[3],st_coords[4],st_coords[5])
+        for ct in coords_array:
+            coordinates = self.update_coordinates(coordinates[0],coordinates[1],ct[0],ct[1],ct[2],ct[3])
+        return coordinates
+            
+    def draw_border(self):      
+        border_start = (-450,290,0,880,0,0)
+        border_array = [(0,0,0,-560),(0,-880,-20,-20),(0,0,0,560)]
+        self.update_coordinates_from_array(border_start,border_array)
+    
+    def reset_coordinates(self,x_cord,y_cord):
+        self.pu()
+        self.goto(x_cord,y_cord)
 
-        def draw_letter_return_info(info, letter):
-            match letter:
-                case "a": return generator.draw_a(info[0],info[1],info[2])
-                case "b": return generator.draw_b(info[0],info[1],info[2])
-                case "c": return generator.draw_c(info[0],info[1],info[2])
-                case "d": return generator.draw_d(info[0],info[1],info[2])
-                case "e": return generator.draw_e(info[0],info[1],info[2])
-                case "f": return generator.draw_f(info[0],info[1],info[2])
-                case "g": return generator.draw_g(info[0],info[1],info[2])
-                case "h": return generator.draw_h(info[0],info[1],info[2])
-                case "i": return generator.draw_i(info[0],info[1],info[2])
-                case "j": return generator.draw_j(info[0],info[1],info[2])
-                case "k": return generator.draw_k(info[0],info[1],info[2])
-                case "l": return generator.draw_l(info[0],info[1],info[2])
-                case "m": return generator.draw_m(info[0],info[1],info[2])
-                case "n": return generator.draw_n(info[0],info[1],info[2])
-                case "o": return generator.draw_o(info[0],info[1],info[2])
-                case "p": return generator.draw_p(info[0],info[1],info[2])
-                case "q": return generator.draw_q(info[0],info[1],info[2])
-                case "r": return generator.draw_r(info[0],info[1],info[2])
-                case "s": return generator.draw_s(info[0],info[1],info[2])
-                case "t": return generator.draw_t(info[0],info[1],info[2])
-                case "u": return generator.draw_u(info[0],info[1],info[2])
-                case "v": return generator.draw_v(info[0],info[1],info[2])
-                case "w": return generator.draw_w(info[0],info[1],info[2])
-                case "x": return generator.draw_x(info[0],info[1],info[2])
-                case "y": return generator.draw_y(info[0],info[1],info[2])
-                case "z": return generator.draw_z(info[0],info[1],info[2])
-                case _: return generator.draw_space_options(info[0],info[1],info[2])
+    def draw_circle(self,x_offset,y_offset,radius,angle,heading):
+        self.reset_coordinates(self.xcor()+x_offset,self.ycor()+y_offset)
+        self.pd()
+        self.setheading(heading)
+        self.circle(radius, angle)
+        
+    def draw_grid(self):
+        self.pencolor("LightGrey")
+        coords = self.update_coordinates(-450,270,0,880,0,0)
+        while coords[1] > -270:
+            coords = self.update_coordinates(-450,coords[1],0,880,-20,-20)
+        coords = self.update_coordinates(-430,290,0,0,0,-580)
+        while coords[0] < 430:
+            coords = self.update_coordinates(coords[0],290,20,20,0,-580)
+        self.pencolor("black")
 
-        word_input = words.Words()
-        generator = None
+    def draw_right_side(self,start_x,start_y):
+        self.update_coordinates(start_x,start_y,0,140,-240,-240)
+        if random.choice([True, False]):
+            self.update_coordinates(start_x + 140, start_y,0,0,0,-220)
+            return (start_x + 140, start_y,"bottom")
+        else:
+            self.update_coordinates(start_x + 140, start_y,0,0,-20,-240)
+            return (start_x + 140, start_y,"top")
 
-        def on_submit(ev):
-            global generator
-            phrase = document["phrase-input"].value
-            response = word_input.check_phrase(phrase)
-            
-            if not response[0]:
-                document["error-msg"].text = response[1]
-                return
-            
-            # Clear errors and hide the input form once valid
-            document["error-msg"].text = ""
-            document["input-container"].style.display = "none"
-            
-            # Initialize Screen and Generator
-            screen = turtle.Screen()
-            screen.setup(width=850, height=650)
-            screen.bgcolor("white")
-            
-            generator = Generator()
-            generator.draw_border()
-            
-            info = (-450, 290, "top")
-            for i in word_input.line_one:
-                info = draw_letter_return_info(info, i)
-            generator.draw_row_one_end(True)
-            
-            info = (-430, 50, "top")
-            for i in word_input.line_two:
-                info = draw_letter_return_info(info, i)
-            generator.two_row_finish()
+    def draw_a(self,start_x, start_y,top_or_bottom):
+        self.pensize(self.bold)
+        start_coords = (start_x,start_y,40,70,-180,-40)
+        coords_array = [(20,50,0,-140),(-20,-30,0,60),(0,-20,0,0),(0,-10,0,-60),(10,15,80,110),(0,10,0,0),
+                        (0,5,0,-30),(0,-20,0,0)]
+        self.update_coordinates_from_array(start_coords,coords_array)
+        self.pensize(self.normal)
+        start_coords = (start_x,start_y,20,20,0,-40)
+        coords_array = [(-20,20,-20,-20),(0,0,0,40),(0,20,0,0),(20,20,20,0),(-20,-60,-60,-60),(-20,20,-20,-20),
+                        (0,0,0,-20),(-20,-20,0,-20),(0,30,0,0),(-50,-30,-20,-20),(0,20,-20,-20),(20,20,0,-20),
+                        (0,-60,0,0),(80,80,60,-20),(0,-60,0,0),(-20,120,-20,-20),(-40,-40,0,20),(-20,20,20,20),
+                        (0,0,-20,60),(0,20,20,20),(-36,-20,20,20),(0,0,0,20),(20,0,20,20),(-20,0,20,20),(0,0,0,20),
+                        (-20,-20,-60,0)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        if top_or_bottom == "top":
+            close_coords = self.update_coordinates(coords[0],coords[1],0,-20,0,0)
+            self.pensize(self.bold)
+            if random.choice([True, False]):
+                self.update_coordinates(close_coords[0],close_coords[1],-10,10,-20,-20)
+            else:
+                self.update_coordinates(close_coords[0],close_coords[1],-20,-40,-160,-160)
+            self.pensize(self.normal)
+        else:
+            self.pensize(self.bold)
+            close_coords = self.update_coordinates(start_x,start_y,70,90,-40,-40)
+            self.pensize(self.normal)
+            close_coords = self.update_coordinates(close_coords[0],close_coords[1],-10,-10,-180,-200)
+        return self.draw_right_side(start_x,start_y)
+        
+    def draw_b(self,start_x, start_y,top_or_bottom):
+        self.pensize(self.bold)
+        start_coords = (start_x,start_y,20,20,-180,-80)
+        coords_array = [(0,20,20,20),(-20,0,-140,-140),(0,0,125,85),(0,0,-30,-70),(0,0,-15,-15)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        for i in range(2):
+            self.draw_circle(0,0,35,180, 0)
+        self.draw_circle(0,-125,20,180, 0)
+        self.draw_circle(0,30,20,180, 0)
+        self.pensize(self.normal)
+        start_coords = (start_x,start_y,20,20,-60,-20)
+        coords_array = [(0,60,0,0),(40,40,20,-40),(-20,-20,-120,40),(0,-60,-20,-20),(40,40,-20,-40),
+                        (0,-10,0,0),(5,18,-20,-20),(11,-9,-20,-20),(-15,10,-20,-20),(10,-5,-20,-20),
+                        (16,36,-20,-20),(20,0,100,100),(0,-20,-20,-20),(0,40,-20,-20),(-40,-20,-20,-20),
+                        (20,0,-20,-20),(0,0,-20,-60),(-20,-20,0,20),(0,-20,0,0),(0,-20,-20,-20),
+                        (0,0,0,26),(-20,-20,-46,-26),(-20,-20,20,0),(-20,120,-20,-20)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        if top_or_bottom == "top":
+            start_coords = (start_x,start_y,20,20,0,-20)
+            coords_array = [(-20,0,-160,-160),(80,80,-40,-60)]
+            self.update_coordinates_from_array(start_coords,coords_array)
+        else:
+            start_coords = (start_x,start_y,0,20,-80,-80)
+            coords_array = [(60,60,-160,-140),(20,41,0,0)]
+            self.update_coordinates_from_array(start_coords,coords_array)
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_c(self,start_x, start_y,top_or_bottom):
+        self.pensize(self.bold)
+        self.reset_coordinates(start_x,start_y)
+        self.draw_circle(80,-60,40,180,90)
+        self.update_coordinates(self.xcor(),self.ycor(),0,0,0,-60)
+        self.draw_circle(0,0,40,180,270)
+        self.draw_circle(-60,0,20,180,270)
+        self.update_coordinates(self.xcor(),self.ycor(),-40,-40,0,60)
+        self.draw_circle(40,0,20,180,90)
+        self.pensize(self.normal)
+        start_coords = (start_x,start_y,120,120,-40,-160)
+        coords_Array = [(0,-40,0,-40),(0,-20,0,0),(0,-20,0,0),(-20,20,20,20),(0,40,0,40),
+                        (0,0,0,100),(0,-40,-40,-40),(0,0,0,20),(-20,-20,0,-60),
+                        (0,40,20,20),(0,0,0,-20)]
+        coords = self.update_coordinates_from_array(start_coords,coords_Array)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,20,0)
+        if top_or_bottom == "bottom":
+            start_coords = (coords[0],coords[1],20,40,120,100)
+            coords_Array = [(0,0,-20,0),(-40,-20,0,-20),(-80,-80,-140,-200),
+                            (0,80,20,20),(0,20,0,20)]
+            coords = self.update_coordinates_from_array(start_coords,coords_Array)
+        else:
+            start_coords = (coords[0],coords[1],-20,20,120,80)
+            coords_Array = [(20,20,20,0),(20,-20,-140,-180),(0,-80,0,0),
+                            (20,-10,20,20),(0,-10,0,10)]
+            coords = self.update_coordinates_from_array(start_coords,coords_Array)
+        return self.draw_right_side(start_x,start_y)
 
-            generator.update_coordinates(0, 0, 0, 0, 0, 0)
-            turtle.done()
+    def draw_d(self,start_x, start_y,top_or_bottom):
+        self.pensize(self.bold)
+        self.update_coordinates(start_x,start_y,40,40,-40,-180)
+        self.draw_circle(20,0,60,90,0)
+        self.update_coordinates(self.xcor(),self.ycor(),0,0,0,20)
+        self.draw_circle(0,0,60,90,90)
+        self.update_coordinates(self.xcor(),self.ycor(),0,0,-20,-120)
+        self.draw_circle(0,0,40,90,0)
+        self.update_coordinates(self.xcor(),self.ycor(),0,0,0,20)
+        self.draw_circle(0,0,40,90,90)
+        self.pensize(self.normal)
+        start_coords = (start_x,start_y,20,40,-20,-20)
+        coord_array = [(0,0,0,-20),(-40,-20,0,0),(20,0,-20,-20),(-20,0,-20,-20),(20,0,-20,-20),
+                       (-20,0,-20,-20),(20,0,-20,-20),(-20,0,-20,-20),(20,0,-20,-20),(0,0,0,-40),
+                       (-20,120,-20,-20),(-100,-100,0,40),(20,20,20,-20),(20,20,-20,20),(0,40,0,0),
+                       (-20,20,-20,-20),(-65,-20,40,40),(0,20,20,20),(0,-20,100,100),(-45,0,20,20),
+                       (20,-40,20,20),(-20,-20,0,-20)]
+        coords = self.update_coordinates_from_array(start_coords,coord_array)
+        if top_or_bottom == "top":
+            if random.choice([True, False]):
+                closed_coord = self.update_coordinates(coords[0],coords[1],0,0,20,40)
+                closed_coord = self.update_coordinates(closed_coord[0],closed_coord[1],-40,-60,-20,-20)
+            else:
+                closed_coord = self.update_coordinates(coords[0],coords[1],-20,-20,40,20)
+                closed_coord = self.update_coordinates(closed_coord[0],closed_coord[1],20,40,-200,-200)
+        else:
+            if random.choice([True, False]):
+                closed_coord = self.update_coordinates(coords[0],coords[1],0,0,40,20)
+                closed_coord = self.update_coordinates(closed_coord[0],closed_coord[1],-20,-20,-160,-181)
+            else:
+                closed_coord = self.update_coordinates(coords[0],coords[1],-60,-40,20,20)
+                closed_coord = self.update_coordinates(closed_coord[0],closed_coord[1],40,40,-220,-199)
+        return self.draw_right_side(start_x,start_y)
+        
+    def draw_e(self,start_x, start_y,top_or_bottom):
+        self.pensize(self.bold)
+        start_coords = (start_x,start_y,20,100,-20,-20)
+        coord_Array =[(0,-60,-20,-20),(0,0,0,-40),(0,40,0,0),(0,-40,-20,-20),
+                      (0,0,0,-40),(0,60,0,0),(0,-80,-20,-20),(0,0,0,120)]
+        coords = self.update_coordinates_from_array(start_coords,coord_Array)
+        self.pensize(self.normal)
+        start_coords = (coords[0],coords[1],0,0,-120,-200)
+        coord_Array = [(-20,120,0,0),(-60,-20,20,20),(0,-60,20,20),(0,0,0,-20),
+                       (-20,-20,0,40),(0,100,0,0),(-20,-40,20,20),(0,20,20,20),
+                       (-60,0,20,20),(0,0,0,40),(0,-40,0,0),(-20,40,20,20),
+                       (0,0,0,60),(-120,-100,-20,-20)]
+        coords = self.update_coordinates_from_array(start_coords,coord_Array)
+        match random.choice([1,2,3]):
+            case 1:
+                exit = self.update_coordinates(coords[0],coords[1],100,100,-100,-120)
+                exit = self.update_coordinates(exit[0],exit[1],0,0,0,-20)
+            case 2:
+                exit = self.update_coordinates(coords[0],coords[1],100,100,-40,-60)
+                exit = self.update_coordinates(exit[0],exit[1],0,0,-60,-80)
+            case 3:
+                exit = self.update_coordinates(coords[0],coords[1],100,100,-40,-60)
+                exit = self.update_coordinates(exit[0],exit[1],0,0,-40,-60)
+        match random.choice([1,2,3,4]):
+            case 1:
+                block = self.update_coordinates(start_x,start_y,60,60,-220,-240)
+                block = self.update_coordinates(block[0],block[1],20,20,0,20)
+            case 2:
+                block = self.update_coordinates(start_x,start_y,60,60,-220,-240)
+                block = self.update_coordinates(block[0],block[1],60,80,20,20)
+            case 3:
+                block = self.update_coordinates(start_x,start_y,60,80,-220,-220)
+                block = self.update_coordinates(block[0],block[1],40,40,0,-20)
+            case 4:
+                block = self.update_coordinates(start_x,start_y,120,120,-180,-200)
+                block = self.update_coordinates(block[0],block[1],-40,-40,-20,-40)
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_f(self,start_x, start_y,top_or_bottom):
+        self.pensize(self.bold)
+        start_coords = (start_x,start_y,20,100,-20,-20)
+        coord_Array =[(0,-60,-20,-20),(0,0,0,-40),(0,40,0,0),(0,-40,-20,-20),
+                      (0,0,0,-60),(-20,-20,0,120)]
+        coords = self.update_coordinates_from_array(start_coords,coord_Array)
+        self.pensize(self.normal)
+        coord_Array = [(0,20,0,0),(0,0,0,-40),(0,-60,0,0),(80,20,-20,-20),
+                       (0,40,-20,-20),(0,0,0,-120),(20,-120,-20,-20),(20,100,20,20),
+                       (0,0,0,100),(0,-40,0,0),(0,0,0,-60),(20,20,40,-20),(0,-40,0,0),
+                       (0,0,0,40),(-40,-20,40,40),(-20,0,-60,-60),(20,0,-20,-20),
+                       (-20,0,-20,-20),(60,60,220,200)]
+        coords = self.update_coordinates_from_array(start_coords,coord_Array)
+        if top_or_bottom == "top":
+            coords = self.update_coordinates(coords[0],coords[1],40,60,-200,-200)
+        else :
+            coords = self.update_coordinates(coords[0],coords[1],40,40,-200,-220)
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_g(self,start_x, start_y,top_or_bottom):
+        self.pensize(self.bold)
+        self.reset_coordinates(start_x,start_y)
+        self.draw_circle(120,-140,40,180,90)
+        self.update_coordinates(self.xcor(),self.ycor(),0,0,-20,-60)
+        self.draw_circle(0,0,40,180,270)
+        self.draw_circle(-60,0,20,180,270)
+        self.update_coordinates(self.xcor(),self.ycor(),-40,-40,0,60)
+        self.draw_circle(40,0,20,180,90)
+        start_coords = (self.xcor(),self.ycor(),40,30,-60,-60)
+        coords_array = [(0,0,0,20),(0,50,0,0),(0,0,0,-40),(-20,-20,0,20)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        self.pensize(self.normal)
+        start_coords = (start_x,start_y,20,20,-220,-20)
+        coords_array = [(0,40,-20,-20),(0,40,-20,-20),(0,0,-20,40),(-20,-20,20,-20),
+                        (0,0,-60,-40),(-20,-20,0,60),(-20,-20,20,0),(0,0,-40,-120),
+                        (35,35,-60,0),(0,45,-20,-20),(0,0,0,160)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        if random.choice([True, False]):
+            self.update_coordinates(coords[0],coords[1],-100,-100,-220,-240)
+        else:
+            self.update_coordinates(coords[0],coords[1],-20,-40,-80,-80)
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_h(self,start_x, start_y,top_or_bottom):
+        self.pensize(self.bold)
+        start_coords = (start_x,start_y,40,40,-40,-160)
+        coords_array = [(0,20,-20,-20),(0,0,0,60),(0,40,0,0),(0,0,0,-60),
+                        (0,20,0,0),(0,0,20,120),(0,-20,20,20),(0,0,0,-60),
+                        (0,-40,0,0),(0,0,0,40),(0,-20,20,20)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        self.pensize(self.normal)
+        start_coords = (coords[0],coords[1],-20,60,20,20)
+        coords_array = [(-20,-20,0,-60),(0,-20,40,40),(-40,-40,20,-100),(-20,0,0,0),
+                        (20,0,-20,-20),(0,0,0,-60),(80,0,0,0),(0,80,20,20),(-20,-20,60,0),
+                        (40,40,-40,20),(20,0,80,80),(0,0,60,100)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_i(self,start_x, start_y,top_or_bottom):
+        self.pensize(self.bold)
+        start_coords = (start_x,start_y,30,60,-40,-40)
+        coords_array = [(0,0,0,-100),(0,-30,0,0),(0,80,-20,-20),(0,-30,20,20),(0,0,0,100),
+                        (0,30,0,0),(0,-80,20,20)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        if random.choice([True, False]):
+            self.update_coordinates(start_x,start_y,30,30,-20,-40)
+        else:
+            self.update_coordinates(start_x,start_y,30,30,-140,-160)
+        if random.choice([True, False]):
+            self.update_coordinates(start_x,start_y,110,110,-20,-40)
+        else:
+            self.update_coordinates(start_x,start_y,110,110,-140,-160)
+        self.pensize(self.normal)
+        start_coords = (coords[0],coords[1],-13,-30,0,0)
+        coords_array = [(15,30,-20,-20),(-30,10,-20,-20),(0,0,0,-60),(-10,-20,-20,-20),
+                        (0,0,60,0),(-3,-20,-20,-20),(120,10,-20,-20),(-10,10,-20,-20),
+                        (-3,10,-20,-20),(0,0,-20,40),(90,40,-40,-40),(0,0,-20,0),
+                        (-20,-20,0,20),(0,90,0,0),(-20,-20,20,40),(-10,0,0,0),
+                        (-40,0,40,40),(0,0,0,40),(-20,-20,-20,20),(0,40,0,0),(-30,-30,40,60)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_j(self,start_x, start_y,top_or_bottom):
+        self.pensize(self.bold)
+        start_cords = (start_x,start_y,60,100,-20,-20)
+        coords_array = [(0,0,0,-90),(20,20,0,90),(0,20,0,0),(0,-80,20,20)]
+        self.update_coordinates_from_array(start_cords,coords_array)
+        self.draw_circle(20,-110,10,180,270)
+        self.draw_circle(-40,0,30,180,270)
+        self.pensize(self.normal)
+        start_coords = (start_x,start_y,20,20,0,-220)
+        coords_array = [(0,80,0,0),(0,0,0,40),(0,-40,0,0),(-20,20,-20,-20),
+                        (40,40,-40,40),(0,-80,0,0),(0,0,-40,100),(0,60,0,0),
+                        (-20,-20,-40,-20),(0,-20,0,0),(0,0,-30,0),(20,-40,40,40)]
+        self.update_coordinates_from_array(start_coords, coords_array)
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_k(self,start_x, start_y,top_or_bottom):
+        self.pensize(self.bold)
+        start_coords = (start_x,start_y,40,40,-60,-160)
+        coords_array = [(0,20,-20,-20),(0,0,0,60),(0,40,0,-60),(20,-20,0,70),
+                        (0,40,0,70),(-20,-60,0,-60),(0,0,0,60),(0,-20,0,0)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        if random.choice([True, False]):
+            self.update_coordinates(coords[0],coords[1],0,0,0,-20)
+        else:
+            self.update_coordinates(coords[0],coords[1],0,0,-120,-140)
+        if random.choice([True, False]):
+            self.update_coordinates(coords[0],coords[1],60,80,0,0)
+        else:
+            self.update_coordinates(coords[0],coords[1],60,80,-140,-140)
+        self.pensize(self.normal)
+        if top_or_bottom == "top":
+            self.update_coordinates(coords[0],coords[1],0,-20,0,0)
+        else:
+            self.update_coordinates(coords[0],coords[1],-20,-20,-180,-200)
+        start_coords = (coords[0],coords[1],-20,-20,0,-180)
+        coords_array = [(20,20,-20,40),(20,100,-40,-40),(-80,-20,20,20),(0,0,0,20),
+                        (-50,-31,20,20),(20,31,0,0),(-10,20,20,20),(-52,-20,20,20),
+                        (20,-20,20,20),(-2,20,20,20),(5,20,20,20),(-40,-40,20,60),
+                        (-20,-20,-40,-20),(0,-80,0,0)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_l(self,start_x, start_y,top_or_bottom):
+        self.pensize(self.bold)
+        start_coords = (start_x,start_y,0,0,-100,-220)
+        coords_array = [(0,80,-20,-20),(0,-60,20,20),(0,0,0,120)]
+        coords = self.update_coordinates_from_array(start_coords, coords_array)
+        if top_or_bottom == "top":
+            self.update_coordinates(start_x,start_y,0,0,-220,-240)
+        self.pensize(self.normal)
+        start_coords = (coords[0],coords[1],0,0,0,100)
+        coords_array = [(0,20,-20,-20),(0,0,-20,-40),(20,0,0,0),(-20,0,-20,-20),(0,0,0,-20),
+                        (20,0,-20,-20),(-20,0,-20,-20),(0,20,-20,-20),(0,0,0,140),(0,60,0,0),
+                        (-20,-20,0,-20),(-20,-20,0,-20),(0,60,0,0),(-20,-20,20,0),
+                        (-60,0,-20,-20),(20,-40,-20,-20),(0,0,0,-80),(0,-40,0,0),(0,60,-20,-20),
+                        (0,0,-40,80),(0,20,0,0),(20,0,-20,-20),(-20,0,-20,-20),(20,0,-20,-20),
+                        (-20,0,-20,-20),(20,0,-20,-20)]
+        coords = self.update_coordinates_from_array(start_coords, coords_array)
+        if random.choice([True, False]):
+            self.update_coordinates(start_x,start_y,80,100,-40,-40)
+        else:
+            self.update_coordinates(start_x,start_y,40,40,-60,-80)
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_m(self,start_x, start_y,top_or_bottom):
+        self.pensize(self.bold)
+        start_coord = (start_x,start_y,60,60,-60,-200)
+        coords_array = [(20,20,0,100),(0,20,0,-40),(0,20,0,40),(0,0,0,-100),
+                        (20,20,0,140),(-20,-40,0,-40),(0,-20,0,40)]
+        self.update_coordinates_from_array(start_coord,coords_array)
+        if random.choice([True,False]):
+            self.update_coordinates(start_x,start_y,60,80,-60,-60)
+        else:
+            self.update_coordinates(start_x,start_y,60,80,-200,-200)
+        self.pensize(self.normal)
+        start_coord = (start_x,start_y,0,100,-20,-20)
+        coords_array = [(20,20,20,-40),(-20,-20,-10,40),(-20,-20,-40,-20),
+                        (0,-60,0,0),(-20,20,-20,-20),(20,-20,-20,-20),(0,0,0,-20),
+                        (20,20,0,-20),(0,-40,0,0),(20,60,-20,-20),(-60,-20,-20,-20),
+                        (0,0,0,-20),(-20,-20,0,-20),(0,40,0,0),(-60,40,-20,-20),
+                        (0,0,60,0),(20,20,20,-20)]
+        self.update_coordinates_from_array(start_coord,coords_array)
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_n(self,start_x, start_y,top_or_bottom):
+        self.pensize(self.bold)
+        start_coords = (start_x,start_y,20,20,-40,-180)
+        coords_array = [(20,20,0,100),(0,40,0,-100),(0,20,0,0),(0,0,0,140),
+                        (-20,-20,0,-100),(0,-40,0,100),(0,-20,0,0)]
+        self.update_coordinates_from_array(start_coords, coords_array)
+        self.pensize(self.normal)
+        start_coords = (start_x,start_y,20,20,0,-40)
+        coords_array = [(0,20,-160,-160),(0,0,0,20),(10,20,30,0),(0,0,0,-20),(0,20,0,0),(0,0,0,-20),(0,-80,0,0),
+                        (100,100,-20,40),(0,20,0,0),(20,0,-40,-40),(0,0,0,20),(20,0,40,40),(0,0,20,40),(-20,0,0,0),
+                        (20,0,20,20),(-20,0,20,20),(20,0,20,20),(0,0,20,40),(0,-20,0,0),(0,0,-20,0),(0,-60,0,0),
+                        (0,20,0,-20),(0,5,0,-20)]
+        self.update_coordinates_from_array(start_coords, coords_array)
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_o(self,start_x, start_y,top_or_bottom):
+        self.pensize(self.bold)
+        start_coords = (start_x,start_y,20,20,-80,-100)
+        coords_array = [(20,20,40,-20),(40,40,0,60),(20,20,-20,-40)]
+        self.update_coordinates_from_array(start_coords, coords_array)
+        self.draw_circle(0,40,40,180,90)
+        self.draw_circle(0,-60,40,180,270)
+        self.draw_circle(-20,60,20,180,90)
+        self.draw_circle(0,-60,20,180,270)
+        self.pensize(self.normal)
+        start_coords = (start_x,start_y,60,60,0,-20)
+        coords_array = [(0,-40,0,0),(0,-20,-60,-60),(0,20,-100,-100),(0,20,20,20),(0,0,0,-40),
+                        (-40,0,-20,-20),(-20,20,20,20),(0,0,0,-40),(0,20,20,20),(20,20,-20,0),
+                        (0,20,0,0),(20,-40,20,20),(-20,40,20,20),(-40,-40,23,0),(40,40,20,40),
+                        (20,0,0,0),(-20,0,20,20),(-20,0,20,20),(0,0,0,20),(20,0,0,0),
+                        (-20,0,20,20),(0,0,0,40),(-20,0,0,0)]
+        self.update_coordinates_from_array(start_coords,coords_array)
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_p(self,start_x, start_y,top_or_bottom):
+        self.pensize(self.bold)
+        coords = self.update_coordinates(start_x,start_y,20,20,-20,-160)
+        coords = self.update_coordinates(coords[0],coords[1],20,20,0,60) 
+        self.draw_circle(0,0,40,180,0)
+        coords = self.update_coordinates(self.xcor(),self.ycor(),-5,-5,-20,-60)
+        self.draw_circle(0,0,20,180,0)
+        self.pensize(self.normal)
+        start_coords = (start_x,start_y,40,40,0,-20)
+        coords_array = [(-20,-20,-140,-220),(20,20,20,60),(20,20,-20,-60),(20,20,20,60),(20,20,-20,-60),
+                        (20,20,20,60),(0,-80,0,0),(20,20,0,60),(20,20,60,-40),(20,20,-20,140),(-20,0,0,0),
+                        (20,20,20,-140)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        if random.choice([True,False]):
+            self.update_coordinates(coords[0],coords[1],0,0,0,-20)
+        else:
+            self.update_coordinates(coords[0],coords[1],0,0,-60,-80)
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_q(self,start_x, start_y,top_or_bottom):
+        self.pensize(self.bold)
+        start_coords = (start_x,start_y,20,20,-80,-120)
+        coords_array = [(20,20,0,60),(40,40,0,-50),(0,-5,0,10),(0,-15,0,-10),(0,14,0,-20),
+                        (26,26,50,-6),(0,10,0,-16),(-10,-21,-14,4)]
+        coords = self.update_coordinates_from_array(start_coords, coords_array)
+        self.reset_coordinates(start_x, start_y)
+        self.draw_circle(100,-60,40,180,90)
+        self.draw_circle(60,0,20,180,90)
+        self.draw_circle(0,-60,20,145,270)
+        self.draw_circle(-56,10,40,135,270)
+        self.pensize(self.normal)
+        start_coords = (start_x,start_y,20,20,0,-60)
+        coords_array = [(40,100,40,40),(20,-10,-20,-20),(-10,10,-20,-20),(20,-20,-20,-20),(25,25,-20,-100),
+                        (0,-25,13,13),(0,0,-13,-33),(-20,-20,45,20),(0,60,-20,-20),(-20,-20,0,-20),
+                        (-20,-20,-20,0),(-20,-20,0,20),(-20,-20,40,-40),(-60,-20,20,20),(0,0,0,20),
+                        (-20,-20,0,20),(0,40,0,0),(-35,-60,20,20),(10,27,20,20)]
+        self.update_coordinates_from_array(start_coords,coords_array)
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_r(self,start_x, start_y,top_or_bottom):
+        self.pensize(self.bold)
+        start_coords = (start_x,start_y,20,20,-20,-160)
+        coords_Array = [(20,20,0,60),(0,40,0,-60),(20,-20,0,60),(0,-20,20,20),
+                        (0,0,0,40),(0,20,0,0),(0,-20,20,20)]
+        self.update_coordinates_from_array(start_coords,coords_Array)
+        self.draw_circle(20,-80,40,180,0) 
+        self.draw_circle(0,-60,20,180,0)
+        self.pensize(self.normal)
+        start_coords = (start_x,start_y,20,20,0,-20)
+        coords_array = [(0,0,-220,-160),(0,40,0,0),(-20,-20,0,20),(10,35,20,-20),(65,-1,0,0),(0,0,0,-20),(0,-34,0,0),
+                        (-20,60,-20,-20),(0,0,0,20),(20,20,-40,0),(20,0,40,40),(-35,0,20,20),(20,-30,20,20),(-20,30,20,20),
+                        (0,0,0,60),(20,-20,20,20)]
+        coords = self.update_coordinates_from_array(start_coords, coords_array)
+        right_side = self.draw_right_side(start_x,start_y)
+        self.pensize(self.bold)
+        if right_side[2] == "top":
+            self.update_coordinates(start_x,start_y,20,40,-20,-20)
+        else:
+            self.update_coordinates(start_x,start_y,80,100,-160,-160)
+        self.pensize(self.normal)
+        return right_side
+    
+    def draw_s(self,start_x, start_y,top_or_bottom):
+        self.pensize(self.bold)
+        self.reset_coordinates(start_x + 120, start_y - 80)
+        self.draw_circle(0,0,40,270,90)
+        self.draw_circle(-20,-20,20,270,270)
+        self.reset_coordinates(self.xcor()-40,self.ycor()-20)
+        self.draw_circle(0,0,40,270,270)
+        self.draw_circle(20,20,20,270,90)
+        self.pensize(self.normal)
+        start_coords = (start_x,start_y,20,20,0,-20)
+        coords_array = [(40,20,0,-20),(-40,0,0,0),(0,0,20,0),(-20,-20,-20,-40),(20,0,0,0),(-20,0,-20,-20),(0,0,0,-20),
+                        (60,20,-20,0),(0,0,0,-20),(-20,-20,0,-20),(0,20,0,0),(0,0,10,-60),(0,-10,20,40),(0,-30,0,0),
+                        (20,20,-20,-60),(40,60,20,20),(0,0,-20,0),(20,20,0,20),(-60,0,0,0),(20,20,-40,60),(-40,0,60,40),
+                        (0,0,0,100),(-40,-40,0,-20),(20,40,0,-20)]
+        self.update_coordinates_from_array(start_coords,coords_array)
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_t(self,start_x, start_y,top_or_bottom):
+        self.pensize(self.bold)
+        start_coords = (start_x,start_y,20,50,-80,-80)
+        coords_array = [(0,0,0,-120),(20,20,0,120),(0,30,0,0),(0,-80,20,20)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        self.pensize(self.normal)
+        start_coords = (coords[0],coords[1],0,0,60,20)
+        coords_array = [(0,60,0,0),(-40,20,20,20),(0,0,-20,-40),(20,20,60,-20),(0,-20,0,0),(-80,-85,0,0),(0,0,0,-120),
+                        (-15,20,-20,-20),(0,0,0,120),(15,15,-100,-140),(20,20,40,20),(20,30,0,0),(0,0,0,120),(0,-15,0,0),
+                        (-15,0,-20,-20),(15,0,-20,-20),(-15,0,-20,-20),(15,0,-20,-20),(-15,0,-20,-20),(35,35,-40,100)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        self.update_coordinates(start_x,start_y,0,20,-60,-60)
+        if random.choice([True, False]):
+            self.update_coordinates(coords[0],coords[1],0,-20,0,0)
+            self.update_coordinates(coords[0],coords[1],-40,-40,60,80)
+        else:
+            self.update_coordinates(coords[0],coords[1],-35,-50,0,0)
+            self.update_coordinates(coords[0],coords[1],-20,-20,60,80)
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_u(self,start_x, start_y,top_or_bottom):
+        self.pensize(self.bold)
+        coords = self.update_coordinates(start_x,start_y,40,40,-80,-180)
+        self.draw_circle(0,0,40,180,270)
+        coords = self.update_coordinates(self.xcor(),self.ycor(),0,0,0,100)
+        coords = self.update_coordinates(coords[0],coords[1],-20,-20,0,-100)
+        self.draw_circle(-40,0,20,180,270)
+        coords = self.update_coordinates(self.xcor(),self.ycor(),-40,-40,0,100)
+        self.pensize(self.normal)
+        start_coords = (start_x,start_y,20,20,-40,-220)
+        coords_array = [(20,0,0,0),(0,40,160,160),(0,0,60,-20),(-20,-20,40,60),
+                        (-40,0,0,0),(40,40,0,-160),(0,0,-60,-40),(35,60,0,0),
+                        (0,-60,160,160),(20,20,60,20),(0,20,0,0),(0,20,20,20)]
+        self.update_coordinates_from_array(start_coords, coords_array)
+        return self.draw_right_side(start_x,start_y)
 
-        # Bind the HTML button click event to our Python function
-        document["submit-btn"].bind("click", on_submit)
+    def draw_v(self,start_x, start_y,top_or_bottom):
+        self.pensize(self.bold)
+        start_coords = (start_x,start_y,20,50,-80,-220)
+        coords_Array = [(20,50,0,140),(-20,-40,0,-90),(0,-20,0,90)]
+        self.update_coordinates_from_array(start_coords,coords_Array)
+        self.pensize(self.normal)
+        start_coords = (start_x,start_y,40,40,-80,0)
+        coords_Array = [(-40,-20,-20,-20),(80,0,-20,-20),(-20,0,-20,-20),
+                        (0,0,-20,-60),(-20,0,-20,-20),(15,0,-20,-20),
+                        (-20,10,-20,-20),(15,-10,-20,-20),(-20,15,-20,-20),
+                        (15,15,-20,0),(90,20,0,0),(50,50,40,20),(0,-25,0,0),
+                        (0,10,0,40),(15,0,0,0),(0,15,0,80),(0,0,0,60),
+                        (0,-60,0,0),(0,0,-95,-40),(0,60,0,0)]
+        self.update_coordinates_from_array(start_coords, coords_Array)
+        if random.choice([True,False]):
+            self.update_coordinates(start_x,start_y,40,60,-60,-60)
+        else:
+            self.update_coordinates(start_x,start_y,95,95,-200,-220)
+        return self.draw_right_side(start_x,start_y)
+
+    def draw_w(self,start_x, start_y,top_or_bottom):
+        self.pensize(self.bold)
+        start_coords = (start_x,start_y,60,70,-20,-160)
+        coords_array = [(20,30,0,40),(0,10,0,-40),(20,30,0,140),(-20,-25,0,-100),
+                        (0,-15,0,40),(0,-15,0,-40),(0,-5,0,100)]
+        self.update_coordinates_from_array(start_coords,coords_array)
+        self.pensize(self.normal)
+        start_coords = (start_x,start_y,20,60,-20,-20)
+        coords_array = [(40,40,20,-45),(-80,-60,-15,-15),(-20,-20,-160,0),(43,20,-20,-20),
+                        (-20,0,-20,-20),(27,0,-20,-20),(-20,10,-20,-20),(40,37,0,-20),
+                        (-47,53,0,0),(-20,-120,-20,-20),(20,120,-20,-20),(-120,-120,140,180),
+                        (0,20,0,0),(21,0,-20,-20),(-20,-20,20,40)]
+        self.update_coordinates_from_array(start_coords,coords_array)
+        if top_or_bottom == "top":
+            self.update_coordinates(start_x,start_y,120,120,0,-20)
+        else:
+            self.update_coordinates(start_x,start_y,80,80,0,-20)
+        return self.draw_right_side(start_x,start_y)
+
+    def draw_x(self,start_x, start_y,top_or_bottom):
+        self.pensize(self.bold)
+        start_coords = (start_x,start_y,40,70,-40,-100)
+        coords_array = [(0,-30,0,-80),(20,40,0,60),(0,20,0,-60),(20,-10,0,80),
+                        (0,30,0,60),(-20,-40,0,-40),(0,-20,0,40)]
+        self.update_coordinates_from_array(start_coords, coords_array)
+        self.pensize(self.normal)
+        start_coords = (start_x,start_y,0,20,-20,-20)
+        coords_array = [(20,20,0,-20),(0,-20,0,0),(-20,10,-20,-20),(30,-10,-20,-20),(0,0,0,-40),(20,20,20,-20),(15,-20,0,0),
+                        (0,0,0,-20),(-20,0,-20,-20),(0,0,-60,-20),(20,20,-20,20),(20,20,0,-40),(20,20,70,-20),(20,20,20,60),
+                        (20,20,0,-40),(20,0,40,80),(0,0,0,20),(-30,0,20,20),(20,0,20,20),(-10,0,20,20),(0,0,20,40),
+                        (-20,-20,0,-20),(-20,-20,-15,40),(-20,-20,-20,-40),(-5,-20,-60,-60)]
+        self.update_coordinates_from_array(start_coords, coords_array)
+        if(random.choice([True, False])):
+            self.update_coordinates(start_x,start_y,40,40,0,-20)
+        else:
+            self.update_coordinates(start_x,start_y,40,40,-220,-240)
+        if(random.choice([True, False])):
+            self.update_coordinates(start_x,start_y,120,120,0,-22)
+        else:
+            self.update_coordinates(start_x,start_y,120,120,-220,-240)
+        return self.draw_right_side(start_x,start_y)
+
+    def draw_y(self,start_x, start_y,top_or_bottom):
+        self.pensize(self.bold)
+        start_coords = (start_x,start_y,20,50,-80,-140)
+        coords_array = [(0,0,0,-80),(20,20,0,80),(0,30,0,60),(-20,-40,0,-40),(0,-20,0,40)]
+        self.update_coordinates_from_array(start_coords, coords_array)
+        self.pensize(self.normal)
+        start_coords = (start_x,start_y,20,20,0,-80)
+        coords_array = [(-20,10,0,-60),(20,-5,-20,-20),(0,-10,0,20),(-15,5,0,-40),(0,20,0,0),(10,-25,-20,-20),
+                        (0,-5,0,10),(-10,0,-10,-30),(0,25,0,0),(35,35,-20,0),(20,20,-20,0),(-10,0,20,0),(0,30,0,20),
+                        (-50,-20,60,0),(20,-10,0,60),(0,30,0,60),(-15,-5,-130,-150),(15,-5,50,85),(0,30,0,65),
+                        (-60,-60,0,20),(60,0,0,0),(-60,-35,0,0),(15,-25,-30,50),(60,30,-70,-10),(15,35,20,-20),
+                        (15,35,20,-20),(-5,5,60,40)]
+        self.update_coordinates_from_array(start_coords, coords_array)
+        return self.draw_right_side(start_x,start_y)
+
+    def draw_z(self,start_x, start_y,top_or_bottom):
+        self.pensize(self.bold)
+        start_coord = (start_x,start_y,40,100,-20,-20)
+        coords_array = [(0,-60,0,-100),(0,80,-20,-20),(0,-60,20,20),
+                        (0,60,0,100),(-80,0,20,20),(0,0,0,-20)]
+        self.update_coordinates_from_array(start_coord,coords_array)
+        self.pensize(self.normal)
+        coords = self.update_coordinates(start_x,start_y,20,20,0,-100)
+        coords = self.update_coordinates(coords[0],coords[1],0,15,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,35,0,60)
+        coords = self.update_coordinates(coords[0],coords[1],-10,-35,20,-20)
+        coords = self.update_coordinates(coords[0],coords[1],5,-35,-60,-60)
+        coords = self.update_coordinates(coords[0],coords[1],80,130,0,80)
+        coords = self.update_coordinates(coords[0],coords[1],10,-17,-20,-65)
+        coords = self.update_coordinates(coords[0],coords[1],-73,-93,-35,-35)
+        coords = self.update_coordinates(coords[0],coords[1],-0,0,0,-100)
+        coords = self.update_coordinates(coords[0],coords[1],20,120,20,20)
+        coords = self.update_coordinates(coords[0],coords[1],-40,-40,80,40)
+        coords = self.update_coordinates(coords[0],coords[1],20,20,20,-20)
+        coords = self.update_coordinates(coords[0],coords[1],0,-40,0,0)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,40)
+        coords = self.update_coordinates(coords[0],coords[1],-20,-20,-60,-20)
+        coords = self.update_coordinates(coords[0],coords[1],20,-20,20,20)
+        coords = self.update_coordinates(coords[0],coords[1],0,0,0,-40)
+        if random.choice([True,False]):
+            self.update_coordinates(coords[0],coords[1],80,80,40,60)
+        else:
+            self.update_coordinates(coords[0],coords[1],80,80,0,-20)
+        return self.draw_right_side(start_x,start_y)
+
+    def draw_space_one(self,start_x, start_y,top_or_bottom):
+        start_coords = (start_x,start_y,20,60,-20,-20)
+        coords_array = [(20,60,0,0),(-20,-80,-20,-20),(-20,0,-20,-20),(40,80,0,0),
+                        (-20,-80,-20,-20),(40,80,-20,-20),(-20,-20,0,-20),(0,20,-40,-40),
+                        (0,0,0,140),(-60,-60,0,-100),(0,20,0,0),(0,0,0,-20),(0,20,0,0),
+                        (40,20,-40,-40),(0,-20,-20,-20),(0,0,0,20),(0,-20,0,0),(0,0,0,20),
+                        (0,-20,0,0),(0,0,0,20),(0,-20,0,0),(0,0,0,40),(0,-20,0,0),(0,0,60,0),
+                        (0,0,-20,-100),(0,20,40,40),(0,0,0,-20),(0,20,0,0),(0,0,0,-20),(0,20,0,0),
+                        (0,0,0,-20),(0,20,0,0),(40,20,0,0),(-120,-80,0,0),(0,0,0,20)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        if top_or_bottom == "top":
+            start_coords = (coords[0],coords[1],59,81,-20,-20)
+            coords_array = [(19,-1,200,200),(-60,-60,20,0),(-40,-60,-20,-20)]
+            coords = self.update_coordinates_from_array(start_coords,coords_array)
+        else:
+            coords = self.update_coordinates(coords[0],coords[1],60,60,-19,-40)
+            coords = self.update_coordinates(coords[0],coords[1],20,20,240,219)
+            coords = self.update_coordinates(coords[0],coords[1],-100,-100,-80,-100)
+            if random.choice([True, False]):
+                coords = self.update_coordinates(coords[0],coords[1],60,60,-20,-40)
+            else:
+                coords = self.update_coordinates(coords[0],coords[1],80,80,-20,-40)
+        return self.draw_right_side(start_x,start_y)
+    
+    def draw_space_two(self,start_x, start_y,top_or_bottom):
+        start_coords = (start_x,start_y,40,40,0,-100)
+        coords_array = [(0,80,0,0),(0,0,0,60),(0,-40,0,0),(0,0,0,-20),(20,20,0,-20),
+                        (0,-40,0,0),(0,0,0,60),(0,80,0,0),(-120,-120,0,-200),(0,80,0,0),
+                        (0,0,0,60),(0,-40,0,0),(0,0,0,-20),(20,20,0,-20),(0,-40,0,0),
+                        (0,0,0,60),(0,80,0,0),(0,0,-100,0),(20,-100,20,20)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        return self.draw_right_side(start_x,start_y)
+
+    def draw_space_three(self,start_x, start_y,top_or_bottom):
+        start_coords = (start_x,start_y,20,40,-20,-20)
+        coords_array = [(0,0,0,-20),(80,80,40,20),(-20,-20,-20,0),(-40,-20,0,0),
+                        (0,0,20,-40),(20,20,40,20),(20,-80,0,0),(0,0,0,-20),
+                        (20,40,0,0),(20,60,0,0),(0,0,0,-20),(0,-60,0,0),
+                        (-20,-20,20,0),(0,-40,0,0),(20,20,-40,0),(40,60,-20,-20),
+                        (0,0,20,0),(20,60,0,0),(-20,-100,-20,-20),(0,0,-80,20),
+                        (-20,0,-40,-40),(20,20,-20,0),(0,20,0,0),(0,0,20,0),
+                        (60,20,0,0),(0,0,0,-20),(0,-20,0,0),(0,0,-20,0),
+                        (-80,-60,0,0),(20,0,-20,-20),(0,0,0,-40),(0,20,0,0),
+                        (0,60,20,20),(-40,-40,-40,0),(20,40,-20,-20),(0,0,0,20),
+                        (-40,-20,20,20),(20,40,0,0),(0,0,20,-60)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        return self.draw_right_side(start_x,start_y)
+
+    def draw_space_four(self,start_x, start_y,top_or_bottom):
+        if top_or_bottom == "top":
+            self.update_coordinates(start_x,start_y,60,60,-20,-220)
+        else:
+            self.update_coordinates(start_x,start_y,60,60,-40,-240)
+        start_coords = (start_x,start_y,20,40,-20,-20)
+        coords_array = [(0,0,0,-20),(20,0,0,0),(-40,-20,0,0),(20,0,-20,-20),(0,0,0,-20),(-20,0,0,0),
+                        (20,20,0,-20),(20,-20,0,0),(-20,20,-20,-20),(0,0,0,-40),(0,-20,0,0),(0,0,0,-20),
+                        (-20,0,40,40),(-20,0,-60,-60),(0,0,-40,-20),(20,20,0,40),(0,20,0,0),
+                        (60,60,-60,-40),(20,-20,20,20),(0,0,0,-20),(0,-20,0,0),(-20,0,20,20),(40,0,20,20),
+                        (0,0,0,40),(0,-20,0,0),(80,40,-20,-20),(0,0,0,60),(20,20,-40,0),(20,0,0,0),
+                        (-40,-40,-20,20),(-20,40,0,0),(-20,-20,60,0),(-20,0,20,20),(20,20,0,20),(20,0,0,0),
+                        (-60,-40,0,0),(40,20,20,20),(-40,-20,0,0),(0,0,0,20)]
+        self.update_coordinates_from_array(start_coords,coords_array)
+        return self.draw_right_side(start_x,start_y)
+
+    def draw_space_options(self,start_x,start_y,top_or_bottom):
+        if len(self.space_options) == 0:
+            self.space_options = [1,2,3,4]
+        random_space = random.choice(self.space_options)
+        self.space_options.remove(random_space)
+        match random_space:
+            case 1:
+                return self.draw_space_one(start_x,start_y,top_or_bottom)
+            case 2:
+                return self.draw_space_two(start_x,start_y,top_or_bottom)
+            case 3:
+                return self.draw_space_three(start_x,start_y,top_or_bottom)
+            case 4:
+                return self.draw_space_four(start_x,start_y,top_or_bottom)
+    
+    def draw_row_one_end(self, draw_second_row_ends):
+        start_coords = (430,290,-20,-20,-20,-40)
+        coords_array = [(-20,0,0,0),(20,0,-20,-20),(-20,0,-20,-20),(0,0,0,-20),(20,0,-20,-20),
+                        (-20,0,-20,-20),(20,0,-20,-20),(0,0,0,-20),(-20,0,-20,-20),(20,0,-20,-20),
+                        (-20,0,-20,-20)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        if draw_second_row_ends:
+            coords = self.update_coordinates(coords[0],coords[1],20,-1,-240,-240)
+            coords = self.update_coordinates(-430,coords[1],0,0,0,220)
+
+    def two_row_finish(self):
+        start_coords = (-450,-290,0,120,20,20)
+        coords_array = [(20,20,-20,20),(0,-120,0,0),(0,200,20,20),(-60,-60,0,-40),(20,20,-20,20),
+                        (20,20,20,-20),(20,20,-20,20),(-200,60,40,40),(-40,-40,0,-60),(0,20,0,0),
+                        (0,0,0,20),(0,20,0,0),(0,0,0,20),(-20,20,0,0),(0,0,0,20),(0,20,0,0),
+                        (20,20,0,-40),(0,-20,20,20),(0,0,0,-20),(0,-20,0,0),(0,0,0,-20),
+                        (0,-20,0,0),(0,0,0,-20),(40,60,20,20),(0,0,-20,0),(20,20,80,0),
+                        (0,80,0,0),(0,0,0,40),(0,-40,0,0),(20,-20,-20,-20),(0,0,0,40),
+                        (0,80,0,0),(0,0,0,-80),(20,20,20,80),(20,20,-20,-80),(20,20,20,80),
+                        (20,20,-20,-80),(20,20,20,80),(20,20,-20,-80),(20,20,20,80),
+                        (-120,0,0,0),(20,20,20,-20),(0,0,-20,-40),(20,20,-20,0),(20,20,20,0),
+                        (20,20,-20,0),(20,20,20,0),(20,20,-20,0),(20,20,20,0),(20,20,-20,0),
+                        (20,20,20,0),(20,20,-20,0),(20,20,20,0),(20,20,-20,0),(20,20,0,60),
+                        (0,-220,0,0),(-20,200,-20,-20),(20,-220,-20,-20)]
+        coords = self.update_coordinates_from_array(start_coords,coords_array)
+        match random.choice([1, 2, 3]):
+            case 1:
+                coords = self.update_coordinates(-230,-290,0,0,40,60)
+                self.update_coordinates(coords[0],coords[1],100,120,20,20)
+            case 2:
+                self.update_coordinates(-130,-290,0,0,100,80)
+                self.update_coordinates(-230,-290,0,0,40,60)
+            case 3:
+                self.update_coordinates(-130,-290,0,0,100,80)
+                self.update_coordinates(-230,-290,0,20,60,60)
+        if random.choice([True, False]):
+            self.update_coordinates(150,-290,0,0,100,78)
+        else:
+            self.update_coordinates(150,-290,0,0,0,20)
+        if random.choice([True, False]):
+            self.update_coordinates(190,-290,0,0,100,80)
+        else:
+            self.update_coordinates(330,-290,0,0,0,21)
     </script>
 
+    <script type="text/python" id="main">
+from browser import document, window
+import turtle
+from generator import Generator
+from words import Words
+import random
+
+turtle.set_defaults(
+    canvwidth=920,
+    canvheight=600,
+    turtle_canvas_wrapper=document["turtle-div-v3"]
+)
+turtle.screensize(920, 600)
+
+def draw_letter_return_info(info, letter):
+    match letter:
+        case "a":
+            return generator.draw_a(info[0],info[1],info[2])
+        case "b":
+            return generator.draw_b(info[0],info[1],info[2])
+        case "c":
+            return generator.draw_c(info[0],info[1],info[2])
+        case "d":
+            return generator.draw_d(info[0],info[1],info[2])
+        case "e":
+            return generator.draw_e(info[0],info[1],info[2])
+        case "f":
+            return generator.draw_f(info[0],info[1],info[2])
+        case "g":
+            return generator.draw_g(info[0],info[1],info[2])
+        case "h":
+            return generator.draw_h(info[0],info[1],info[2])
+        case "i":
+            return generator.draw_i(info[0],info[1],info[2])
+        case "j":
+            return generator.draw_j(info[0],info[1],info[2])
+        case "k":
+            return generator.draw_k(info[0],info[1],info[2])
+        case "l":
+            return generator.draw_l(info[0],info[1],info[2])
+        case "m":
+            return generator.draw_m(info[0],info[1],info[2])
+        case "n":
+            return generator.draw_n(info[0],info[1],info[2])
+        case "o":
+            return generator.draw_o(info[0],info[1],info[2])
+        case "p":
+            return generator.draw_p(info[0],info[1],info[2])
+        case "q":
+            return generator.draw_q(info[0],info[1],info[2])
+        case "r":
+            return generator.draw_r(info[0],info[1],info[2])
+        case "s":
+            return generator.draw_s(info[0],info[1],info[2])
+        case "t":
+            return generator.draw_t(info[0],info[1],info[2])
+        case "u":
+            return generator.draw_u(info[0],info[1],info[2])
+        case "v":
+            return generator.draw_v(info[0],info[1],info[2])
+        case "w":
+            return generator.draw_w(info[0],info[1],info[2])
+        case "x":
+            return generator.draw_x(info[0],info[1],info[2])
+        case "y":
+            return generator.draw_y(info[0],info[1],info[2])
+        case "z":
+            return generator.draw_z(info[0],info[1],info[2])
+        case _:
+            return generator.draw_space_options(info[0],info[1],info[2])
+
+word_input = Words()
+screen = turtle.Screen()
+screen.setup(width=920, height=600)
+screen.title("Maze Generator")
+screen.tracer(2, 0)
+generator = None
+
+def generate_maze(phrase):
+    global generator
+    word_input.set_word(phrase)
+    word_input.format_string()
+    
+    generator = Generator()
+    generator.draw_border()
+    
+    info = (-450, 290, "top")
+    for i in word_input.line_one:
+        info = draw_letter_return_info(info, i)
+    generator.draw_row_one_end(True)
+
+    info = (-430, 50, "top")
+    print(word_input.input_string)
+    for i in word_input.line_two:
+        info = draw_letter_return_info(info, i)
+    generator.two_row_finish()
+
+    generator.update_coordinates(0, 0, 0, 0, 0, 0)
+    turtle.done()
+
+def on_submit(event):
+    phrase = document["phrase-input"].value
+    is_valid, error_msg = word_input.check_phrase(phrase)
+    
+    if is_valid:
+        document["input-container"].style.display = "none"
+        document["prompt-wrapper"].style.display = "none"
+        generate_maze(word_input.input_string)
+    else:
+        document["error-msg"].text = error_msg
+
+document["submit-btn"].bind("click", on_submit)
+document["phrase-input"].bind("keypress", lambda ev: on_submit(ev) if ev.key == "Enter" else None)
+    </script>
 </body>
 
 </html>
