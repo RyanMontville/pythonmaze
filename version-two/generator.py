@@ -1,69 +1,44 @@
-###### V 0.010 ######
-def go_to_top_left(self):
-    self.pu()
-    self.goto(-390,290)
-    self.pd()
+from turtle import Turtle
+import random
+
+class Generator(Turtle):
+    def __init__(self):
+        super().__init__()
+        self.draw_border()
+        self.hideturtle()
+        self.speed("fastest")
         
-def draw_border(self):
-    self.go_to_top_left()
-    for i in range(2):
-        self.forward(780)
-        self.right(90)
-        self.forward(560)
+    def print_cors(self):
+        xint = int(self.xcor())
+        yint = int(self.ycor())
+        print("X: " + str(xint) + ", Y: " + str(yint))
+        
+    def draw_line_from_tuple(self,ct):
         self.pu()
-        self.forward(20)
+        self.goto(ct[0],ct[1])
         self.pd()
-        self.right(90)
-
-def draw_vertical(self, xcoord):
-        self.pu()
-        self.goto(xcoord,290)
-        self.setheading(270)
-        while self.ycor() > -290:
-            should_draw = random.choice([True, False])
-            if should_draw:
-                self.pd()
-                self.forward(20)
-            else:
-                self.pu()
-                self.forward(20)
-                
-    def draw_horizontal(self, ycoord):
-        self.pu()
-        self.goto(-390, ycoord)
-        self.setheading(0)
-        while self.xcor() < 390:
-            should_draw = random.choice([True, False])
-            if should_draw:
-                self.pd()
-                self.forward(20)
-            else:
-                self.pu()
-                self.forward(20)
-                
-    def draw_all_vertical(self):
-        x_index = -370
-        for i in range(38):
-            self.draw_vertical(x_index)
-            x_index += 20
+        self.goto(ct[2],ct[3])
+        
+    def update_coordinates(self,x_coordinate,y_coordinate,x_start_change,x_end_change,y_start_change,y_end_change):
+        x_start = x_coordinate + x_start_change
+        x_end = x_coordinate + x_end_change
+        y_start = y_coordinate + y_start_change
+        y_end = y_coordinate + y_end_change
+        self.draw_line_from_tuple((x_start,y_start,x_end,y_end))
+        return (x_end,y_end)
+        
+    def update_coordinates_from_array(self,st_coords,coords_array):
+        coordinates = self.update_coordinates(st_coords[0],st_coords[1],st_coords[2],st_coords[3],st_coords[4],st_coords[5])
+        for ct in coords_array:
+            coordinates = self.update_coordinates(coordinates[0],coordinates[1],ct[0],ct[1],ct[2],ct[3])
+        return coordinates
             
-    def draw_all_horizontal(self):
-        y_index = 270
-        for i in range(28):
-            self.draw_horizontal(y_index)
-            y_index -= 20
-
-###### V 0.020 ######
-#main.py
-bottom_of_zig_zags = generator.draw_zig_zags(-390,290)
-bottom_of_second_row = generator.draw_second_row(-390,bottom_of_zig_zags[0],bottom_of_zig_zags[1])
-bottom_of_third_row = generator.draw_third_row(bottom_of_second_row)
-generator.draw_forth_row(bottom_of_third_row)
-# Draw another line to make sure the last line isn't skipped by the tracer
-generator.update_coordinates(0,0,0,0,0,0)
-
-#generator.py
-def draw_zig_zags(self, x_coordinate, y_coordinate):
+    def draw_border(self):      
+        border_start = (-390,290,0,780,0,0)
+        border_array = [(0,0,0,-560),(0,-780,-20,-20),(0,0,0,560)]
+        self.update_coordinates_from_array(border_start,border_array)
+        
+    def draw_zig_zags(self, x_coordinate, y_coordinate):
         # randomly choose how long the vertical zig zags will be
         random_lengths = [(60,"even"),(80,"odd"),(100,"both"),(120,"both")]
         # choice = random.choice(random_lengths)

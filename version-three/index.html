@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Maze Generator</title>
+    <!-- Load Brython engines -->
+    <script src="https://cdn.jsdelivr.net/npm/brython@3/brython.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3/brython_stdlib.js"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* Simple styling for the input form container */
+        #input-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        #phrase-input {
+            padding: 8px;
+            font-size: 16px;
+            width: 300px;
+        }
+        #submit-btn {
+            padding: 8px 16px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #error-msg {
+            color: red;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body onload="brython()">
+    <div id="page-wrapper">
+        <header>
+            <h1>Python Maze Generator V3</h1>
+        </header>
+        <main>
+            <!-- HTML Input Form -->
+            <div id="input-container">
+                <label for="phrase-input">Type a word or phrase (12 letters max, no spaces counted):</label><br><br>
+                <input type="text" id="phrase-input" placeholder="Enter word or phrase...">
+                <button id="submit-btn">Generate Maze</button>
+                <div id="error-msg"></div>
+            </div>
+
+            <!-- Target container for the turtle canvas wrapper -->
+            <div id="turtle-div"></div>
+        </main>
+    </div>
+
+    <!-- 1. generator.py module -->
+    <script type="text/python" id="generator">
+        from turtle import Turtle
+        import random
+
+        class Generator(Turtle):
+            def __init__(self):
+                super().__init__()
+                self.hideturtle()
+                self.speed("fastest")
+                self.normal = 1
+                self.bold = 3
+                self.space_options = [1,2,3,4]
+                
+            def draw_line_from_tuple(self,ct):
+                self.pu()
+                self.goto(ct[0],ct[1])
+                self.pd()
+                self.goto(ct[2],ct[3])
+                
+            def update_coordinates(self,x_coordinate,y_coordinate,x_start_change,x_end_change,y_start_change,y_end_change):
+                x_start = x_coordinate + x_start_change
+                x_end = x_coordinate + x_end_change
+                y_start = y_coordinate + y_start_change
+                y_end = y_coordinate + y_end_change
+                self.draw_line_from_tuple((x_start,y_start,x_end,y_end))
+                return (x_end,y_end)
+                
+            def update_coordinates_from_array(self,st_coords,coords_array):
+                coordinates = self.update_coordinates(st_coords[0],st_coords[1],st_coords[2],st_coords[3],st_coords[4],st_coords[5])
+                for ct in coords_array:
+                    coordinates = self.update_coordinates(coordinates[0],coordinates[1],ct[0],ct[1],ct[2],ct[3])
+                return coordinates
+                    
+            def draw_border(self):      
+                border_start = (-450,290,0,880,0,0)
+                border_array = [(0,0,0,-560),(0,-880,-20,-20),(0,0,0,560)]
+                self.update_coordinates_from_array(border_start,border_array)
+            
+            def reset_coordinates(self,x_cord,y_cord):
+                self.pu()
+                self.goto(x_cord,y_cord)
+
+            def draw_circle(self,x_offset,y_offset,radius,angle,heading):
+                self.reset_coordinates(self.xcor()+x_offset,self.ycor()+y_offset)
+                self.pd()
+                self.setheading(heading)
+                self.circle(radius, angle)
+
+            def draw_right_side(self,start_x,start_y):
+                self.update_coordinates(start_x,start_y,0,140,-240,-240)
+                if random.choice([True, False]):
+                    self.update_coordinates(start_x + 140, start_y,0,0,0,-220)
+                    return (start_x + 140, start_y,"bottom")
+                else:
+                    self.update_coordinates(start_x + 140, start_y,0,0,-20,-240)
+                    return (start_x + 140, start_y,"top")
+
+            # Include your letter drawing methods (draw_a through draw_z) and space methods here...
+            def draw_row_one_end(self, draw_second_row_ends):
+                start_coords = (430,290,-20,-20,-20,-40)
+                coords_array = [(-20,0,0,0),(20,0,-20,-20),(-20,0,-20,-20),(0,0,0,-20),(20,0,-20,-20),
+                                (-20,0,-20,-20),(20,0,-20,-20),(0,0,0,-20),(-20,0,-20,-20),(20,0,-20,-20),
+                                (-20,0,-20,-20)]
+                coords = self.update_coordinates_from_array(start_coords,coords_array)
+                if draw_second_row_ends:
+                    coords = self.update_coordinates(coords[0],coords[1],20,-1,-240,-240)
+                    coords = self.update_coordinates(-430,coords[1],0,0,0,220)
+
+            def two_row_finish(self):
+                # (your two_row_finish array logic)
+                pass
+    </script>
+
+    <!-- 2. words.py module -->
+    <script type="text/python" id="words">
+        class Words():
+            def __init__(self):
+                self.input_string = ""
+                self.line_one = ""
+                self.line_two = ""
+
+            def check_phrase(self,phrase_to_check):
+                if not phrase_to_check:
+                    return (False, "Please enter at least 1 letter.")
+                phrase_no_spaces = phrase_to_check.replace(" ","")
+                if len(phrase_no_spaces) == 0:
+                    return (False, "Error! Please enter at least 1 letter.")
+                elif len(phrase_no_spaces) > 12:
+                    return (False, "Error! Word or Phrase is too long (max 12 letters).")
+                elif len(phrase_no_spaces) == 12:
+                    self.input_string = phrase_no_spaces.lower()
+                    return (True,"")
+                else:
+                    self.input_string = phrase_to_check.lower()
+                    return (True,"")
+
+            def format_string(self):
+                words = self.input_string.split()
+                line_one = ""
+                if len(words) == 1:
+                    line_one = self.input_string[:6]
+                    line_two = self.input_string[6:]
+                elif len(words[0]) == 6:
+                    line_one = words[0]
+                    line_two = self.input_string[6:]
+                elif len(words[0]) + len(words[1]) == 6:
+                    line_one = words[0] + words[1]
+                    line_two = self.input_string[len(line_one) + 1:]
+                elif len(words[0]) + len(words[1]) < 6:
+                    line_one = words[0] + " " + words[1]
+                    line_two = self.input_string[len(line_one):]
+                else:
+                    line_one = words[0]
+                    line_two = self.input_string[len(line_one):]
+                line_one_final = line_one.strip()
+                line_two_final = line_two.strip()
+                while len(line_one_final) < 6:
+                    line_one_final += "-"
+                while len(line_two_final) < 6:
+                    line_two_final += "-"
+                if len(line_two_final) > 6:
+                    no_spaces = self.input_string.replace(" ","")
+                    self.line_one = no_spaces[0:6]
+                    second_line = no_spaces[6:]
+                    while len(second_line) < 6:
+                        second_line += "-"
+                    self.line_two = second_line
+                else:
+                    self.line_one = line_one_final
+                    self.line_two = line_two_final
+    </script>
+
+    <!-- 3. main.py execution script -->
+    <script type="text/python">
+        from browser import document
+        from generator import Generator
+        import words
+        import turtle
+
+        # Map turtle to your custom HTML div container
+        turtle.set_defaults(
+            canvwidth = 850,
+            canvheight = 650,
+            turtle_canvas_wrapper = document["turtle-div"]
+        )
+
+        def draw_letter_return_info(info, letter):
+            match letter:
+                case "a": return generator.draw_a(info[0],info[1],info[2])
+                case "b": return generator.draw_b(info[0],info[1],info[2])
+                case "c": return generator.draw_c(info[0],info[1],info[2])
+                case "d": return generator.draw_d(info[0],info[1],info[2])
+                case "e": return generator.draw_e(info[0],info[1],info[2])
+                case "f": return generator.draw_f(info[0],info[1],info[2])
+                case "g": return generator.draw_g(info[0],info[1],info[2])
+                case "h": return generator.draw_h(info[0],info[1],info[2])
+                case "i": return generator.draw_i(info[0],info[1],info[2])
+                case "j": return generator.draw_j(info[0],info[1],info[2])
+                case "k": return generator.draw_k(info[0],info[1],info[2])
+                case "l": return generator.draw_l(info[0],info[1],info[2])
+                case "m": return generator.draw_m(info[0],info[1],info[2])
+                case "n": return generator.draw_n(info[0],info[1],info[2])
+                case "o": return generator.draw_o(info[0],info[1],info[2])
+                case "p": return generator.draw_p(info[0],info[1],info[2])
+                case "q": return generator.draw_q(info[0],info[1],info[2])
+                case "r": return generator.draw_r(info[0],info[1],info[2])
+                case "s": return generator.draw_s(info[0],info[1],info[2])
+                case "t": return generator.draw_t(info[0],info[1],info[2])
+                case "u": return generator.draw_u(info[0],info[1],info[2])
+                case "v": return generator.draw_v(info[0],info[1],info[2])
+                case "w": return generator.draw_w(info[0],info[1],info[2])
+                case "x": return generator.draw_x(info[0],info[1],info[2])
+                case "y": return generator.draw_y(info[0],info[1],info[2])
+                case "z": return generator.draw_z(info[0],info[1],info[2])
+                case _: return generator.draw_space_options(info[0],info[1],info[2])
+
+        word_input = words.Words()
+        generator = None
+
+        def on_submit(ev):
+            global generator
+            phrase = document["phrase-input"].value
+            response = word_input.check_phrase(phrase)
+            
+            if not response[0]:
+                document["error-msg"].text = response[1]
+                return
+            
+            # Clear errors and hide the input form once valid
+            document["error-msg"].text = ""
+            document["input-container"].style.display = "none"
+            
+            # Initialize Screen and Generator
+            screen = turtle.Screen()
+            screen.setup(width=850, height=650)
+            screen.bgcolor("white")
+            
+            generator = Generator()
+            generator.draw_border()
+            
+            info = (-450, 290, "top")
+            for i in word_input.line_one:
+                info = draw_letter_return_info(info, i)
+            generator.draw_row_one_end(True)
+            
+            info = (-430, 50, "top")
+            for i in word_input.line_two:
+                info = draw_letter_return_info(info, i)
+            generator.two_row_finish()
+
+            generator.update_coordinates(0, 0, 0, 0, 0, 0)
+            turtle.done()
+
+        # Bind the HTML button click event to our Python function
+        document["submit-btn"].bind("click", on_submit)
+    </script>
+
+</body>
+
+</html>

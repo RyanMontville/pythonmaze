@@ -5,6 +5,12 @@ class Words():
         self.line_two = ""
 
     def check_phrase(self,phrase_to_check):
+        if phrase_to_check is None:
+            return (
+                False,
+                "Cancelled.\nType a word or phrase 12 letter long or less (not"
+                " including spaces):",
+            )
         print(phrase_to_check)
         phrase_no_spaces = phrase_to_check.replace(" ","")
         if len(phrase_no_spaces) == 0:
@@ -12,7 +18,7 @@ class Words():
         elif len(phrase_no_spaces) > 12:
             return (False, "Error! Word or Phrase is too long.\nType a word or phrase 12 letter long or less (not including spaces):")
         elif len(phrase_no_spaces) == 12:
-            self.input_string =  phrase_no_spaces
+            self.input_string = phrase_no_spaces.lower()
             return (True,"")
         else:
             self.input_string =  phrase_to_check.lower()
